@@ -13,12 +13,8 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        {{ __('Dashbogggggggard') }}
                     </x-nav-link>
-                   <x-nav-link :href="route('customer')" :active="request()->routeIs('customer')">
-                        {{ __('Customer') }}
-                    </x-nav-link>
-                    
                 </div>
             </div>
 
@@ -74,10 +70,6 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('customer')" :active="request()->routeIs('customer')">
-                {{ __('Customer') }}
-            </x-responsive-nav-link>
-            
         </div>
 
         <!-- Responsive Settings Options -->
