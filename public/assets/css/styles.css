@@ -325,7 +325,11 @@ th {
   text-align: -webkit-match-parent;
 }
 
-thead,
+thead {
+  background-color: #343a40; /* Dark gray */
+  color: white; /* Ensure text is visible on dark background */
+}
+
 tbody,
 tfoot,
 tr,
@@ -2004,7 +2008,7 @@ progress {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
-  border-radius: 0.375rem;
+  border-radius: 1rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 @media (prefers-reduced-motion: reduce) {

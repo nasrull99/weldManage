@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('custdetail', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('phone number');
-            $table->string('location');
-            $table->timestamps();
+        Schema::table('custdetail', function (Blueprint $table) {
+            $table->string('status')->after('location');
         });
     }
 
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('custdetail');
+        Schema::table('custdetail', function (Blueprint $table) {
+            $table->dropColumn('status');
+        });
     }
 };

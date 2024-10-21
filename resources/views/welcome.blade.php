@@ -18,7 +18,6 @@
                 background-position: center;
                 background-repeat: no-repeat;
                 font-family: 'Raleway';
-                
                 height: 100vh;
                 margin: 0;
             }

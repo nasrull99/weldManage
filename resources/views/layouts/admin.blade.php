@@ -28,7 +28,7 @@
                     @yield('content')
                 </div>
             </main>
-                @include('layouts.partial.footer')
+                 {{-- @include('layouts.partial.footer')  --}}
             </div>
         </div>
 
