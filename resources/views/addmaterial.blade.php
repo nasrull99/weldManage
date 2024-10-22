@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Customer Management')
+@section('title', 'Quotation')
 
 @section('content')
 
@@ -15,19 +15,20 @@
             height: 100vh;
             margin: 0;
         }
-
+        
         header {
             background-color: #f9fafb;
             padding: 1rem;
             text-align: center;
             border-radius: 5px;
         }
-        
+
         .header-title {
             font-size: 1.5rem;
-            font-weight: 600;
+            font-weight: bold;
             color: #333;
         }
+        
         .main-content {
             display: flex;
             justify-content: center;
@@ -74,50 +75,30 @@
             box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
         }
     </style>
-
+    
 <body>
     <header>
-        <h2 class="header-title">CUSTOMER MANAGEMENT</h2>
+        <h2 class="header-title">QUOTATION MANAGEMENT</h2>
     </header>
-
-    <!-- Display success message if customer saved -->
-    @if (session('status'))
-        <div class="alert alert-success">
-            {{ session('status') }}
-        </div>
-    @endif
 
     <!-- Main Content -->
     <div class="main-content">
         <div class="container">
             <div class="card">
                 <div class="card-body">
-                    <h1 class="card-title">CUSTOMER DETAILS</h1>
+                    <h1 class="card-title">QUOTATION DETAILS</h1>
                     <div class="form-container">
-                        <form action="{{ route('editsavedcust', $customer->id) }}" method="POST">
+                        <form action="{{ route('storematerial') }}" method="POST">
                             @csrf
                             <div class="form-group">
-                                <label for="name">Name:</label>
-                                <input type="text" id="name" name="name" placeholder="Enter your name"  value="{{ $customer->name }}" required>
+                                <label for="name">Material:</label>
+                                <input type="text" id="material" name="material" placeholder="Material name" required>
                             </div>
                             <div class="form-group">
-                                <label for="phone">Phone Number:</label>
-                                <input type="text" id="phone" name="phone" placeholder="Enter your phone number" value="{{ $customer->phone }}" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="location">Location:</label>
-                                <input type="text" id="location" name="location" placeholder="Enter Location" value="{{ $customer->location }}" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="status" class="form-label">Status</label>
-                                <select name="status" id="status" class="form-select" required>
-                                    <option value="" disabled>Select Status</option>
-                                    <option value="pending" {{ $customer->status === 'pending' ? 'selected' : '' }}>Pending</option>
-                                    <option value="in_progress" {{ $customer->status === 'in_progress' ? 'selected' : '' }}>In Progress</option>
-                                    <option value="completed" {{ $customer->status === 'completed' ? 'selected' : '' }}>Completed</option>
-                                </select>
-                            </div>
-
+                                <label for="phone">Price:</label>
+                                <input type="text" id="price" name="price" placeholder="Price of material" required>
+                            </div>                       
+                            
                             <!-- Save Button -->
                             <button type="submit" class="btn btn-primary">Save</button>
                         </form>

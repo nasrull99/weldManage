@@ -92,14 +92,14 @@
                             @csrf
                             <div class="form-group">
                                 <label for="name">Name:</label>
-                                <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                                <input type="text" id="name" name="name" placeholder="Enter customer name" required>
                                 @error('name')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 <label for="phone">Phone Number:</label>
-                                <input type="text" id="phone" name="phone" placeholder="Enter your phone number" required>
+                                <input type="text" id="phone" name="phone" placeholder="Enter customer phone number" required>
                             </div>
                             <div class="form-group">
                                 <label for="location">Location:</label>

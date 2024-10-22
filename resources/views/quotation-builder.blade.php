@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-
+@section('title', 'Quotation')
 @section('content')
 
 <style>
@@ -19,6 +19,7 @@
             background-color: #f9fafb;
             padding: 1rem;
             text-align: center;
+            border-radius: 5px;
         }
 
     .header-title {
@@ -35,22 +36,21 @@
 <body>
 
     <div>
-        <header class="header-title">QUOTATION</header>
+        <header class="header-title">QUOTATION MANAGEMENT</header>
     </div>
 
-    <div class="my-3">
-        <table class="table table-bordered border primary">
-            <div>
-                <thead class="table-dark">
-                    <tr>
-                        <th>#</th>
-                        <th>Material</th>
-                        <th>Price</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-            </div>
-        </table>
+    <div class="card my-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <form action="{{ route('showQuotation') }}" method="POST">
+                <select class="form-select" aria-label="Default select example">
+                    <option selected>Open this select menu</option>
+                        @forelse ($customers as $customer)
+                            <option value="{{ $customer->id }}">{{ $customer->name }}</option>
+                        @empty
+                        @endforelse
+                </select>
+            </form>
+        </div>
     </div>
 
 </body>

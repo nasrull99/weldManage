@@ -24,3 +24,18 @@ window.addEventListener('DOMContentLoaded', event => {
     }
 
 });
+
+let number = 0;
+
+function increment() {
+    number++;
+    document.getElementById('number-display').textContent = number;
+}
+
+function decrement() {
+    if (number > 0) {
+        number--;
+        document.getElementById('number-display').textContent = number;
+    }
+}
+

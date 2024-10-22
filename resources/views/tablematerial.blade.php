@@ -1,12 +1,10 @@
 @extends('layouts.admin')
-
-@section('title', 'Customer Management')
-
+@section('title', 'Quotation')
 @section('content')
 
 <style>
 
-    body {
+    body{
         font-family: Arial, sans-serif;
         background-image: url('{{ asset('images/welcomebg.jpg') }}');
         background-size: cover;
@@ -18,51 +16,37 @@
     }
 
     header {
-        background-color: #f9fafb;
-        padding: 1rem;
-        text-align: center;
-        border-radius: 5px;
-    }
+            background-color: #f9fafb;
+            padding: 1rem;
+            text-align: center;
+            border-radius: 5px;
+        }
 
     .header-title {
+        text-align: center;
         font-size: 1.5rem;
         font-weight: bold;
         color: #333;
     }
-
-    .status-pending {
-        color: red; /* Red for pending */
+    .item-1{
+        background-color: #ffffff;
     }
-
-    .status-in-progress {
-        color: blue; /* Yellow for in progress */
-    }
-
-    .status-completed {
-        color: green; /* Green for completed */
-    }
-
-    .status-uppercase {
-    text-transform: uppercase; /* Change text to uppercase */
-    }
-
 </style>
 
 <body>
-    
-    <header>
-        <h2 class="header-title">CUSTOMER MANAGEMENT</h2>
-    </header>
 
-    <!-- Table -->
+    <div>
+        <header class="header-title">QUOTATION MANAGEMENT</header>
+    </div>
+
     <div class="card my-4">
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
                 <i class="fas fa-table me-1"></i>
-                List of Customers
+                List of Material
             </div>
             <div class="ms-auto">  <!-- This will push the button to the right -->
-                <a href="{{ route('customer') }}" class="btn btn-primary" >+ Add Customer</a>
+                <a href="{{ route('addmaterial') }}" class="btn btn-primary" >+ Add Material</a>
             </div>
         </div>
         
@@ -71,44 +55,34 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Name</th>
-                        <th>Phone Number</th>
-                        <th>Location</th>
-                        <th>Status</th>
+                        <th>Material</th>
+                        <th>Price</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($customers as $customer)
+                    @forelse ($materials as $material)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $customer->name }}</td>
-                            <td>{{ $customer->phone }}</td>
-                            <td>{{ $customer->location }}</td>
-                            <td>
-                                <span class="status-uppercase {{ $customer->status === 'pending' ? 'status-pending' : ($customer->status === 'in_progress' ? 'status-in-progress' : 'status-completed') }}">
-                                    {{ $customer->status }}
-                                </span>
-                            </td>
-                            
+                            <td>{{ $material->material }}</td>
+                            <td>RM {{ $material->price }}</td>
                             <td>
                                 <div class="btn-group" role="group" aria-label="Actions">
-                                    <a href="{{ route('edit', $customer->id) }}" class="btn btn-primary btn-sm">
+                                    <a href="{{ route('editmaterial', $material->id) }}" class="btn btn-primary btn-sm">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $customer->id }}">
+                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $material->id }}">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </div>
                             </td>
-                        </tr>
+                        </tr>  
 
-                        <!-- Delete Modal -->
-                        <div class="modal fade" id="deleteModal{{ $customer->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $customer->id }}" aria-hidden="true">
+                        <div class="modal fade" id="deleteModal{{ $material->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $material->id }}" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="deleteModalLabel{{ $customer->id }}">Confirm Deletion</h5>
+                                        <h5 class="modal-title" id="deleteModalLabel{{ $material->id }}">Confirm Deletion</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
@@ -116,7 +90,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                        <form action="{{ route('deletecustomer', $customer->id) }}" method="POST">
+                                        <form action="{{ route('destroymaterial', $material->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger">Delete</button>
@@ -131,6 +105,7 @@
             </table>
         </div>
     </div>
-    
+
 </body>
+
 @endsection

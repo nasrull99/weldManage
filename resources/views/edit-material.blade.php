@@ -77,7 +77,7 @@
 
 <body>
     <header>
-        <h2 class="header-title">CUSTOMER MANAGEMENT</h2>
+        <h2 class="header-title">QUOTATION MANAGEMENT</h2>
     </header>
 
     <!-- Display success message if customer saved -->
@@ -92,32 +92,19 @@
         <div class="container">
             <div class="card">
                 <div class="card-body">
-                    <h1 class="card-title">CUSTOMER DETAILS</h1>
+                    <h1 class="card-title">QUOTATION DETAILS</h1>
                     <div class="form-container">
-                        <form action="{{ route('editsavedcust', $customer->id) }}" method="POST">
+                        <form action="{{ route('editsavedmaterial', $material->id) }}" method="POST">
                             @csrf
                             <div class="form-group">
-                                <label for="name">Name:</label>
-                                <input type="text" id="name" name="name" placeholder="Enter your name"  value="{{ $customer->name }}" required>
+                                <label for="name">Material:</label>
+                                <input type="text" id="material" name="material" placeholder="Material name"  value="{{ $material->material }}" required>
                             </div>
                             <div class="form-group">
-                                <label for="phone">Phone Number:</label>
-                                <input type="text" id="phone" name="phone" placeholder="Enter your phone number" value="{{ $customer->phone }}" required>
+                                <label for="phone">Price:</label>
+                                <input type="text" id="price" name="price" placeholder="New price" value="{{ $material->price }}" required>
                             </div>
-                            <div class="form-group">
-                                <label for="location">Location:</label>
-                                <input type="text" id="location" name="location" placeholder="Enter Location" value="{{ $customer->location }}" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="status" class="form-label">Status</label>
-                                <select name="status" id="status" class="form-select" required>
-                                    <option value="" disabled>Select Status</option>
-                                    <option value="pending" {{ $customer->status === 'pending' ? 'selected' : '' }}>Pending</option>
-                                    <option value="in_progress" {{ $customer->status === 'in_progress' ? 'selected' : '' }}>In Progress</option>
-                                    <option value="completed" {{ $customer->status === 'completed' ? 'selected' : '' }}>Completed</option>
-                                </select>
-                            </div>
-
+                            
                             <!-- Save Button -->
                             <button type="submit" class="btn btn-primary">Save</button>
                         </form>
