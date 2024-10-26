@@ -4,9 +4,35 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Customer;
+use Pdf;
 
 class CustomerController extends Controller
 {
+
+    public function pdfcustomer()
+    {
+        // Fetch customer data from the database (adjust according to your model)
+        $customers = Customer::all();
+
+        // Data to be passed to the view
+        $data = [
+            'title' => 'Customer List',
+            'date' => now()->toDateString(),
+            'image' => public_path('images/welcomebg.jpg'), // Adjust the image path if necessary
+            'content' => 'Here is the list of customers.',
+            'customers' => $customers
+        ];
+
+        // Load the view and pass the data
+        $pdf = Pdf::loadView('pdf-customer', $data);
+
+        // Save PDF to storage or public folder
+        $pdf->save(public_path('public.pdf'));
+
+        // Optionally, return a download response
+        return $pdf->download('customers.pdf');
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -21,7 +47,7 @@ class CustomerController extends Controller
 
         Customer::create($request->all());
 
-        return redirect()->route('tablecustomer')
+        return redirect()->route('storecustomer')
             ->with('success', 'Customer created successfully.');
     }
 
@@ -61,7 +87,7 @@ class CustomerController extends Controller
     {
         $customer = Customer::findOrFail($id);
         $customer->delete();
-        return redirect()->route('tablecustomer')->with('success', 'Customer deleted successfully');
+        return redirect()->route('showname')->with('success', 'Customer deleted successfully');
     }
 
     public function showQuotation()
@@ -71,5 +97,4 @@ class CustomerController extends Controller
     
     return view('quotation-builder', compact('customers'));// Pass the customers to the view
     }
-
 }

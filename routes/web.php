@@ -13,27 +13,32 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+//CUSTOMER
 Route::get('/customer', function () {
     return view('customer');
-})->middleware(['auth', 'verified'])->name('customer');
+    })->middleware(['auth', 'verified'])->name('customer');
 
-//CUSTOMER
 Route::post('/tablecustomer', CustomerController::class .'@store')
-->name('storedata')->middleware(['auth', 'verified']);
+    ->name('storecustomer')
+    ->middleware(['auth', 'verified']);
 
 Route::get('/tablecustomer', CustomerController::class .'@show')
-->name('showname')->middleware(['auth', 'verified']);
+    ->name('showname')
+    ->middleware(['auth', 'verified']);
 
 Route::get('/edit-customer/{id}', CustomerController::class .'@editview')
-->name('edit')->middleware(['auth', 'verified']);
+    ->name('editcustomer')
+    ->middleware(['auth', 'verified']);
 
 Route::post('/editsavedcustomer/{id}', CustomerController::class .'@editsaved')
     ->name('editsavedcust')
     ->middleware(['auth', 'verified']);
 
-    Route::delete('/destroycustomer/{id}', CustomerController::class .'@destroy')
+Route::delete('/destroycustomer/{id}', CustomerController::class .'@destroy')
     ->name('deletecustomer')
     ->middleware(['auth', 'verified']);
+
+Route::get('pdf-customer', [CustomerController::class, 'pdfcustomer'])->name('pdfcustomer');
 
 //MATERIAL
 Route::get('/addmaterial', function () {
@@ -56,14 +61,15 @@ Route::delete('/destroymaterial/{id}', MaterialController::class .'@destroymater
     ->name('destroymaterial')
     ->middleware(['auth', 'verified']);
 
+Route::get('pdf-material', [MaterialController::class, 'pdfmaterial'])->name('pdfmaterial');
+
+
 //Quotation-builder
-Route::get('/quotation-builder', function () {
-    return view('quotation-builder');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/quotation-builder', [CustomerController::class, 'showQuotation'])
+    ->name('showQuotation')
+    ->middleware(['auth', 'verified']);
 
-Route::get('/quotation-builder', [CustomerController::class, 'showQuotation'])->name('showQuotation');
-
-
+//auth
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

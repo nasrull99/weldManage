@@ -29,7 +29,7 @@
                 <nav class="sb-sidenav-menu-nested nav">
                     <a class="nav-link" href="{{ url('tablematerial') }}">Manage Quotation</a>
                     <a class="nav-link" href="{{ url('addmaterial') }}">Add Material</a>
-                    <a class="nav-link" href="#!">Quotation Builder</a>
+                    <a class="nav-link" href="{{ route('showQuotation') }}">Quotation Builder</a>
                 </nav>
             </div>
 

@@ -28,9 +28,11 @@
         font-weight: bold;
         color: #333;
     }
-    .item-1{
-        background-color: #ffffff;
+
+    .form-select{
+        width: 500px;
     }
+
 </style>
 
 <body>
@@ -43,7 +45,7 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <form action="{{ route('showQuotation') }}" method="POST">
                 <select class="form-select" aria-label="Default select example">
-                    <option selected>Open this select menu</option>
+                    <option disabled selected>Open this select menu</option>
                         @forelse ($customers as $customer)
                             <option value="{{ $customer->id }}">{{ $customer->name }}</option>
                         @empty

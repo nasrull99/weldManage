@@ -63,6 +63,9 @@
             </div>
             <div class="ms-auto">  <!-- This will push the button to the right -->
                 <a href="{{ route('customer') }}" class="btn btn-primary" >+ Add Customer</a>
+                <a href="{{ route('pdfcustomer') }}" class="btn btn-primary">
+                    <i class="fas fa-print"></i>
+                </a>
             </div>
         </div>
         
@@ -93,7 +96,7 @@
                             
                             <td>
                                 <div class="btn-group" role="group" aria-label="Actions">
-                                    <a href="{{ route('edit', $customer->id) }}" class="btn btn-primary btn-sm">
+                                    <a href="{{ route('editcustomer', $customer->id) }}" class="btn btn-primary btn-sm">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $customer->id }}">

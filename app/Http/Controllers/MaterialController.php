@@ -3,13 +3,33 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Material;  
+use App\Models\Material; 
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class MaterialController extends Controller
 {
-    public function index()
+    public function pdfmaterial()
     {
+        // Fetch customer data from the database (adjust according to your model)
+        $materials = Material::all();
 
+        // Data to be passed to the view
+        $data = [
+            'title' => 'Customer List',
+            'date' => now()->toDateString(),
+            'image' => public_path('images/welcomebg.jpg'), // Adjust the image path if necessary
+            'content' => 'Here is the list of customers.',
+            'materials' => $materials
+        ];
+
+        // Load the view and pass the data
+        $pdf = Pdf::loadView('pdf-material', $data);
+
+        // Save PDF to storage or public folder
+        $pdf->save(public_path('public.pdf'));
+
+        // Optionally, return a download response
+        return $pdf->download('Materials.pdf');
     }
 
     /**
@@ -19,7 +39,7 @@ class MaterialController extends Controller
     {
         $request->validate([
             'material' => 'required|max:255',
-            'price' => 'required|numeric',
+            'price' => 'required|numeric|between:0,99999.99',
         ]);
 
         Material::create($request->all());

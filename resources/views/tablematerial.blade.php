@@ -47,6 +47,9 @@
             </div>
             <div class="ms-auto">  <!-- This will push the button to the right -->
                 <a href="{{ route('addmaterial') }}" class="btn btn-primary" >+ Add Material</a>
+                <a href="{{ route('pdfmaterial') }}" class="btn btn-primary">
+                    <i class="fas fa-print"></i>
+                </a>
             </div>
         </div>
         
@@ -56,7 +59,7 @@
                     <tr>
                         <th>#</th>
                         <th>Material</th>
-                        <th>Price</th>
+                        <th>Unit Price</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -65,7 +68,7 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $material->material }}</td>
-                            <td>RM {{ $material->price }}</td>
+                            <td>RM{{ $material->price }}</td>
                             <td>
                                 <div class="btn-group" role="group" aria-label="Actions">
                                     <a href="{{ route('editmaterial', $material->id) }}" class="btn btn-primary btn-sm">

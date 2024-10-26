@@ -6,6 +6,17 @@
 
 <style>
 
+    body {
+        font-family: Arial, sans-serif;
+        background-image: url('{{ asset('images/welcomebg.jpg') }}');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        height: 100vh;
+        margin: 0;
+    }
+
     header {
         padding: 1rem;
         text-align: left;
@@ -15,11 +26,11 @@
     .header-title {
         font-size: 2rem;
         font-weight: bold;
-        color: #000000;
+        color: #ffffff;
     }
 
 </style>
-
+<body>
 <header class="header-title">Dashboard</header>
 
 <div class="row">
@@ -43,9 +54,9 @@
     </div>
     <div class="col-xl-3 col-md-6">
         <div class="card bg-success text-white mb-4">
-            <div class="card-body">Success Card</div>
+            <div class="card-body">Quotation</div>
             <div class="card-footer d-flex align-items-center justify-content-between">
-                <a class="small text-white stretched-link" href="#">View Details</a>
+                <a class="small text-white stretched-link" href="{{ route('showQuotation') }}">View Details</a>
                 <div class="small text-white"><i class="fas fa-angle-right"></i></div>
             </div>
         </div>
@@ -81,5 +92,5 @@
         </div>
     </div>
 </div>
-
+</body>
 @endsection

@@ -88,7 +88,7 @@
                 <div class="card-body">
                     <h1 class="card-title">CUSTOMER DETAILS</h1>
                     <div class="form-container">
-                        <form action="{{ route('storedata') }}" method="POST">
+                        <form action="{{ route('storecustomer') }}" method="POST">
                             @csrf
                             <div class="form-group">
                                 <label for="name">Name:</label>
