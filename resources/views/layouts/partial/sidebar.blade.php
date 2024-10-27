@@ -27,7 +27,7 @@
             </a>
             <div class="collapse" id="collapsePages" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                 <nav class="sb-sidenav-menu-nested nav">
-                    <a class="nav-link" href="{{ url('tablematerial') }}">Manage Quotation</a>
+                    <a class="nav-link" href="{{ url('tablematerial') }}">Manage Materials</a>
                     <a class="nav-link" href="{{ url('addmaterial') }}">Add Material</a>
                     <a class="nav-link" href="{{ route('showQuotation') }}">Quotation Builder</a>
                 </nav>
