@@ -29,10 +29,6 @@
         color: #333;
     }
 
-    .form-select{
-        width: 500px;
-    }
-
 </style>
 
 <body>
@@ -43,17 +39,28 @@
 
     <div class="card my-4">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <form action="{{ route('showQuotation') }}" method="POST">
-                <select class="form-select" aria-label="Default select example">
-                    <option disabled selected>Open this select menu</option>
+            <h1 class="h3">AMD SYNERGY</h1>
+            <img src="{{ asset('images/logoAMD.jpeg') }}" alt="AMD Synergy Logo" class="img-fluid" style="max-width: 100px;">
+        </div>
+        <div class="card-body">
+            <form action="" method="POST">
+                @csrf
+                <div class="mb-3">
+                    <label for="customerSelect" class="form-label">Select Customer</label>
+                    <select class="form-select" aria-label="Default select example">
+                        <option disabled selected>Open this select menu</option>
                         @forelse ($customers as $customer)
                             <option value="{{ $customer->id }}">{{ $customer->name }}</option>
                         @empty
+                            <option disabled>No customers available</option>
                         @endforelse
-                </select>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Save Quotation</button>
             </form>
         </div>
     </div>
+    
 
 </body>
 

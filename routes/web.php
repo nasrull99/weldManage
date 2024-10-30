@@ -13,6 +13,10 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/tablequotation', function () {
+    return view('tablequotation');
+})->middleware(['auth', 'verified'])->name('tablequotation');
+
 //CUSTOMER
 Route::get('/customer', function () {
     return view('customer');

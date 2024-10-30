@@ -25,5 +25,17 @@ window.addEventListener('DOMContentLoaded', event => {
 
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+    const successAlert = document.getElementById('successAlert');
+    if (successAlert) {
+        // Start fade-out after 3 seconds
+        setTimeout(() => {
+            successAlert.classList.add('fade-out');
+        }, 3000);
 
-//search customer name in quotation-builder
+        // Remove the alert from the DOM after the fade-out transition (3.5 seconds total)
+        setTimeout(() => {
+            successAlert.remove();
+        }, 3500);
+    }
+});

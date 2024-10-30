@@ -45,7 +45,7 @@ class MaterialController extends Controller
         Material::create($request->all());
 
         return redirect()->route('tablematerial')
-            ->with('success', 'Customer created successfully.');
+            ->with('success', 'Material Add successfully.');
     }
 
     /**
@@ -72,7 +72,7 @@ class MaterialController extends Controller
         $material->material = $request->material;
         $material->price = $request->price;
         $material->save();
-        return redirect('tablematerial');
+        return redirect()->route('tablematerial')->with('success', 'Material Edited successfully');
     }
 
     /**
@@ -82,7 +82,7 @@ class MaterialController extends Controller
     {
         $material = Material::findOrFail($id);
         $material->delete();
-        return redirect()->route('tablematerial')->with('success', 'Customer deleted successfully');
+        return redirect()->route('tablematerial')->with('success', 'Material deleted successfully');
     }
-    
+
 }

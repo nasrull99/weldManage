@@ -17,11 +17,27 @@
         margin: 0;
     }
 
-    header {
-        padding: 1rem;
-        text-align: left;
-        border-radius: 5px;
+    .header-container {
+        display: flex; /* Use flexbox for alignment */
+        align-items: center; /* Center items vertically */
+        justify-content: space-between; /* Space out the logo and title */
+        padding: 1rem; /* Add padding around the header */
     }
+
+    .header-title {
+        font-size: 2rem; /* Increase font size for better visibility */
+        font-weight: bold; /* Make the title bold */
+        color: #333; /* Dark color for the title */
+        margin: 0; /* Remove default margin */
+        text-align: left; /* Align text to the left */
+    }
+
+    .logo {
+        width: 150px; /* Set a more appropriate size for the logo */
+        height: auto; /* Maintain aspect ratio */
+        margin-right: 20px; /* Space between the logo and title */
+    }
+
 
     .header-title {
         font-size: 2rem;
@@ -31,7 +47,12 @@
 
 </style>
 <body>
-<header class="header-title">Dashboard</header>
+    <header class="header-container">
+        <h1 class="header-title">Dashboard</h1>
+        <img src="images/logoAMD-no-bg.png" alt="AMD Synergy Logo" class="logo" />
+    </header>
+    
+
 
 <div class="row">
     <div class="col-xl-3 col-md-6">
@@ -54,18 +75,18 @@
     </div>
     <div class="col-xl-3 col-md-6">
         <div class="card bg-success text-white mb-4">
-            <div class="card-body">Quotation</div>
+            <div class="card-body">Materials</div>
             <div class="card-footer d-flex align-items-center justify-content-between">
-                <a class="small text-white stretched-link" href="{{ route('showQuotation') }}">View Details</a>
+                <a class="small text-white stretched-link" href="{{ route('tablematerial') }}">View Details</a>
                 <div class="small text-white"><i class="fas fa-angle-right"></i></div>
             </div>
         </div>
     </div>
     <div class="col-xl-3 col-md-6">
         <div class="card bg-danger text-white mb-4">
-            <div class="card-body">Danger Card</div>
+            <div class="card-body">Quotation</div>
             <div class="card-footer d-flex align-items-center justify-content-between">
-                <a class="small text-white stretched-link" href="#">View Details</a>
+                <a class="small text-white stretched-link" href="{{ route('tablequotation') }}">View Details</a>
                 <div class="small text-white"><i class="fas fa-angle-right"></i></div>
             </div>
         </div>

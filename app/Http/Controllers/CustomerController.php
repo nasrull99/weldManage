@@ -48,7 +48,7 @@ class CustomerController extends Controller
         Customer::create($request->all());
 
         return redirect()->route('storecustomer')
-            ->with('success', 'Customer created successfully.');
+            ->with('success', 'Customer Add successfully.');
     }
 
     /**
@@ -77,7 +77,7 @@ class CustomerController extends Controller
         $customer->location = $request ->location;
         $customer->status = $request ->status;
         $customer->save();
-        return redirect('tablecustomer');
+        return redirect()->route('showname')->with('success', 'Customer Edited successfully');
     }
 
     /**
@@ -97,4 +97,5 @@ class CustomerController extends Controller
     
     return view('quotation-builder', compact('customers'));// Pass the customers to the view
     }
+
 }
