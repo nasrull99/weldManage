@@ -1,98 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Management System</title>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+    <title>Management System</title>
 
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-image: url('{{ asset('images/welcomebg.jpg') }}');
-                background-size: cover;
-                background-position: center;
-                background-repeat: no-repeat;
-                font-family: 'Raleway';
-                height: 100vh;
-                margin: 0;
-            }
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
 
-            .full-height {
-                height: 100vh;
-            }
+    <!-- Styles -->
+    <style>
+        html,
+        body {
+            background-image: url('{{ asset('images/welcomebg.jpg') }}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: 'Raleway';
+            height: 100vh;
+            margin: 0;
+        }
 
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
+        .full-height {
+            height: 100vh;
+        }
 
-            .position-ref {
-                position: relative;
-            }
+        .flex-center {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+        }
 
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-                color: white;
-            }
+        .position-ref {
+            position: relative;
+        }
 
-            .content {
-                text-align: center;
-            }
+        .top-right {
+            position: absolute;
+            right: 10px;
+            top: 18px;
+            color: white;
+        }
 
-            .title {
-                font-size: 100px;
-            }
+        .content {
+            text-align: center;
+        }
 
-            .links > a {
-                color: white;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
+        .title {
+            font-size: 100px;
+        }
 
-            .m-b-md {
-                margin: 10px;
-                color: white;
-                font-weight: 500;
-                text-align: center; /* Center align the title */
-            }
+        .links>a {
+            color: white;
+            padding: 0 25px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: .1rem;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
 
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
+        .m-b-md {
+            margin: 10px;
+            color: white;
+            font-weight: 500;
+            text-align: center;
+            /* Center align the title */
+        }
+    </style>
+</head>
 
-            @if (Route::has('login') && Auth::check())
-                <div class="top-right links">
-                    <a href="{{ url('/dashboard') }}">Dashboard</a>
-                </div>
-            @elseif (Route::has('login') && !Auth::check())
-                <div class="top-right links">
-                    <a href="{{ url('/login') }}">Login</a>
-                    <a href="{{ url('/register') }}">Register</a>
-                </div>
-            @endif
+<body>
+    <div class="flex-center position-ref full-height">
 
-            <div class="content">
-                <div class="title m-b-md">
-                    AMD SYNERGY
-                </div>
+        @if (Route::has('login') && Auth::check())
+        <div class="top-right links">
+            <a href="{{ url('/dashboard') }}">Dashboard</a>
+        </div>
+        @elseif (Route::has('login') && !Auth::check())
+        <div class="top-right links">
+            <a href="{{ url('/login') }}">Login</a>
+            <a href="{{ url('/register') }}">Register</a>
+        </div>
+        @endif
 
-                <div class="links">
-                    <a href="https://linktr.ee/AMDSYNERGY">Details</a>
-                </div>
+        <div class="content">
+            <div class="title m-b-md">
+                AMD SYNERGY
+            </div>
+
+            <div class="links">
+                <a href="https://linktr.ee/AMDSYNERGY">Details</a>
             </div>
         </div>
-    </body>
+    </div>
+</body>
+
 </html>

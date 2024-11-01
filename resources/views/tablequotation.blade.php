@@ -18,7 +18,7 @@
                 <td>Ali</td>
                 <td>RM118000.00</td>
                 <td>Blue</td>
-              </tr>
+            </tr>
         </tbody>
     </table>
 </div>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,33 +13,41 @@
             margin: 0;
             padding: 20px;
         }
+
         h1 {
             color: #333;
             text-align: center;
         }
+
         p {
             font-size: 14px;
             margin: 10px 0;
         }
+
         .table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
-        .table th, .table td {
+
+        .table th,
+        .table td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
         }
+
         .table th {
             background-color: #f2f2f2;
         }
+
         img {
             display: block;
             margin: 10px auto;
         }
     </style>
 </head>
+
 <body>
     <h1>{{ $title }}</h1>
     <p>Date: {{ $date }}</p>
@@ -57,19 +66,20 @@
         </thead>
         <tbody>
             @forelse ($customers as $customer)
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $customer->name }}</td>
-                    <td>{{ $customer->phone }}</td>
-                    <td>{{ $customer->location }}</td>
-                    <td>{{ $customer->status }}</td>
-                </tr>
+            <tr>
+                <td>{{ $loop->iteration }}</td>
+                <td>{{ $customer->name }}</td>
+                <td>{{ $customer->phone }}</td>
+                <td>{{ $customer->location }}</td>
+                <td>{{ $customer->status }}</td>
+            </tr>
             @empty
-                <tr>
-                    <td colspan="6">No customers found.</td>
-                </tr>
+            <tr>
+                <td colspan="6">No customers found.</td>
+            </tr>
             @endforelse
         </tbody>
     </table>
 </body>
+
 </html>
