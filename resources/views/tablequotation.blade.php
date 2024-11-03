@@ -1,26 +1,28 @@
 @extends('layouts.admin')
-@section('title', 'Quotation')
+@section('title', 'Quotations List')
 @section('content')
 
-<div class="overflow-x-auto">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>total price</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th>1</th>
-                <td>Ali</td>
-                <td>RM118000.00</td>
-                <td>Blue</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+<h2>Quotations List</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Customer Name</th>
+            <th>Total Price (RM)</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{-- @foreach ($quotations as $quotation)
+        <tr>
+            <td>{{ $loop->iteration }}</td>
+            <td>{{ $quotation->customer->name }}</td>
+            <td>RM {{ number_format($quotation->total_price, 2) }}</td>
+            <td>{{ $quotation->created_at->format('d/m/Y') }}</td>
+        </tr>
+        @endforeach --}}
+    </tbody>
+</table>
 
 @endsection

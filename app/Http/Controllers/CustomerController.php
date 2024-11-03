@@ -89,13 +89,4 @@ class CustomerController extends Controller
         $customer->delete();
         return redirect()->route('showname')->with('success', 'Customer deleted successfully');
     }
-
-    public function showQuotation()
-    {
-    // Fetch customers from the database
-    $customers = Customer::all(); // Adjust this based on your database structure
-    
-    return view('quotation-builder', compact('customers'));// Pass the customers to the view
-    }
-
 }

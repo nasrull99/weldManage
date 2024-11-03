@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\QuotationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -12,10 +13,6 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::get('/tablequotation', function () {
-    return view('tablequotation');
-})->middleware(['auth', 'verified'])->name('tablequotation');
 
 //CUSTOMER
 Route::get('/customer', function () {
@@ -69,9 +66,15 @@ Route::get('pdf-material', [MaterialController::class, 'pdfmaterial'])->name('pd
 
 
 //Quotation-builder
-Route::get('/quotation-builder', [CustomerController::class, 'showQuotation'])
+Route::get('/quotation-builder', [QuotationController::class, 'showQuotation'])
     ->name('showQuotation')
     ->middleware(['auth', 'verified']);
+
+Route::get('/tablequotation', [QuotationController::class, 'show'])->name('tablequotation');
+
+
+
+
 
 //auth
 Route::middleware('auth')->group(function () {

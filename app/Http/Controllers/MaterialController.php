@@ -84,5 +84,4 @@ class MaterialController extends Controller
         $material->delete();
         return redirect()->route('tablematerial')->with('success', 'Material deleted successfully');
     }
-
 }
