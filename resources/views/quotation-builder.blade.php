@@ -56,60 +56,25 @@
                     </select>
                 </div>
 
-                <!-- Material selection dropdown -->
                 <div class="mb-3">
-                    <label for="materialSelect" class="form-label">Select Material</label>
-                    <select id="materialSelect" class="form-select">
-                        <option disabled selected>Choose Material</option>
+                    <label for="materialSelect" class="form-label">Select material</label>
+                    <select id="materialSelect" name="material_id" class="form-select" required>
+                        <option disabled selected>Select a material</option>
                         @foreach ($materials as $material)
-                        <option value="{{ $material->id }}" data-unit-price="{{ $material->price }}">
-                            {{ $material->material }}
-                        </option>
+                        <option value="{{ $material->material }}">{{ $material->material }}</option>
                         @endforeach
                     </select>
-
                 </div>
 
-                <!-- Quantity input and Add button -->
                 <div class="mb-3">
                     <label for="quantity" class="form-label">Quantity</label>
-                    <div class="col-2">
-                        <input type="number" id="quantity" class="form-control" min="1" placeholder="Enter Quantity">
-                    </div>
+                    <input id="quantity" name="quantity" class="form-control w-auto" type="number" min="1" required>
                 </div>
 
-                <button type="button" class="btn btn-secondary" id="addMaterialButton">Add</button>
-
-                <!-- Selected materials table -->
-                <h5 class="mt-4 ">Selected Materials</h5>
-                <table class="table table-bordered" id="selectedMaterialsTable">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Material</th>
-                            <th>Unit Price</th>
-                            <th>Quantity</th>
-                            <th>Amount</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="selectedMaterials"></tbody>
-                </table>
-
-                <!-- Total Price Display -->
-                <div class="mb-3">
-                    <label for="total_price" class="form-label">Total Price</label>
-                    <div class="col-2">
-                        <input type="text" id="total_price" name="total_price" class="form-control " readonly>
-                    </div>
-                </div>
-
-                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="submit" class="btn btn-primary">add</button>
             </form>
         </div>
     </div>
-
-
 </body>
 
 @endsection

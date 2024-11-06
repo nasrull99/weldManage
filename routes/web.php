@@ -73,9 +73,6 @@ Route::get('/quotation-builder', [QuotationController::class, 'showQuotation'])
 Route::get('/tablequotation', [QuotationController::class, 'show'])->name('tablequotation');
 
 
-
-
-
 //auth
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

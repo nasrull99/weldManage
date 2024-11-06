@@ -9,14 +9,14 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-    Schema::create('quotations', function (Blueprint $table) {
-        $table->id();
-        $table->string('name');
-        $table->decimal('total_price', 10, 2);
-        $table->timestamps();
-    });
+        Schema::create('quotation', function (Blueprint $table) {
+            $table->id();
+            $table->string('cust_name');
+            $table->decimal('total_price', 10, 2);
+            $table->timestamps();
+        });
     }
 
     /**
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('quotations');
+        Schema::dropIfExists('quotation');
     }
 };
