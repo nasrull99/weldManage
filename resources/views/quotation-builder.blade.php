@@ -47,13 +47,8 @@
 
                 <!-- Customer selection dropdown -->
                 <div class="mb-3">
-                    <label for="customerSelect" class="form-label">Select Customer</label>
-                    <select id="customerSelect" name="customer_id" class="form-select" required>
-                        <option disabled selected>Select a Customer</option>
-                        @foreach ($customers as $customer)
-                        <option value="{{ $customer->name }}">{{ $customer->name }}</option>
-                        @endforeach
-                    </select>
+                    <label for="customerInput" class="form-label">Select Customer</label>
+                    <input type="text" id="customerInput" name="customer_name" class="form-control" placeholder="Enter Customer Name" required>
                 </div>
 
                 <div class="mb-3">
@@ -71,7 +66,7 @@
                     <input id="quantity" name="quantity" class="form-control w-auto" type="number" min="1" required>
                 </div>
 
-                <button type="submit" class="btn btn-primary">add</button>
+                <button type="button" class="btn btn-primary">add</button>
             </form>
         </div>
     </div>

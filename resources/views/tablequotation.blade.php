@@ -2,7 +2,7 @@
 @section('title', 'Quotations List')
 @section('content')
 
-<h2>Quotations List</h2>
+<h2>Customer List</h2>
 
 <table class="table table-bordered">
     <thead>
@@ -11,6 +11,7 @@
             <th>Customer Name</th>
             <th>Total Price (RM)</th>
             <th>Date</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
