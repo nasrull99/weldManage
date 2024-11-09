@@ -52,9 +52,7 @@
 </style>
 
 <body>
-    <header>
-        <h2 class="header-title">CUSTOMER MANAGEMENT</h2>
-    </header>
+    <header><h2 class="header-title">CUSTOMER MANAGEMENT</h2></header>
 
     @if(session('success'))
     <div id="successAlert" class="alert alert-success d-flex align-items-center my-2" role="alert"
@@ -67,7 +65,7 @@
         </div>
     </div>
     @endif
-
+    
     <!-- Table -->
     <div class="card my-4">
         <div class="card-header d-flex justify-content-between align-items-center">

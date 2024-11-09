@@ -70,8 +70,9 @@ Route::get('/quotation-builder', [QuotationController::class, 'showQuotation'])
     ->name('showQuotation')
     ->middleware(['auth', 'verified']);
 
-Route::get('/tablequotation', [QuotationController::class, 'show'])->name('tablequotation');
-
+    Route::get('/tablequotation', function () {
+        return view('tablequotation');
+    })->middleware(['auth', 'verified'])->name('tablequotation');
 
 //auth
 Route::middleware('auth')->group(function () {

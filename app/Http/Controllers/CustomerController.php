@@ -18,7 +18,7 @@ class CustomerController extends Controller
         $data = [
             'title' => 'Customer List',
             'date' => now()->toDateString(),
-            'image' => public_path('images/welcomebg.jpg'), // Adjust the image path if necessary
+            'image' => public_path('images/logoAMD.jpeg'),
             'content' => 'Here is the list of customers.',
             'customers' => $customers
         ];

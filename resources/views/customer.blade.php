@@ -93,6 +93,10 @@
     <div class="main-content">
         <div class="container">
             <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h1 class="h3">AMD SYNERGY</h1>
+                    <img src="{{ asset('images/logoAMD.jpeg') }}" alt="AMD Synergy Logo" class="img-fluid" style="max-width: 100px;">
+                </div>
                 <div class="card-body">
                     <h1 class="card-title">CUSTOMER DETAILS</h1>
                     <div class="form-container">

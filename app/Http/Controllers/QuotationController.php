@@ -15,11 +15,4 @@ class QuotationController extends Controller
     $materials = Material::all();
     return view('quotation-builder', compact('customers', 'materials'));
     }
-
-    public function show()
-    {
-    $quotations = Quotation::all();
-    return view('tablequotation', compact('quotations'));
-    }
-
 }

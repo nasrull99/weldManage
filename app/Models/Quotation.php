@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Quotation extends Model
 {
     use HasFactory;
-    protected $table = 'quotation';
-    protected $fillable = ['name', 'total_price'];
-    
+    protected $fillable = [
+        'customer_name',
+        'quantity',
+        'total_amount',
+    ];
 }
