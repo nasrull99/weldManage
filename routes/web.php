@@ -74,6 +74,8 @@ Route::get('/quotation-builder', [QuotationController::class, 'showQuotation'])
         return view('tablequotation');
     })->middleware(['auth', 'verified'])->name('tablequotation');
 
+    Route::post('/quotation/save', [QuotationController::class, 'save'])->name('quotation.save');
+
 //auth
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
