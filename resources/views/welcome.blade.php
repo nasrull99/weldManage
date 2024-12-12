@@ -55,7 +55,7 @@
 
         .links>a {
             color: white;
-            padding: 0 25px;
+            padding: 0 10px;
             font-size: 12px;
             font-weight: 600;
             letter-spacing: .1rem;

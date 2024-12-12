@@ -7,8 +7,8 @@
 
         <title>@yield('title')</title>
 
-        <link rel="icon" href="{{ asset('images/logoAMD-no-bg.png') }}" type="image/x-icon">
-        <link rel="shortcut icon" href="{{ asset('images/logoAMD-no-bg.png') }}" type="image/x-icon">
+        <link rel="icon" href="{{ asset('images/logoAMD-no-bg-white.png') }}" type="image/x-icon">
+        <link rel="shortcut icon" href="{{ asset('images/logoAMD-no-bg-white.png') }}" type="image/x-icon">
 
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="{{ asset('assets/css/styles.css')}}" rel="stylesheet" />

@@ -3,7 +3,7 @@
             <nav class="navbar bg-body-tertiary">
                 <div class="container-fluid">
                 <a class="navbar-brand text-white" href="{{ route('dashboard') }}">
-                    <img src="images/logoAMDnavbar.jpeg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top rounded">
+                    <img src="images/logoAMD-no-bg-white.png" alt="Logo" width="30" height="24" class="d-inline-block align-text-top rounded">
                     AMD SYNERGY
                 </a>
                 </div>
