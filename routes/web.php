@@ -10,9 +10,13 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
-Route::get('/dashboard', function () {
+Route::get('dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'admin'])->name('dashboard');
+
+Route::get('customer/dashboard',[CustomerController::class, 'index'])
+-> middleware(['auth', 'verified'])
+-> name('customer.dashboard');
 
 //CUSTOMER
 Route::get('/customer', function () {
@@ -74,7 +78,7 @@ Route::get('/quotation-builder', [QuotationController::class, 'showQuotation'])
         return view('tablequotation');
     })->middleware(['auth', 'verified'])->name('tablequotation');
 
-    Route::post('/quotation/save', [QuotationController::class, 'save'])->name('quotation.save');
+    Route::post('/quotations/save', [QuotationController::class, 'store'])->name('quotation.save');
 
 //auth
 Route::middleware('auth')->group(function () {

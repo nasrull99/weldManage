@@ -73,6 +73,7 @@
                 <i class="fas fa-table me-1"></i>
                 List of Customers
             </div>
+            
             <div class="ms-auto">
                 <!-- This will push the button to the right -->
                 <a href="{{ route('customer') }}" class="btn btn-primary">+ Add Customer</a>

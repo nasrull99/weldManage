@@ -16,27 +16,27 @@ class QuotationController extends Controller
     return view('quotation-builder', compact('customers', 'materials'));
     }
 
-    public function save(Request $request)
+    public function store(Request $request)
     {
-        // Validate incoming request
         $request->validate([
-            'customer_name' => 'required|string|max:255',
-            'material' => 'required|string|max:255',
-            'price' => 'required|numeric',
-            'quantity' => 'required|integer|min:1',
-            'amount' => 'required|numeric',
+            'customer_id' => 'required|exists:customers,id',
+            'material_id' => 'required|exists:materials,id',
+            'quantity' => 'required|numeric',
         ]);
 
-        // Create a new quotation entry
+        // Get material data
+        $material = Material::find($request->material_id);
+        $price = $material->price;
+
+        // Save quotation to database
         Quotation::create([
-            'customer_name' => $request->customer_name,
-            'material' => $request->material,
-            'price' => $request->price,
+            'customer_id' => $request->customer_id,
+            'material_id' => $request->material_id,
             'quantity' => $request->quantity,
-            'amount' => $request->amount,
+            'amount' => $price * $request->quantity,
         ]);
 
-        return response()->json(['success' => true]);
+        return redirect()->route('quotation.create')->with('success', 'Quotation saved successfully!');
     }
     
 }

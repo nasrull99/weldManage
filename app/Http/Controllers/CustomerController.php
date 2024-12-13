@@ -9,6 +9,10 @@ use Pdf;
 class CustomerController extends Controller
 {
 
+    public function index(){
+        return view('customer.dashboard');
+    }
+
     public function pdfcustomer()
     {
         // Fetch customer data from the database (adjust according to your model)
