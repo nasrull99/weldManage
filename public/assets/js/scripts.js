@@ -261,8 +261,8 @@ function addRow() {
         <td>${quantity}</td>
         <td>${amount}</td>
         <td>
-            <button type="button" class="btn btn-primary btn-sm" onclick="editRow(this)">edit</button>
-            <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)">X</button>
+            <button type="button" class="btn btn-primary btn-sm" onclick="editRow(this) "><i class="fa fa-edit"></i></button>
+            <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)"><i class="fas fa-trash-alt"></i></button>
         </td>
     `;
 

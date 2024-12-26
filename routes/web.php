@@ -69,7 +69,7 @@ Route::delete('/destroymaterial/{id}', MaterialController::class .'@destroymater
 Route::get('pdf-material', [MaterialController::class, 'pdfmaterial'])->name('pdfmaterial');
 
 
-//Quotation-builder
+//Quotation
 Route::get('/quotation-builder', [QuotationController::class, 'showQuotation'])
     ->name('showQuotation')
     ->middleware(['auth', 'verified']);
@@ -79,6 +79,17 @@ Route::get('/quotation-builder', [QuotationController::class, 'showQuotation'])
     })->middleware(['auth', 'verified'])->name('tablequotation');
 
     Route::post('/quotations/save', [QuotationController::class, 'store'])->name('quotation.save');
+
+//Invoices
+Route::get('/tableinvoices', function () {
+    return view('tableinvoices');
+    })->middleware(['auth', 'verified'])->name('tableinvoicesView');
+
+//Sales Report
+Route::get('/salesreport', function () {
+    return view('salesreport');
+    })->middleware(['auth', 'verified'])->name('salesreportView');
+
 
 //auth
 Route::middleware('auth')->group(function () {

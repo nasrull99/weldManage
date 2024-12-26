@@ -62,7 +62,7 @@
                 <!-- This will push the button to the right -->
                 <a href="{{ route('addmaterial') }}" class="btn btn-primary">+ Add Material</a>
                 <a href="{{ route('pdfmaterial') }}" class="btn btn-primary">
-                    <i class="fas fa-print"></i>
+                    <i class="fa-solid fa-download"></i>
                 </a>
             </div>
         </div>

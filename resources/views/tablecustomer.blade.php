@@ -78,7 +78,7 @@
                 <!-- This will push the button to the right -->
                 <a href="{{ route('customer') }}" class="btn btn-primary">+ Add Customer</a>
                 <a href="{{ route('pdfcustomer') }}" class="btn btn-primary">
-                    <i class="fas fa-print"></i>
+                    <i class="fa-solid fa-download"></i>
                 </a>
             </div>
         </div>

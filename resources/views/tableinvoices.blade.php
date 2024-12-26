@@ -31,19 +31,19 @@
 <body>
 
     <header>
-        <h2 class="header-title">QUOTATION MANAGEMENT</h2>
+        <h2 class="header-title">INVOICES MANAGEMENT</h2>
     </header>
     
     <div class="card my-4">
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
                 <i class="fas fa-table me-1"></i>
-                List of Quotations
+                List of Invoices
             </div>
             
             <div class="ms-auto">
                 <!-- This will push the button to the right -->
-                <a href="{{ route('showQuotation') }}" class="btn btn-primary">+ Add Quotation</a>
+                <a href="{{ route('showQuotation') }}" class="btn btn-primary">+ Add Invoice</a>
                 <a href="#" class="btn btn-primary">
                     <i class="fa-solid fa-download"></i>
                 </a>
