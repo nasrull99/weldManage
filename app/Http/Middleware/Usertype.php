@@ -15,12 +15,37 @@ class Usertype
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, $usertype): Response
     {
-        if (Auth::user()->usertype != 'admin') 
+        if(!Auth::check())
         {
-            return redirect()->route('customer.dashboard');
+            return redirect()->route('login');
         }
-        return $next($request);
+
+        $authUserType = Auth::user()->usertype;
+
+        switch($usertype)
+        {
+            case 'admin':
+                if($authUserType == 'admin'){
+                    return $next($request);
+                }
+                break;
+            case 'user':
+                if($authUserType == 'user'){
+                    return $next($request);
+                }
+                break;
+        }
+        
+        switch($authUserType)
+        {
+            case 'admin':
+                return redirect()->route('dashboard');
+            case 'user':
+                return redirect()->route('customer.dashboard');
+        }
+
+        return redirect()->route('login');
     }
 }

@@ -28,12 +28,21 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        if($request->user()->usertype === 'user')
-        {
-            return redirect('customer/dashboard');
-        }
+        // if($request->user()->usertype === 'user')
+        // {
+        //     return redirect('customer/dashboard');
+        // }
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        $authUserType = Auth::user()->usertype;
+
+        if($authUserType === 'admin')
+        {
+            return redirect()->intended(route('dashboard', absolute: false));
+        } 
+        elseif($authUserType === 'user')
+        {
+            return redirect()->intended(route('customer.dashboard', absolute: false));
+        }   
     }
 
     /**
@@ -49,4 +58,12 @@ class AuthenticatedSessionController extends Controller
 
         return redirect('/');
     }
+
+    protected function redirectTo($request)
+    {
+        if (! $request->expectsJson()) {
+            return route('login'); // Redirect to login if not authenticated
+        }
+    }
+
 }

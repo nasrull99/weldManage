@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\User;
+
 
 class ProfileController extends Controller
 {
@@ -19,6 +21,25 @@ class ProfileController extends Controller
         return view('profile.edit', [
             'user' => $request->user(),
         ]);
+    }
+
+    public function userList()
+    {
+        $users = User::all(); // Fetch all users
+        return view('user', compact('users')); // Pass the users to the userList view
+    }
+
+    public function addUser()
+    {
+        return view('adduser'); // Return the 'adduser' view
+    }
+
+    public function destroyUser($id)
+    {
+        $user = User::findOrFail($id); // Find the user by ID
+        $user->delete(); // Delete the user
+
+        return redirect()->back()->with('success', 'User deleted successfully.');
     }
 
     /**
