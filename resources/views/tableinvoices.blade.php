@@ -43,7 +43,7 @@
             
             <div class="ms-auto">
                 <!-- This will push the button to the right -->
-                <a href="{{ route('showQuotation') }}" class="btn btn-primary">+ Add Invoice</a>
+                <a href="{{ route('showInvoices') }}" class="btn btn-primary">+ Add Invoice</a>
                 <a href="#" class="btn btn-primary">
                     <i class="fa-solid fa-download"></i>
                 </a>

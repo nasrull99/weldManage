@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\QuotationController;
+use App\Http\Controllers\InvoicesController;
 use App\Models\User;
 
 use Illuminate\Support\Facades\Route;
@@ -35,7 +36,7 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::post('/editsavedcustomer/{id}', [CustomerController::class, 'editsaved'])->name('editsavedcust');
     Route::delete('/destroycustomer/{id}', [CustomerController::class, 'destroy'])->name('deletecustomer');
     Route::get('pdf-customer', [CustomerController::class, 'pdfcustomer'])->name('pdfcustomer');
-
+    
     // Material Routes
     Route::get('/addmaterial', function () {
         return view('addmaterial');
@@ -49,12 +50,14 @@ Route::middleware(['auth','verified'])->group(function () {
 
     // Quotation Routes
     Route::get('/quotation-builder', [QuotationController::class, 'showQuotation'])->name('showQuotation');
-    Route::get('/tablequotation', function () {
-        return view('tablequotation');
-        })->name('tablequotation');
     Route::post('/quotations/save', [QuotationController::class, 'store'])->name('quotation.save');
+    Route::get('/tablequotation', [QuotationController::class, 'showQuotations'])->name('tablequotation');
+    Route::get('quotation/{customerId}/{quotationId}', [QuotationController::class, 'viewForCustomer'])->name('viewForCustomer');
+
+
 
     // Invoice Routes
+    Route::get('/invoice-builder', [InvoicesController::class, 'index'])->name('showInvoices');
     Route::get('/tableinvoices', function () {
         return view('tableinvoices');
         })->name('tableinvoicesView');

@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Quotations List')
+@section('title', 'Date Range Input')
 @section('content')
 
 <style>
@@ -26,6 +26,60 @@
         font-weight: 600;
         color: #333;
     }
+
+    .main-content {
+        display: flex;
+        justify-content: center;
+        padding: 2rem 0;
+    }
+
+    .container {
+        max-width: 900px;
+        width: 100%;
+        padding: 0 1rem;
+    }
+
+    .card {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    .card-title {
+        font-size: 1.75rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 0.875rem;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 0.5rem;
+        font-size: 1rem;
+        border: 1px solid #d1d5db;
+        border-radius: 4px;
+        outline: none;
+    }
+
+    .form-group input:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+    }
 </style>
 
 <body>
@@ -34,7 +88,34 @@
         <h2 class="header-title">SALES REPORT</h2>
     </header>
 
-</body>
+    <div class="main-content">
+        <div class="container">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h1 class="h3">AMD SYNERGY</h1>
+                    <img src="{{ asset('images/logoAMD.jpeg') }}" alt="AMD Synergy Logo" class="img-fluid" style="max-width: 100px;">
+                </div>
+                <div class="card-body">
+                    <h1 class="card-title">Select Date Range</h1>
+                    <div class="form-container">
+                        <form action="#" method="POST">
+                            @csrf
+                            <div class="form-group">
+                                <label for="start_date">Start Date:</label>
+                                <input type="date" id="start_date" name="start_date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="end_date">End Date:</label>
+                                <input type="date" id="end_date" name="end_date" required>
+                            </div>
+                            <button class="btn btn-primary" type="submit">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+</body>
 
 @endsection

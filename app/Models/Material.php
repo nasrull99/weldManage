@@ -13,4 +13,9 @@ class Material extends Model
         'material',
         'price',
       ];
+
+    public function quotation()
+    {
+      return $this->belongsTo(Quotation::class); // Ensure this is correctly defined
+    }
 }

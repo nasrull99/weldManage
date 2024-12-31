@@ -56,7 +56,7 @@
             <div class="collapse" id="collapseInvoice" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                 <nav class="sb-sidenav-menu-nested nav">
                     <a class="nav-link" href="{{ route('tableinvoicesView') }}">Manage Invoice</a>
-                    <a class="nav-link" href="#">add Invoice</a>
+                    <a class="nav-link" href="{{ route('showInvoices') }}">add Invoice</a>
                 </nav>
             </div>
 

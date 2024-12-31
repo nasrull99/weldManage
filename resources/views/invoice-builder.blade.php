@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Quotation')
+@section('title', 'Invoices')
 @section('content')
 
 <style>
@@ -46,18 +46,36 @@
         background-color: #c82333;
     }
 
-    .output {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-top: 1rem;
-        font-size: 1rem;
+    .total-amount-container {
+        border: 1px solid #000000; /* Light gray border */
+        padding: 15px; /* Padding inside the container */
+        margin: 20px; /* Space above the container */
+        background-color: #f9f9f9; /* Light background color */
     }
 
-    .output span {
-        border: 2px solid black;
-        padding: 0.5rem;            
-        border-radius: 5px;         
+    .total-amount-title {
+        font-size: 1.5em; /* Larger font size */
+        margin-bottom: 10px; /* Space below the title */
+        color: #333; /* Darker text color */
+    }
+
+    .amount-display {
+        font-size: 1.2em; /* Slightly larger font size */
+        margin: 5px 0; /* Space above and below each line */
+        display: flex; /* Use flexbox for alignment */
+        justify-content: space-between; /* Space between text and value */
+        align-items: center; /* Center align items vertically */
+    }
+
+    .amount-display span {
+        margin-left: 20px; /* Add consistent space between the text and the value */
+        min-width: 80px; /* Ensure all values are aligned with the same width */
+        text-align: right; /* Right-align the value */
+    }
+
+    .total-amount {
+        font-weight: bold; /* Bold text for emphasis */
+        color: #d9534f; /* Bootstrap danger color for total amount */
     }
 
     body .select2-selection {
@@ -94,7 +112,7 @@
 </style>
 
 <body>
-    <header class="header-title">QUOTATION MANAGEMENT</header>
+    <header class="header-title">INVOICES MANAGEMENT</header>
 
     @if ($errors->any())
         <div class="alert alert-danger">
@@ -113,13 +131,13 @@
         </div>
 
         <div class="card-body">
-            <form id="quotationForm" method="POST" action="{{ route('quotation.save') }}">
+            <form id="invoiceForm" method="POST" action="{{ route('quotation.save') }}">
                 @csrf
-                
+
                 <!-- Customer selection dropdown -->
                 <div class="mb-3">
                     <label for="customerSelect" class="form-label">Select Customer</label>
-                    <select id="customerSelect" name="customer_id" class="form-select" required>
+                    <select id="customerSelect" name="customer_id" class="form-select" required onchange="updateCustomerName()">
                         <option disabled selected></option>
                         @foreach ($customers as $customer)
                             <option value="{{ $customer->id }}">{{ $customer->name }}</option>
@@ -133,7 +151,7 @@
                 <!-- Material selection -->
                 <div class="mb-3">
                     <label for="materialSelect" class="form-label">Select Material</label>
-                    <select id="materialSelect" name="materials[]" class="form-select" required>
+                    <select id="materialSelect" name="material_id" class="form-select" required>
                         <option disabled selected>Select a material</option>
                         @foreach ($materials as $material)
                             <option value="{{ $material->id }}" data-price="{{ $material->price }}">{{ $material->material }}</option>
@@ -141,16 +159,23 @@
                     </select>
                 </div>
 
-                <input type="hidden" name="materials" id="materials">
-
                 <!-- Quantity input -->
                 <div class="mb-3">
                     <label for="quantity" class="form-label">Quantity</label>
                     <input id="quantity" name="quantity" class="form-control w-auto" type="number" min="1" value="1" required>
                 </div>
 
+                <div class="mb-3">
+                    <label for="deposit" class="form-label">Deposit(RM)</label>
+                    <input id="deposit" name="deposit" class="form-control w-auto" type="number" min="0" value="0" required>
+                </div>
+
                 <!-- Button to add row -->
-                <button type="button" class="btn btn-primary mb-3" onclick="addRowQuotation()">Add</button>
+                <div class="d-flex justify-content-between mb-3">
+                    <button type="button" class="btn btn-primary" onclick="addRowInvoice()">Add</button>
+                </div>
+                
+
 
                 <div class="cardbody">
                     <table id="maintable" class="table table-striped">
@@ -170,11 +195,17 @@
                     </table>
                 </div>
 
-                <input type="hidden" name="quotationData" id="quotationData">
+                <input type="hidden" name="invoiceData" id="invoiceData">
 
-                <div class="output">
-                    <button type="submit" class="btn btn-primary" onclick="submitFormQuotation()">Save</button>
-                    <span id="totalAmountDisplay">Total Amount: RM0.00</span>
+                <div class="total-amount-container">
+                    <div class="total-amount-title d-flex justify-content-between mb-3">
+                        Total Amount Summary
+                        <button type="button" class="btn btn-primary" onclick="calculateAmountSumInvoice()">Calculate Total</button>
+                    </div>
+                    <div class="amount-display">Subtotal(RM): <span id="totalAmountDisplayAmount">0.00</span></div>
+                    <div class="amount-display">Deposit(RM): <span id="totalAmountDisplayDeposit">0.00</span></div>
+                    <div class="amount-display total-amount">Total Amount(RM): <span id="totalAmountDisplayTotal">0.00</span></div>
+                    <button type="submit" class="btn btn-primary" onclick="submitForm()">Save</button>
                 </div>
             </form>
         </div>

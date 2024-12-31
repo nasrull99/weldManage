@@ -8,23 +8,23 @@ use Illuminate\Database\Eloquent\Model;
 class Quotation extends Model
 {
     use HasFactory;
-
+    protected $table = 'quotations';
     protected $fillable = [
         'customer_id', 
-        'material_id', 
-        'quantity', 
-        'amount',
+        'totalamount',
     ];
 
     // Relationship with Customer model
     public function customer()
     {
         return $this->belongsTo(Customer::class, 'customer_id');
+        return $this->belongsTo(Customer::class);
     }
 
-    // Relationship with Material model
-    public function material()
+    // Relationship with QuotationMaterial model
+    public function materials()
     {
-        return $this->belongsTo(Material::class, 'material_id');
+        return $this->hasMany(QuotationMaterial::class, 'quotation_id');
+        return $this->hasMany(Material::class);
     }
 }

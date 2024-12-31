@@ -55,6 +55,7 @@
                 <thead>
                     <tr>
                         <th>#</th>
+                        <th>Quotation ID</th>
                         <th>Customer Name</th>
                         <th>Total Price (RM)</th>
                         <th>Date</th>
@@ -62,20 +63,26 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {{-- @foreach ($quotations as $quotation)
+                    @foreach ($quotations as $quotation)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
+                        <td>{{ $quotation->id }}</td>
                         <td>{{ $quotation->customer->name }}</td>
-                        <td>RM {{ number_format($quotation->total_price, 2) }}</td>
+                        <td>{{ number_format($quotation->totalamount, 2) }}</td>
                         <td>{{ $quotation->created_at->format('d/m/Y') }}</td>
+                        <td>
+                            <a href="{{ route('viewForCustomer', ['customerId' => $quotation->customer->id, 'quotationId' => $quotation->id]) }}" class="btn btn-primary btn-sm">
+                                view
+                            </a>
+                            
+                        </td>
                     </tr>
-                    @endforeach --}}
+                    @endforeach
                 </tbody>
             </table>
         </div>
     </div>
 
 </body>
-
 
 @endsection

@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Customer;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Pdf;
 
 class CustomerController extends Controller
 {
 
-    public function index(){
+    public function index()
+    {
         return view('customer.dashboard');
     }
 
@@ -46,13 +49,18 @@ class CustomerController extends Controller
             'name' => 'required|max:255',
             'phone' => 'required',
             'location' => 'required|max:255',
-            'status' => 'required|string|in:pending,in_progress,completed', // Validate status
+            'status' => 'required|string|in:pending,in_progress,completed',
         ]);
 
-        Customer::create($request->all());
+        Customer::create([
+            'name' => $request->name,
+            'phone' => $request->phone,
+            'location' => $request->location,
+            'status' => $request->status,
+            'user_id' => Auth::id(), // Associate with the logged-in user
+        ]);
 
-        return redirect()->route('storecustomer')
-            ->with('success', 'Customer Add successfully.');
+        return redirect()->route('storecustomer')->with('success', 'Customer Add successfully.');
     }
 
     /**
