@@ -1,36 +1,87 @@
 @extends('layouts.admin')
-@section('title', 'Quotation')
+@section('title', 'Material')
 @section('content')
 
 <style>
     body {
-        font-family: Arial, sans-serif;
-        background-image: url('{{ asset('images/welcomebg.jpg') }}');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        height: 100vh;
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(to right, #f0f2f5, #ffffff);
         margin: 0;
+        padding: 0;
     }
 
     header {
-        background-color: #f9fafb;
+        background-color: #007bff;
         padding: 1rem;
+        margin: 1rem;
         text-align: center;
-        border-radius: 5px;
+        border-radius: 10px;
     }
-
 
     .header-title {
-        text-align: center;
         font-size: 1.5rem;
         font-weight: bold;
-        color: #333;
+        color: #ffffff;
+        text-align: center;
     }
 
-    .item-1 {
-        background-color: #ffffff;
+    /* Table styling */
+    .table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    .table th, .table td {
+        padding: 1rem;
+        text-align: left;
+    }
+
+    .table th {
+        background-color: #007bff;
+        color: white;
+        font-weight: bold;
+    }
+
+    .table td {
+        background-color: #f9f9f9;
+    }
+
+    .table tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .btn-group button {
+        border-radius: 50%;
+    }
+
+    .btn {
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
+        margin: 0.25rem;
+        transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+        transform: scale(1.05);
+    }
+
+    /* Success alert */
+    .alert-success {
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+        color: #155724;
+        font-size: 1rem;
+        padding: 1rem;
+    }
+
+    .modal-header {
+        background-color: #007bff;
+        color: white;
+        border-radius: 5px 5px 0 0;
+    }
+
+    .modal-footer {
+        text-align: right;
     }
 </style>
 
@@ -55,12 +106,12 @@
     <div class="card my-4">
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
-                <i class="fas fa-table me-1"></i>
+                <i class="fa-solid fa-wrench"></i>
                 List of Materials
             </div>
             <div class="ms-auto">
                 <!-- This will push the button to the right -->
-                <a href="{{ route('addmaterial') }}" class="btn btn-primary">+ Add Material</a>
+                <a href="{{ route('addmaterial') }}" class="btn btn-success"><i class="fa-solid fa-plus fa-flip-vertical"></i></a>
                 <a href="{{ route('pdfmaterial') }}" class="btn btn-primary">
                     <i class="fa-solid fa-download"></i>
                 </a>
@@ -85,7 +136,7 @@
                         <td>RM{{ $material->price }}</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Actions">
-                                <a href="{{ route('editmaterial', $material->id) }}" class="btn btn-primary btn-sm">
+                                <a href="{{ route('editmaterial', $material->id) }}" class="btn btn-warning btn-sm">
                                     <i class="fas fa-edit"></i>
                                 </a>
                                 <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"

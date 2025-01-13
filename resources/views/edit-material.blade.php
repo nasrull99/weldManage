@@ -7,7 +7,7 @@
 <style>
     body {
         font-family: Arial, sans-serif;
-        background-image: url('{{ asset('images/welcomebg.jpg') }}');
+        background-color: #f0f2f5;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -17,16 +17,18 @@
     }
 
     header {
-        background-color: #f9fafb;
+        background-color: #007bff;
         padding: 1rem;
+        margin: 1rem;
         text-align: center;
         border-radius: 5px;
     }
 
     .header-title {
         font-size: 1.5rem;
-        font-weight: 600;
-        color: #333;
+        font-weight: bold;
+        color: #ffffff;
+        text-align: center;
     }
 
     .main-content {

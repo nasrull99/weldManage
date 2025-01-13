@@ -5,7 +5,7 @@
 <style>
     body {
         font-family: Arial, sans-serif;
-        background-image: url('{{ asset('images/welcomebg.jpg') }}');
+        background-color: #f0f2f5;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;

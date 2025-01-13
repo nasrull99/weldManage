@@ -10,7 +10,7 @@
 
             {{-- Customer --}}
             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseCustomer" aria-expanded="false" aria-controls="collapseCustomer">
-                <div class="sb-nav-link-icon"><i class="fa-solid fa-person"></i></div>
+                <div class="sb-nav-link-icon"><i class="fas fa-users me-1"></i></div>
                 Customer
                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
             </a>
