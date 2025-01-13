@@ -16,6 +16,12 @@ class CustomerController extends Controller
         return view('customer.dashboard');
     }
 
+    public function index2()
+    {
+        $newCustomers = Customer::orderBy('created_at', 'desc')->take(5)->get();
+        return view('dashboard', compact('newCustomers'));
+    }
+
     public function pdfcustomer()
     {
         // Fetch customer data from the database (adjust according to your model)

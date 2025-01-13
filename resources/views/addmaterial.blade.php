@@ -107,7 +107,7 @@
                                 <input type="text" id="material" name="material" placeholder="Material name" required>
                             </div>
                             <div class="form-group">
-                                <label for="phone">Price:</label>
+                                <label for="price">Price:</label>
                                 <input type="text" id="price" name="price" placeholder="Price of material" required>
                             </div>
 

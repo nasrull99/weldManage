@@ -58,7 +58,8 @@
 <div class="receipt-container">
     <div class="receipt-header">
         <h2>Quotation Receipt</h2>
-        <p>For Customer: {{ $customer->name }}</p>
+        <p>Name: {{ $customer->name }}</p>
+        <p>Quotation ID: {{ $quotation->id }}</p>
         <p>Date: {{ $quotation->created_at->format('d/m/Y') }}</p>
     </div>
 
@@ -80,13 +81,13 @@
                 @foreach ($quotation->materials as $index => $material)
                     <tr>
                         <td>{{ $index + 1 }}</td>
-                        <td>{{ $material->material->material }}</td>
-                        <td>{{ number_format($material->material->price, 2) }}</td>
-                        <td>{{ $material->quantity }}</td>
-                        <td>{{ number_format($material->material->price * $material->quantity, 2) }}</td>
+                        <td>{{ $material->material }}</td>
+                        <td>{{ number_format($material->price, 2) }}</td>
+                        <td>{{ $material->pivot->quantity }}</td>
+                        <td>{{ number_format($material->price * $material->pivot->quantity, 2) }}</td>
                     </tr>
                     @php
-                        $totalAmount += $material->material->price * $material->quantity;
+                        $totalAmount += $material->price * $material->pivot->quantity;
                     @endphp
                 @endforeach
             </tbody>

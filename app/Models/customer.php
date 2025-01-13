@@ -23,4 +23,10 @@ class Customer extends Model
     {
         return $this->hasMany(Quotation::class, 'customer_id'); // Ensure the foreign key is 'customer_id' in the quotations table
     }
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'customer_id');
+    }
+
 }

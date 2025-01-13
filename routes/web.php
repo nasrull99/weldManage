@@ -36,6 +36,7 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::post('/editsavedcustomer/{id}', [CustomerController::class, 'editsaved'])->name('editsavedcust');
     Route::delete('/destroycustomer/{id}', [CustomerController::class, 'destroy'])->name('deletecustomer');
     Route::get('pdf-customer', [CustomerController::class, 'pdfcustomer'])->name('pdfcustomer');
+    Route::get('/dashboard', [CustomerController::class, 'index2'])->name('dashboard');
     
     // Material Routes
     Route::get('/addmaterial', function () {
@@ -53,9 +54,10 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::post('/quotations/save', [QuotationController::class, 'store'])->name('quotation.save');
     Route::get('/tablequotation', [QuotationController::class, 'showQuotations'])->name('tablequotation');
     Route::get('quotation/{customerId}/{quotationId}', [QuotationController::class, 'viewForCustomer'])->name('viewForCustomer');
-
-
-
+    Route::delete('/quotations/{id}', [QuotationController::class, 'destroy'])->name('deleteQuotation');
+    Route::get('/quotations/{id}/edit', [QuotationController::class, 'edit'])->name('editQuotation');
+    Route::put('/quotations/{id}', [QuotationController::class, 'update'])->name('updateQuotation');
+    
     // Invoice Routes
     Route::get('/invoice-builder', [InvoicesController::class, 'index'])->name('showInvoices');
     Route::get('/tableinvoices', function () {

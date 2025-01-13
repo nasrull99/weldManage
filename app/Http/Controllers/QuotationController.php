@@ -92,4 +92,55 @@ class QuotationController extends Controller
         return view('viewquotationCust', compact('customer', 'quotation'));
     }
 
+    public function destroy($id)
+    {
+        $quotation = Quotation::findOrFail($id);
+        $quotation->delete();
+        return redirect()->route('tablequotation')->with('success', 'Quotation deleted successfully.');
+    }
+
+    public function edit($id)
+    {
+        // Retrieve the quotation by its ID with related materials
+        $quotation = Quotation::with('materials')->findOrFail($id);
+
+        // Retrieve all available materials from the database
+        $materials = Material::all(); // This ensures $materials is defined
+
+        // Pass data to the view
+        return view('edit-quotation', compact('quotation', 'materials'));
+    }
+
+
+    public function update(Request $request, $id)
+    {
+        $quotation = Quotation::findOrFail($id);
+        $materials = $request->input('materials', []);
+        $totalAmount = 0;
+
+        $data = [];
+        foreach ($materials as $material) {
+            $materialData = Material::findOrFail($material['id']);
+            $price = $materialData->price;
+            $quantity = $material['quantity'];
+            $amount = $price * $quantity;
+
+            $data[$material['id']] = [
+                'quantity' => $quantity,
+                'amount' => $amount,
+            ];
+
+            $totalAmount += $amount;
+        }
+
+        // Sync the materials with the calculated data
+        $quotation->materials()->sync($data);
+
+        // Update total amount in the quotation
+        $quotation->totalamount = $totalAmount;
+        $quotation->save();
+
+        return redirect()->route('tablequotation')->with('success', 'Quotation updated successfully!');
+    }
+
 }

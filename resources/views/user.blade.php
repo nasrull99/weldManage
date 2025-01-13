@@ -39,14 +39,6 @@
                 <i class="fas fa-table me-1"></i>
                 List of Users
             </div>
-            
-            <div class="ms-auto">
-                <!-- This will push the button to the right -->
-                <a href="{{ route('adduser') }}" class="btn btn-primary">+ Add Users</a>
-                <a href="#" class="btn btn-primary">
-                    <i class="fa-solid fa-download"></i>
-                </a>
-            </div>
         </div>
 
         <div class="card-body">

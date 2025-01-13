@@ -89,12 +89,23 @@
         <h2 class="header-title">QUOTATION MANAGEMENT</h2>
     </header>
 
-    <!-- Display success message if customer saved -->
-    @if (session('status'))
-    <div class="alert alert-success">
-        {{ session('status') }}
-    </div>
-    @endif
+<!-- Display success message if material saved -->
+@if (session('success'))
+<div class="alert alert-success">
+    {{ session('success') }}
+</div>
+@endif
+
+<!-- Display validation error messages -->
+@if ($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
 
     <!-- Main Content -->
     <div class="main-content">
@@ -111,7 +122,7 @@
                                     value="{{ $material->material }}" required>
                             </div>
                             <div class="form-group">
-                                <label for="phone">Price:</label>
+                                <label for="price">Price:</label>
                                 <input type="text" id="price" name="price" placeholder="New price"
                                     value="{{ $material->price }}" required>
                             </div>

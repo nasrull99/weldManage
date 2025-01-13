@@ -16,6 +16,8 @@ class Material extends Model
 
     public function quotation()
     {
-      return $this->belongsTo(Quotation::class); // Ensure this is correctly defined
+      return $this->belongsTo(Quotation::class);
+      return $this->belongsToMany(Quotation::class, 'quotation_materials')
+      ->withPivot('quantity', 'amount');
     }
 }

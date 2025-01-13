@@ -446,5 +446,3 @@ function submitFormQuotation() {
     // Allow form submission
     document.getElementById("quotationForm").submit();
 }
-
-
