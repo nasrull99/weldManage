@@ -100,7 +100,7 @@
                 <div class="card-body">
                     <h1 class="card-title">Select Date Range</h1>
                     <div class="form-container">
-                        <form action="#" method="POST">
+                        <form action="{{ url('/sales-report') }}">
                             @csrf
                             <div class="form-group">
                                 <label for="start_date">Start Date:</label>
@@ -110,7 +110,7 @@
                                 <label for="end_date">End Date:</label>
                                 <input type="date" id="end_date" name="end_date" required>
                             </div>
-                            <button class="btn btn-primary" type="submit">Submit</button>
+                            <button class="btn btn-primary">Submit</button>
                         </form>
                     </div>
                 </div>
