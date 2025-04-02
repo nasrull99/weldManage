@@ -7,6 +7,7 @@ use App\Models\Material;
 use App\Models\Customer;
 use App\Models\Quotation;
 use App\Models\QuotationMaterial;
+use Barryvdh\DomPDF\Facade\Pdf;
 use DB;
 
 class QuotationController extends Controller
@@ -20,7 +21,7 @@ class QuotationController extends Controller
 
     public function generatePDF($id)
     {
-        $quotation = QuotationMaterial::find($id);
+        $quotation = Quotation::find($id);
 
         if (!$quotation) {
             abort(404, 'Quotation not found');
@@ -30,7 +31,6 @@ class QuotationController extends Controller
 
         return $pdf->download('quotation_'.$quotation->id.'.pdf');
     }
-
 
     public function store(Request $request)
     {

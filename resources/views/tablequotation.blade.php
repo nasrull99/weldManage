@@ -132,7 +132,7 @@
                                 <a href="{{ route('editQuotation', ['id' => $quotation->id]) }}" class="btn btn-warning btn-sm">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <a href="{{ route('pdfQuotation', ['id' => $quotation->id]) }}" class="btn btn-primary btn-sm">
+                                <a href="{{ route('pdfQuotation', $quotation->id) }}"  class="btn btn-primary btn-sm">
                                     <i class="fa-solid fa-download"></i>
                                 </a>                                                             
                                 <!-- Trigger the modal -->

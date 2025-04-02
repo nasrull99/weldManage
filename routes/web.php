@@ -63,7 +63,6 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::put('/quotations/{id}', [QuotationController::class, 'update'])->name('updateQuotation');
     Route::get('/quotation/pdf/{id}', [QuotationController::class, 'generatePDF'])->name('pdfQuotation');
 
-    
     // Invoice Routes
     Route::get('/invoice-builder', [InvoicesController::class, 'index'])->name('showInvoices');
     Route::get('/tableinvoices', function () {
