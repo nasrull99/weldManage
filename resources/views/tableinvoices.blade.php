@@ -112,6 +112,7 @@
                 <thead>
                     <tr>
                         <th>#</th>
+                        <th>Invoice ID</th>
                         <th>Customer Name</th>
                         <th>Total Price (RM)</th>
                         <th>Date</th>
@@ -121,6 +122,7 @@
                 <tbody>
                     <tr>
                         <td>1</td>
+                        <td>A1</td>
                         <td>user1</td>
                         <td>300</td>
                         <td>5/12/2024</td>

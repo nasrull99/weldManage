@@ -61,6 +61,8 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::delete('/quotations/{id}', [QuotationController::class, 'destroy'])->name('deleteQuotation');
     Route::get('/quotations/{id}/edit', [QuotationController::class, 'edit'])->name('editQuotation');
     Route::put('/quotations/{id}', [QuotationController::class, 'update'])->name('updateQuotation');
+    Route::get('/quotation/pdf/{id}', [QuotationController::class, 'generatePDF'])->name('pdfQuotation');
+
     
     // Invoice Routes
     Route::get('/invoice-builder', [InvoicesController::class, 'index'])->name('showInvoices');

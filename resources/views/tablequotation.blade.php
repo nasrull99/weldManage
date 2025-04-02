@@ -101,8 +101,7 @@
             
             <div class="ms-auto">
                 <a href="{{ route('showQuotation') }}" class="btn btn-success"><i class="fa-solid fa-plus fa-flip-vertical"></i></a>
-                <a href="#" class="btn btn-primary"><i class="fa-solid fa-download"></i></a>
-            </div>
+                </div>
         </div>
 
         <div class="card-body">
@@ -133,9 +132,9 @@
                                 <a href="{{ route('editQuotation', ['id' => $quotation->id]) }}" class="btn btn-warning btn-sm">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <a class="btn btn-primary btn-sm">
+                                <a href="{{ route('pdfQuotation', ['id' => $quotation->id]) }}" class="btn btn-primary btn-sm">
                                     <i class="fa-solid fa-download"></i>
-                                </a>
+                                </a>                                                             
                                 <!-- Trigger the modal -->
                                 <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $quotation->id }}">
                                     <i class="fas fa-trash-alt"></i>

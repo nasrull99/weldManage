@@ -18,6 +18,20 @@ class QuotationController extends Controller
         return view('quotation-builder', compact('customers', 'materials'));
     }
 
+    public function generatePDF($id)
+    {
+        $quotation = QuotationMaterial::find($id);
+
+        if (!$quotation) {
+            abort(404, 'Quotation not found');
+        }
+
+        $pdf = Pdf::loadView('pdf-Quotation', compact('quotation'));
+
+        return $pdf->download('quotation_'.$quotation->id.'.pdf');
+    }
+
+
     public function store(Request $request)
     {
         // Validate the incoming data
