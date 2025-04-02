@@ -7,7 +7,7 @@ use App\Models\Material;
 use App\Models\Customer;
 use App\Models\Quotation;
 use App\Models\QuotationMaterial;
-use Barryvdh\DomPDF\Facade\Pdf;
+use Pdf;
 use DB;
 
 class QuotationController extends Controller
@@ -20,17 +20,20 @@ class QuotationController extends Controller
     }
 
     public function generatePDF($id)
-    {
-        $quotation = Quotation::find($id);
+{
+    // Find the quotation by ID
+    $quotation = Quotation::findOrFail($id);
 
-        if (!$quotation) {
-            abort(404, 'Quotation not found');
-        }
+    // Retrieve the associated customer information (assuming you have a relationship set up)
+    $customer = $quotation->customer;
 
-        $pdf = Pdf::loadView('pdf-Quotation', compact('quotation'));
+    // Load the PDF view, passing both quotation and customer data
+    $pdf = Pdf::loadView('pdf-Quotation', compact('quotation', 'customer'));
 
-        return $pdf->download('quotation_'.$quotation->id.'.pdf');
-    }
+    // Return the PDF as a download
+    return $pdf->download('quotation_'.$quotation->id.'.pdf');
+}
+
 
     public function store(Request $request)
     {
