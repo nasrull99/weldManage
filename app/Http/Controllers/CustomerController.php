@@ -42,7 +42,7 @@ class CustomerController extends Controller
         $pdf->save(public_path('public.pdf'));
 
         // Optionally, return a download response
-        return $pdf->download('customers.pdf');
+        return $pdf->download('List of Customers.pdf');
     }
 
     /**

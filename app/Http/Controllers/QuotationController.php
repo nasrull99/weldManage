@@ -20,19 +20,19 @@ class QuotationController extends Controller
     }
 
     public function generatePDF($id)
-{
-    // Find the quotation by ID
-    $quotation = Quotation::findOrFail($id);
+    {
+        // Find the quotation by ID
+        $quotation = Quotation::findOrFail($id);
 
-    // Retrieve the associated customer information (assuming you have a relationship set up)
-    $customer = $quotation->customer;
+        // Retrieve the associated customer information (assuming you have a relationship set up)
+        $customer = $quotation->customer;
 
-    // Load the PDF view, passing both quotation and customer data
-    $pdf = Pdf::loadView('pdf-Quotation', compact('quotation', 'customer'));
+        // Load the PDF view, passing both quotation and customer data
+        $pdf = Pdf::loadView('pdf-Quotation', compact('quotation', 'customer'));
 
-    // Return the PDF as a download
-    return $pdf->download('quotation_'.$quotation->id.'.pdf');
-}
+        // Return the PDF as a download
+        return $pdf->download('quotation_'.$customer->name.'_ID_'.$quotation->id.'.pdf');
+    }
 
 
     public function store(Request $request)

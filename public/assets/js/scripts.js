@@ -47,7 +47,7 @@ $(document).ready(function() {
     });
 });
 
-// Function to add a row
+//QUOTATION
 function addRowQuotation() {
     // Get the material select element and quantity input element
     const customerSelect = document.getElementById("customerSelect");
@@ -128,6 +128,109 @@ function addQuotationData(materialId, quantity, price, amount) {
     materialsInput.value = JSON.stringify(materials);
 }
 
+// Function to edit a row
+function editRowQuotation(button) {
+    // Get the row that contains the button
+    const row = button.parentNode.parentNode;
+
+    // Get the quantity cell
+    const quantityCell = row.cells[3]; 
+    const amountCell = row.cells[4]; 
+
+    // Get the current quantity
+    const currentQuantity = parseInt(quantityCell.textContent);
+
+    // Create an input field for editing the quantity
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.value = currentQuantity;
+    input.min = 1; 
+
+    // Create a save button
+    const saveButton = document.createElement('button');
+    saveButton.textContent = 'Save';
+    saveButton.classList.add('btn', 'btn-success', 'btn-sm');
+
+    // Replace the quantity cell content with the input field and save button
+    quantityCell.innerHTML = ''; 
+    quantityCell.appendChild(input);
+    quantityCell.appendChild(saveButton);
+
+    // Add event listener for the save button
+    saveButton.addEventListener('click', () => {
+        const newQuantity = parseInt(input.value);
+        if (isNaN(newQuantity) || newQuantity < 1) {
+            alert("Please enter a valid quantity.");
+            return;
+        }
+
+        // Get the price from the price cell
+        const price = parseFloat(row.cells[2].textContent);
+
+        // Calculate the new amount
+        const newAmount = price * newQuantity;
+
+        // Update the quantity and amount cells
+        quantityCell.textContent = newQuantity;
+        amountCell.textContent = newAmount.toFixed(2);
+
+        // Recalculate the total amount
+        calculateAmountSumQuotation();
+    });
+}
+
+// Function to remove a row
+function removeRowQuotation(button) {
+    // Get the row that contains the button
+    const row = button.parentElement.parentElement;
+
+    // Get the amount cell from the row to deduct from the total
+    const amountCell = row.cells[4]; 
+    const amount = parseFloat(amountCell.textContent); 
+
+    // Remove the row from the table
+    row.parentElement.removeChild(row);
+
+    // Deduct the amount from the total sum
+    if (!isNaN(amount)) {
+        const totalAmountDisplay = document.getElementById("totalAmountDisplay");
+        let currentTotal = parseFloat(totalAmountDisplay.textContent.replace("Total Amount: RM", ""));
+        currentTotal -= amount; 
+        totalAmountDisplay.textContent = "Total Amount: RM" + currentTotal.toFixed(2); 
+    }
+
+    // Update row numbers after removing a row
+    updateRowNumbers();
+}
+
+function calculateAmountSumQuotation() {
+    // Get all rows in the table body
+    const rows = document.querySelectorAll("#maintable tbody tr");
+
+    // Initialize the total sum
+    let totalSum = 0;
+
+    // Iterate over each row
+    rows.forEach(row => {
+        // Get the amount cell
+        const amountCell = row.cells[4]; 
+
+        // Get the amount
+        const amount = parseFloat(amountCell.textContent);
+
+        // Check if amount is valid
+        if (!isNaN(amount)) {
+            // Add the amount to the total sum
+            totalSum += amount;
+        }
+    });
+
+    // Update the total amount display
+    document.getElementById("totalAmountDisplay").textContent = "Total Amount: RM" + totalSum.toFixed(2);
+}
+
+
+//INVOICES
 function addRowInvoice() {
     // Get the material select element and quantity input element
     const customerSelect = document.getElementById("customerSelect");
@@ -190,58 +293,6 @@ function addRowInvoice() {
     quantityInput.value = 1;
 }
 
-
-// Function to edit a row
-function editRowQuotation(button) {
-    // Get the row that contains the button
-    const row = button.parentNode.parentNode;
-
-    // Get the quantity cell
-    const quantityCell = row.cells[3]; 
-    const amountCell = row.cells[4]; 
-
-    // Get the current quantity
-    const currentQuantity = parseInt(quantityCell.textContent);
-
-    // Create an input field for editing the quantity
-    const input = document.createElement('input');
-    input.type = 'number';
-    input.value = currentQuantity;
-    input.min = 1; 
-
-    // Create a save button
-    const saveButton = document.createElement('button');
-    saveButton.textContent = 'Save';
-    saveButton.classList.add('btn', 'btn-success', 'btn-sm');
-
-    // Replace the quantity cell content with the input field and save button
-    quantityCell.innerHTML = ''; 
-    quantityCell.appendChild(input);
-    quantityCell.appendChild(saveButton);
-
-    // Add event listener for the save button
-    saveButton.addEventListener('click', () => {
-        const newQuantity = parseInt(input.value);
-        if (isNaN(newQuantity) || newQuantity < 1) {
-            alert("Please enter a valid quantity.");
-            return;
-        }
-
-        // Get the price from the price cell
-        const price = parseFloat(row.cells[2].textContent);
-
-        // Calculate the new amount
-        const newAmount = price * newQuantity;
-
-        // Update the quantity and amount cells
-        quantityCell.textContent = newQuantity;
-        amountCell.textContent = newAmount.toFixed(2);
-
-        // Recalculate the total amount
-        calculateAmountSumQuotation();
-    });
-}
-
 // Function to edit a row
 function editRowInvoice(button) {
     // Get the row that contains the button
@@ -291,30 +342,6 @@ function editRowInvoice(button) {
         // Recalculate the total amount
         calculateAmountSumInvoice();
     });
-}
-
-// Function to remove a row
-function removeRowQuotation(button) {
-    // Get the row that contains the button
-    const row = button.parentElement.parentElement;
-
-    // Get the amount cell from the row to deduct from the total
-    const amountCell = row.cells[4]; 
-    const amount = parseFloat(amountCell.textContent); 
-
-    // Remove the row from the table
-    row.parentElement.removeChild(row);
-
-    // Deduct the amount from the total sum
-    if (!isNaN(amount)) {
-        const totalAmountDisplay = document.getElementById("totalAmountDisplay");
-        let currentTotal = parseFloat(totalAmountDisplay.textContent.replace("Total Amount: RM", ""));
-        currentTotal -= amount; 
-        totalAmountDisplay.textContent = "Total Amount: RM" + currentTotal.toFixed(2); 
-    }
-
-    // Update row numbers after removing a row
-    updateRowNumbers();
 }
 
 function removeRowInvoice(button) {
@@ -394,32 +421,6 @@ function calculateAmountSumInvoice() {
     document.getElementById("totalAmountDisplayTotal").textContent = finalTotal.toFixed(2);
 
     console.log(totalSum);
-}
-
-function calculateAmountSumQuotation() {
-    // Get all rows in the table body
-    const rows = document.querySelectorAll("#maintable tbody tr");
-
-    // Initialize the total sum
-    let totalSum = 0;
-
-    // Iterate over each row
-    rows.forEach(row => {
-        // Get the amount cell
-        const amountCell = row.cells[4]; 
-
-        // Get the amount
-        const amount = parseFloat(amountCell.textContent);
-
-        // Check if amount is valid
-        if (!isNaN(amount)) {
-            // Add the amount to the total sum
-            totalSum += amount;
-        }
-    });
-
-    // Update the total amount display
-    document.getElementById("totalAmountDisplay").textContent = "Total Amount: RM" + totalSum.toFixed(2);
 }
 
 // Function to update row numbers

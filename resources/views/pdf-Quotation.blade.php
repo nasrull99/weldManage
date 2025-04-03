@@ -90,6 +90,7 @@
 
 <div class="receipt-container">
     <div class="receipt-header">
+        <img src="{{ public_path('images/logoAMD-no-bg.png') }}" alt="Company Logo" style="width: 150px; margin-bottom: 20px;">
         <h2>Quotation Receipt</h2>
         <p>Name: {{ $customer->name }}</p>
         <p>Quotation ID: {{ $quotation->id }}</p>
