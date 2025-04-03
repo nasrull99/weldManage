@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Customer;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Pdf;
 
 class CustomerController extends Controller
@@ -48,6 +49,8 @@ class CustomerController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+ 
+
     public function store(Request $request)
     {
         $request->validate([
@@ -57,16 +60,26 @@ class CustomerController extends Controller
             'status' => 'required|string|in:pending,in_progress,completed',
         ]);
 
+        // **1. Create User Account**
+        $user = User::create([
+            'name' => $request->name,
+            'email' => strtolower(str_replace(' ', '', $request->name)) . '@gmail.com', // Generate email
+            'password' => Hash::make('12345678'), // Default password
+            'usertype' => 'user',
+        ]);
+
+        // **2. Create Customer Details & Link with User**
         Customer::create([
             'name' => $request->name,
             'phone' => $request->phone,
             'location' => $request->location,
             'status' => $request->status,
-            'user_id' => Auth::id(), // Associate with the logged-in user
+            'user_id' => $user->id, // Link to created user
         ]);
 
-        return redirect()->route('storecustomer')->with('success', 'Customer Add successfully.');
+        return redirect()->route('showname')->with('success', 'Customer registered successfully.');
     }
+
 
     /**
      * Display the specified resource.
@@ -105,5 +118,24 @@ class CustomerController extends Controller
         $customer = Customer::findOrFail($id);
         $customer->delete();
         return redirect()->route('showname')->with('success', 'Customer deleted successfully');
+    }
+    
+    public function dashboard()
+    {
+        $user = Auth::user();
+        
+        // Ensure only customers access this
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Please log in first.');
+        }
+
+        // Fetch customer details based on user_id
+        $customer = Customer::where('user_id', $user->id)->first();
+
+        if (!$customer) {
+            return redirect()->route('showname')->with('error', 'Customer details not found.');
+        }
+
+        return view('customer.dashboard', compact('customer'));
     }
 }

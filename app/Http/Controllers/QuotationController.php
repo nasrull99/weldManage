@@ -160,4 +160,24 @@ class QuotationController extends Controller
         return redirect()->route('tablequotation')->with('success', 'Quotation updated successfully!');
     }
 
+    public function customerQuotations()
+    {
+        $user = auth()->user(); // Get logged-in user
+
+        // Find the customer record associated with the logged-in user
+        $customer = Customer::where('user_id', $user->id)->firstOrFail();
+
+        // Fetch only the latest quotation for this customer
+        $quotation = Quotation::where('customer_id', $customer->id)
+                            ->with('materials')
+                            ->latest()
+                            ->first();
+
+        return view('customer.quotation', compact('customer', 'quotation'));
+    }
+
+
+
+
+
 }

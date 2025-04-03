@@ -138,7 +138,7 @@
                 <!-- Customer selection dropdown -->
                 <div class="mb-3">
                     <label for="customerSelect" class="form-label">Select Customer</label>
-                    <select id="customerSelect" name="customer_id" class="form-select" required onchange="updateCustomerName()">
+                    <select id="customerSelect" name="customer_id" class="form-select" required>
                         <option disabled selected></option>
                         @foreach ($customers as $customer)
                             <option value="{{ $customer->id }}">{{ $customer->name }}</option>

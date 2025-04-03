@@ -58,11 +58,12 @@
 <div class="receipt-container">
     <div class="receipt-header">
         <h2>Quotation Receipt</h2>
-        <p>Name: User1</p>
-        <p>Quotation ID: 1</p>
-        <p>Date: 14/1/2025</p>
+        <p>Name: {{ $customer->name }}</p>
+        <p>Quotation ID: {{ $quotation->id }}</p>
+        <p>Date: {{ $quotation->created_at->format('d/m/Y') }}</p>
     </div>
 
+    @if ($quotation)
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -74,26 +75,30 @@
                 </tr>
             </thead>
             <tbody>
+                @php
+                    $totalAmount = 0;
+                @endphp
+                @foreach ($quotation->materials as $index => $material)
                     <tr>
-                        <td>1</td>
-                        <td>abc</td>
-                        <td>2000</td>
-                        <td>5</td>
-                        <td>10000</td>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $material->material }}</td>
+                        <td>{{ number_format($material->price, 2) }}</td>
+                        <td>{{ $material->pivot->quantity }}</td>
+                        <td>{{ number_format($material->price * $material->pivot->quantity, 2) }}</td>
                     </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>abcd</td>
-                        <td>2000</td>
-                        <td>5</td>
-                        <td>10000</td>
-                    </tr>
+                    @php
+                        $totalAmount += $material->price * $material->pivot->quantity;
+                    @endphp
+                @endforeach
             </tbody>
         </table>
 
         <div class="total">
-            <p>Total Amount: RM 20,000</p>
+            <p>Total Amount: RM {{ number_format($totalAmount, 2) }}</p>
         </div>
+    @else
+        <p>No materials found for this quotation.</p>
+    @endif
 
     <div class="footer">
         <p>Thank you for choosing us! If you have any questions, feel free to contact us.</p>

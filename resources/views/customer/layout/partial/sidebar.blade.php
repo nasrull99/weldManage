@@ -10,7 +10,7 @@
             </a>
             
             {{-- Quotation --}}
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{ route('customer.quotations') }}">
                 <div class="sb-nav-link-icon"><i class="fa-solid fa-file-invoice-dollar"></i></i></div>
                 Quotation
             </a>

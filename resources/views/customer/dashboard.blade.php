@@ -93,21 +93,12 @@
                 <h2>Customer Information</h2>
             </div>
             <div class="card-body">
-                {{-- @if(isset($customer))
-                    <p><strong>Name:</strong> {{ $customer->name }}</p>
-                    <p><strong>Phone:</strong> {{ $customer->phone }}</p>
-                    <p><strong>Location:</strong> {{ $customer->location }}</p>
-                    <p><strong>Status:</strong> {{ ucfirst($customer->status) }}</p>
-                    <a href="{{ route('editCustomer', $customer->id) }}" class="btn">Edit Details</a>
-                @else
-                    <p>No customer found.</p>
-                @endif --}}
-                <h4>Name: User</h4>
-                <h4>Phone Number: 0123456789</h4>
-                <h4>Location: Batu Pahat, Johor</h4>
-                <h4>Status: Pending</h4>
-                <h4>Description: Sedang Buat Awning</h4>
-                <img src="{{ asset('images/awning.jpeg') }}" alt="Logo" />
+                <ul>
+                    <li><strong>Name:</strong> {{ $customer->name }}</li>
+                    <li><strong>Phone:</strong> {{ $customer->phone }}</li>
+                    <li><strong>Location:</strong> {{ $customer->location }}</li>
+                    <li><strong>Status:</strong> {{ $customer->status }}</li>
+                </ul>
             </div>
         </div>
     </div>

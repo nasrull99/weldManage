@@ -100,6 +100,8 @@
                     <div class="form-container">
                         <form action="{{ route('storecustomer') }}" method="POST">
                             @csrf
+                            <input type="hidden" name="user_id" value="{{ Auth::id() }}"> <!-- Hidden User ID Field -->
+
                             <div class="form-group">
                                 <label for="name">Name:</label>
                                 <input type="text" id="name" name="name" placeholder="Enter customer name" required>

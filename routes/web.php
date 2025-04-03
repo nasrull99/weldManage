@@ -84,5 +84,10 @@ Route::middleware(['auth','verified'])->group(function () {
 
 });
 
+Route::middleware(['auth', 'usertype:user'])->group(function () {
+    Route::get('/customer/dashboard', [CustomerController::class, 'dashboard'])->name('customer.dashboard');
+    Route::get('/customer/quotations', [QuotationController::class, 'customerQuotations'])->name('customer.quotations');
+});
+
 // Authentication routes
 require __DIR__.'/auth.php';

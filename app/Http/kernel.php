@@ -24,6 +24,6 @@ class Kernel extends HttpKernel
      */
     protected $routeMiddleware = [
         // Other route middleware...
-        'usertype' => \App\Http\Middleware\Usertype::class, // Add your custom middleware here
+        'usertype' => \App\Http\Middleware\Usertype::class,
     ];
 }
