@@ -175,9 +175,4 @@ class QuotationController extends Controller
 
         return view('customer.quotation', compact('customer', 'quotation'));
     }
-
-
-
-
-
 }

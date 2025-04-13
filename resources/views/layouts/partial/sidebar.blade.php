@@ -20,7 +20,6 @@
                 <div class="sb-nav-link-icon"><i class="fa-solid fa-wrench"></i></div>
                 Materials
             </a>
-
             
             {{-- Quotation --}}
             <a class="nav-link collapsed" href="{{ url('tablequotation') }}">

@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Quotations List')
+@section('title', 'invoices List')
 @section('content')
 
 <style>
@@ -120,30 +120,56 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach ($invoices as $invoice)
                     <tr>
-                        <td>1</td>
-                        <td>A1</td>
-                        <td>user1</td>
-                        <td>300</td>
-                        <td>5/12/2024</td>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $invoice->id }}</td>
+                        <td>{{ $invoice->customer->name }}</td>
+                        <td>{{ number_format($invoice->totalamount, 2) }}</td>
+                        <td>{{ $invoice->created_at->format('d/m/Y') }}</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Actions">
-                                <a class="btn btn-secondary btn-sm">
+                                <a href="{{ route('viewForCustomer', ['customerId' => $invoice->customer->id, 'invoiceId' => $invoice->id]) }}" class="btn btn-secondary btn-sm">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
-                                <a class="btn btn-warning btn-sm">
+                                <a href="{{ route('editinvoice', ['id' => $invoice->id]) }}" class="btn btn-warning btn-sm">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <a class="btn btn-primary btn-sm">
+                                <a href="{{ route('pdfinvoice', $invoice->id) }}"  class="btn btn-primary btn-sm">
                                     <i class="fa-solid fa-download"></i>
-                                </a>
+                                </a>                                                             
                                 <!-- Trigger the modal -->
-                                <button type="button" class="btn btn-danger btn-sm">
+                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $invoice->id }}">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </div>
                         </td>
                     </tr>
+
+                    <!-- Modal for Deletion Confirmation -->
+                    <div class="modal fade" id="deleteModal{{ $invoice->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $invoice->id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteModalLabel{{ $invoice->id }}">Delete invoice</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this invoice?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <form action="{{ route('deleteinvoice', ['id' => $invoice->id]) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @endforeach
                 </tbody>
             </table>
         </div>

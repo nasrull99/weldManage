@@ -19,13 +19,9 @@ Route::get('/sales-report', function () {
 });
 
 //Admin Dashboard
-Route::get('dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth','verified','usertype:admin'])->name('dashboard');
-
-// Customer View
-Route::get('customer/dashboard', [CustomerController::class, 'index'])
-->middleware(['auth','verified','usertype:user'])->name('customer.dashboard');
+Route::get('dashboard', [CustomerController::class, 'index'])
+    ->middleware(['auth', 'verified', 'usertype:admin'])
+    ->name('dashboard');
 
 // Grouped routes protected by 'auth' middleware
 Route::middleware(['auth','verified'])->group(function () {
@@ -40,7 +36,6 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::post('/editsavedcustomer/{id}', [CustomerController::class, 'editsaved'])->name('editsavedcust');
     Route::delete('/destroycustomer/{id}', [CustomerController::class, 'destroy'])->name('deletecustomer');
     Route::get('pdf-customer', [CustomerController::class, 'pdfcustomer'])->name('pdfcustomer');
-    Route::get('/dashboard', [CustomerController::class, 'index2'])->name('dashboard');
     
     // Material Routes
     Route::get('/addmaterial', function () {
@@ -84,7 +79,9 @@ Route::middleware(['auth','verified'])->group(function () {
 
 });
 
-Route::middleware(['auth', 'usertype:user'])->group(function () {
+
+// Customer View
+Route::middleware(['auth', 'verified', 'usertype:user'])->group(function () {
     Route::get('/customer/dashboard', [CustomerController::class, 'dashboard'])->name('customer.dashboard');
     Route::get('/customer/quotations', [QuotationController::class, 'customerQuotations'])->name('customer.quotations');
 });

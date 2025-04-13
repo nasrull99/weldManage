@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 use App\Models\Customer;
+use App\Models\Material;
+use App\Models\Quotation;
+use App\Models\Invoice;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -11,16 +16,24 @@ use Pdf;
 
 class CustomerController extends Controller
 {
+
     public function index()
     {
-        return view('customer.dashboard');
+        $customerCount = Customer::count();
+        $materialCount = Material::count();
+        $quotationCount = Quotation::count();
+        // $invoiceCount = Invoice::count();
+        $newCustomers = Customer::orderBy('created_at', 'desc')->take(5)->get();
+
+        // $monthlyIncome = DB::table('totalsales')
+        // ->select(DB::raw('MONTH(created_at) as month'), DB::raw('SUM(total_price) as total'))
+        // ->groupBy(DB::raw('MONTH(created_at)'))
+        // ->orderBy('month', 'asc')
+        // ->get();
+
+        return view('dashboard', compact('customerCount', 'newCustomers', 'materialCount', 'quotationCount'));
     }
 
-    public function index2()
-    {
-        $newCustomers = Customer::orderBy('created_at', 'desc')->take(5)->get();
-        return view('dashboard', compact('newCustomers'));
-    }
 
     public function pdfcustomer()
     {

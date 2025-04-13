@@ -111,6 +111,7 @@
                             <a href="{{ route('showname') }}" class="text-white small stretched-link">
                             </a>
                         </h5>
+                        <h3>{{ $customerCount }}</h3>
                     </div>
                 </div>
             </div>
@@ -124,6 +125,7 @@
                             <a href="{{ route('tablematerial') }}" class="text-white small stretched-link">
                             </a>
                         </h5>
+                        <h3>{{ $materialCount }}</h3>
                     </div>
                 </div>
             </div>
@@ -137,6 +139,7 @@
                             <a href="{{ route('tablequotation') }}" class="text-white small stretched-link">
                             </a>
                         </h5>
+                        <h3>{{ $quotationCount }}</h3>
                     </div>
                 </div>
             </div>
@@ -157,31 +160,7 @@
 
         <!-- Chart Section -->
         <div class="row">
-            <!-- Area Chart -->
-            <div class="col-xl-6 mb-4">
-                <div class="card">
-                    <div class="card-header">
-                        <i class="fas fa-chart-area me-1"></i>
-                        Sales
-                    </div>
-                    <div class="card-body">
-                        <canvas id="myAreaChart" width="100%" height="40"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Bar Chart -->
-            <div class="col-xl-6 mb-4">
-                <div class="card">
-                    <div class="card-header">
-                        <i class="fas fa-chart-bar me-1"></i>
-                        Sales
-                    </div>
-                    <div class="card-body">
-                        <canvas id="myBarChart" width="100%" height="40"></canvas>
-                    </div>
-                </div>
-            </div>
+            <!-- Recent Customers -->
             <div class="col-xl-6 mb-4">
                 <div class="card">
                     <div class="card-header">
@@ -210,19 +189,9 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-6 mb-4">
-                <div class="card">
-                    <div class="card-header">
-                        <i class="fas fa-chart-line me-1"></i> Weekly Comparison
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Customers</h5>
-                        <p>Current Week: {{ 25 }} Customers</p>
-                        <p>Previous Week: {{ 18 }} Customers</p>
-                    </div>
-                </div>
-            </div>
         </div>
+
+        <!-- Monthly Income Chart -->
         <div class="col-xl-12 mb-4">
             <div class="card">
                 <div class="card-header">
@@ -233,33 +202,47 @@
                 </div>
             </div>
         </div>
+
+        <!-- Sales by Month Chart -->
+        <div class="col-xl-12 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <strong>Sales by Month</strong>
+                </div>
+                <div class="card-body">
+                    <canvas id="myAreaChart" width="100%" height="40"></canvas>
+                </div>
+            </div>
+        </div>
     </div>
-    
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <script>
- // Dummy data for monthly income
- const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    const data = [3000, 4000, 3500, 5000, 6000, 5500, 4500, 7000, 7500, 8000, 6500, 9000]; // Dummy income values
+    {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    // Create the chart
-    new Chart(document.getElementById('monthlyIncomeChart'), {
-        type: 'bar',
+<script>
+    // Prepare data for Monthly Income chart
+    const monthlyIncomeData = @json($monthlyIncome);  // Convert PHP data to JS
+
+    // Prepare labels (Months)
+    const months = monthlyIncomeData.map(item => item.month);
+
+    // Prepare data (Income)
+    const income = monthlyIncomeData.map(item => item.total);
+
+    // Create Monthly Income Bar Chart
+    var ctx = document.getElementById('monthlyIncomeChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',  // Use 'bar' for bar chart
         data: {
-            labels: labels,
+            labels: months, // Months as x-axis
             datasets: [{
-                label: 'Income (RM)',
-                backgroundColor: '#007bff',
-                data: data,
+                label: 'Monthly Income',
+                data: income, // Sales data
+                backgroundColor: 'rgba(0, 123, 255, 0.5)', // Bar color
+                borderColor: 'rgba(0, 123, 255, 1)',
+                borderWidth: 1
             }]
         },
         options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: false
-                }
-            },
             scales: {
                 y: {
                     beginAtZero: true
@@ -267,29 +250,29 @@
             }
         }
     });
+</script>
+<script>
+    // Prepare Sales Data for Monthly Sales chart
+    const salesData = @json($monthlyIncome);  // Reusing the same data structure
 
-        // Dummy data for months and customer counts
-        var months = ['January', 'February', 'March', 'April', 'May', 'June'];
-        var counts = [12, 19, 3, 5, 2, 3];
+    // Prepare sales amounts (total sales value)
+    const sales = salesData.map(item => item.total);
 
-        // Dummy data for Area Chart
-    var salesData = {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-        datasets: [{
-            label: 'Sales',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1
-        }]
-    };
-
-    var areaCtx = document.getElementById('myAreaChart').getContext('2d');
-    var myAreaChart = new Chart(areaCtx, {
-        type: 'line',
-        data: salesData,
+    // Create Monthly Sales Line Chart
+    var ctx2 = document.getElementById('myAreaChart').getContext('2d');
+    var mySalesChart = new Chart(ctx2, {
+        type: 'line',  // Use 'line' for line chart
+        data: {
+            labels: months,  // Months as x-axis
+            datasets: [{
+                label: 'Sales by Month',
+                data: sales,  // Sales data
+                fill: false,
+                borderColor: 'rgba(0, 123, 255, 1)', // Line color
+                tension: 0.1
+            }]
+        },
         options: {
-            responsive: true,
             scales: {
                 y: {
                     beginAtZero: true
@@ -297,40 +280,7 @@
             }
         }
     });
-
-        // Create the bar chart using Chart.js
-        var ctx = document.getElementById('myBarChart').getContext('2d');
-        var myBarChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: months, // months as labels
-                datasets: [{
-                    label: 'Customer Count',
-                    data: counts, // customer counts as data
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)', // Bar color
-                    borderColor: 'rgba(75, 192, 192, 1)', // Border color
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    tooltip: {
-                        mode: 'index',
-                        intersect: false,
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    </script>
+</script> --}}
 
 </body>
 @endsection
