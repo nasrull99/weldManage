@@ -14,10 +14,6 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
-Route::get('/sales-report', function () {
-    return view('salesreportPage');
-});
-
 //Admin Dashboard
 Route::get('dashboard', [CustomerController::class, 'index'])
     ->middleware(['auth', 'verified', 'usertype:admin'])
@@ -60,14 +56,18 @@ Route::middleware(['auth','verified'])->group(function () {
 
     // Invoice Routes
     Route::get('/invoice-builder', [InvoicesController::class, 'index'])->name('showInvoices');
-    Route::get('/tableinvoices', function () {
-        return view('tableinvoices');
-        })->name('tableinvoicesView');
+    Route::get('/tableinvoices', [InvoicesController::class, 'show'])->name('tableinvoice');
+    Route::post('/invoices/save', [InvoicesController::class, 'store'])->name('invoices.save');
+
+    
 
     // Sales Report Routes
     Route::get('/salesreport', function () {
         return view('salesreport');
         })->name('salesreportView');
+    Route::get('/sales-report', function () {
+        return view('salesreportPage');
+    });
 
     // Profile Routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

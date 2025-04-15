@@ -129,25 +129,25 @@
                         <td>{{ $invoice->created_at->format('d/m/Y') }}</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Actions">
-                                <a href="{{ route('viewForCustomer', ['customerId' => $invoice->customer->id, 'invoiceId' => $invoice->id]) }}" class="btn btn-secondary btn-sm">
+                                {{-- <a href="{{ route('viewForCustomer', ['customerId' => $invoice->customer->id, 'invoiceId' => $invoice->id]) }}" class="btn btn-secondary btn-sm">
                                     <i class="fa-solid fa-eye"></i>
-                                </a>
-                                <a href="{{ route('editinvoice', ['id' => $invoice->id]) }}" class="btn btn-warning btn-sm">
+                                </a> --}}
+                                {{-- <a href="{{ route('editinvoice', ['id' => $invoice->id]) }}" class="btn btn-warning btn-sm">
                                     <i class="fas fa-edit"></i>
-                                </a>
-                                <a href="{{ route('pdfinvoice', $invoice->id) }}"  class="btn btn-primary btn-sm">
+                                </a> --}}
+                                {{-- <a href="{{ route('pdfinvoice', $invoice->id) }}"  class="btn btn-primary btn-sm">
                                     <i class="fa-solid fa-download"></i>
-                                </a>                                                             
+                                </a>                                                              --}}
                                 <!-- Trigger the modal -->
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $invoice->id }}">
+                                {{-- <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $invoice->id }}">
                                     <i class="fas fa-trash-alt"></i>
-                                </button>
+                                </button> --}}
                             </div>
                         </td>
                     </tr>
 
                     <!-- Modal for Deletion Confirmation -->
-                    <div class="modal fade" id="deleteModal{{ $invoice->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $invoice->id }}" aria-hidden="true">
+                    {{-- <div class="modal fade" id="deleteModal{{ $invoice->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $invoice->id }}" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -166,7 +166,7 @@
                                     </form>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
 
                     @endforeach

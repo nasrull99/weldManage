@@ -132,7 +132,7 @@
         </div>
 
         <div class="card-body">
-            <form id="invoiceForm" method="POST" action="{{ route('quotation.save') }}">
+            <form id="invoiceForm" method="POST" action="{{ route('invoices.save') }}">
                 @csrf
 
                 <!-- Customer selection dropdown -->
@@ -206,7 +206,7 @@
                     <div class="amount-display">Subtotal(RM): <span id="totalAmountDisplayAmount">0.00</span></div>
                     <div class="amount-display">Deposit(RM): <span id="totalAmountDisplayDeposit">0.00</span></div>
                     <div class="amount-display total-amount">Total Amount(RM): <span id="totalAmountDisplayTotal">0.00</span></div>
-                    <button type="submit" class="btn btn-primary" onclick="submitForm()">Save</button>
+                    <button type="submit" class="btn btn-primary" onclick="submitFormInvoices()">Save</button>
                 </div>
             </form>
         </div>

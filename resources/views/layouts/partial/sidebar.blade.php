@@ -28,7 +28,7 @@
             </a>
 
             {{-- Invoice --}}
-            <a class="nav-link collapsed" href="{{ route('tableinvoicesView') }}">
+            <a class="nav-link collapsed" href="{{ route('tableinvoice') }}">
                 <div class="sb-nav-link-icon"><i class="fa-solid fa-dollar-sign"></i></div>
                 Invoice
             </a>

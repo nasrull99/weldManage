@@ -107,6 +107,7 @@
                 <div class="card bg-warning text-white">
                     <div class="card-body">
                         <h5 class="card-title d-flex justify-content-between align-items-center">
+                            <i class="fas fa-users me-1"></i>
                             Customer
                             <a href="{{ route('showname') }}" class="text-white small stretched-link">
                             </a>
@@ -121,6 +122,7 @@
                 <div class="card bg-success text-white">
                     <div class="card-body">
                         <h5 class="card-title d-flex justify-content-between align-items-center">
+                            <i class="fa-solid fa-wrench"></i>
                             Materials
                             <a href="{{ route('tablematerial') }}" class="text-white small stretched-link">
                             </a>
@@ -135,6 +137,7 @@
                 <div class="card bg-danger text-white">
                     <div class="card-body">
                         <h5 class="card-title d-flex justify-content-between align-items-center">
+                            <i class="fa-solid fa-file-invoice-dollar"></i>
                             Quotation
                             <a href="{{ route('tablequotation') }}" class="text-white small stretched-link">
                             </a>
@@ -149,8 +152,9 @@
                 <div class="card bg-primary text-white">
                     <div class="card-body">
                         <h5 class="card-title d-flex justify-content-between align-items-center">
+                            <i class="fa-solid fa-dollar-sign"></i>
                             Invoices
-                            <a href="{{ route('tableinvoicesView') }}" class="text-white small stretched-link">
+                            <a href="{{ route('tableinvoice') }}" class="text-white small stretched-link">
                             </a>
                         </h5>
                     </div>

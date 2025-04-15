@@ -229,6 +229,19 @@ function calculateAmountSumQuotation() {
     document.getElementById("totalAmountDisplay").textContent = "Total Amount: RM" + totalSum.toFixed(2);
 }
 
+function submitFormQuotation() {
+    const materialsField = document.getElementById("materials");
+    const materialsData = materialsField.value ? JSON.parse(materialsField.value) : [];
+
+    if (materialsData.length === 0) {
+        alert("Please add at least one material.");
+        return false; // Prevent form submission
+    }
+
+    // Allow form submission
+    document.getElementById("quotationForm").submit();
+}
+
 
 //INVOICES
 function addRowInvoice() {
@@ -288,9 +301,29 @@ function addRowInvoice() {
 
     // Calculate the total amount
     calculateAmountSumInvoice();    
+    addInvoicesData(materialId, quantity, price, amount, deposit);
 
     materialSelect.selectedIndex = 0; 
     quantityInput.value = 1;
+}
+
+
+
+function addInvoicesData(materialId, quantity, price, amount, deposit) {
+    const materialsInput = document.getElementById('materials');
+    let materials = JSON.parse(materialsInput.value || '[]');
+
+    // Add the new material data to the array
+    materials.push({
+        material_id: materialId,
+        quantity: quantity,
+        price: price,
+        amount: amount,
+        deposit: deposit
+    });
+
+    // Update the hidden input with the new materials data as a JSON string
+    materialsInput.value = JSON.stringify(materials);
 }
 
 // Function to edit a row
@@ -379,7 +412,7 @@ function removeRowInvoice(button) {
     updateRowNumbers();
 }
 
-// Function to calculate the total amount
+//Function to calculate the total amount
 function calculateAmountSumInvoice() {
     // Get all rows in the table body
     const rows = document.querySelectorAll("#maintable tbody tr");
@@ -423,6 +456,20 @@ function calculateAmountSumInvoice() {
     console.log(totalSum);
 }
 
+function submitFormInvoices() {
+    const materialsField = document.getElementById("materials");
+    const materialsData = materialsField.value ? JSON.parse(materialsField.value) : [];
+
+    if (materialsData.length === 0) {
+        alert("Please add at least one material.");
+        return false; // Prevent form submission
+    }
+
+    // Allow form submission
+    document.getElementById("invoiceForm").submit();
+}
+
+
 // Function to update row numbers
 function updateRowNumbers() {
     // Get all rows in the table body
@@ -435,15 +482,3 @@ function updateRowNumbers() {
     });
 }
 
-function submitFormQuotation() {
-    const materialsField = document.getElementById("materials");
-    const materialsData = materialsField.value ? JSON.parse(materialsField.value) : [];
-
-    if (materialsData.length === 0) {
-        alert("Please add at least one material.");
-        return false; // Prevent form submission
-    }
-
-    // Allow form submission
-    document.getElementById("quotationForm").submit();
-}
