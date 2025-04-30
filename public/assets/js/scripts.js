@@ -249,14 +249,16 @@ function addRowInvoice() {
     const customerSelect = document.getElementById("customerSelect");
     const materialSelect = document.getElementById("materialSelect");
     const quantityInput = document.getElementById("quantity");
+    const depositInput = document.getElementById("deposit");
 
     // Get the selected material and its price
     const customer = customerSelect.options[customerSelect.selectedIndex].text;
+    const materialId = materialSelect.options[materialSelect.selectedIndex].value; // get material ID
     const material = materialSelect.options[materialSelect.selectedIndex].text;
+    const quantity = parseInt(quantityInput.value);
     const price = parseFloat(materialSelect.options[materialSelect.selectedIndex].getAttribute("data-price"));
 
     // Get the quantity and calculate the amount
-    const quantity = parseInt(quantityInput.value);
     const amount = (price * quantity).toFixed();
 
     // Check if customer and material is selected and quantity is valid
@@ -301,25 +303,20 @@ function addRowInvoice() {
 
     // Calculate the total amount
     calculateAmountSumInvoice();    
-    addInvoicesData(materialId, quantity, price, amount, deposit);
+    addInvoicesData(materialId, quantity);
 
     materialSelect.selectedIndex = 0; 
     quantityInput.value = 1;
 }
 
-
-
-function addInvoicesData(materialId, quantity, price, amount, deposit) {
+function addInvoicesData(materialId, quantity) {
     const materialsInput = document.getElementById('materials');
     let materials = JSON.parse(materialsInput.value || '[]');
 
     // Add the new material data to the array
     materials.push({
         material_id: materialId,
-        quantity: quantity,
-        price: price,
-        amount: amount,
-        deposit: deposit
+        quantity: quantity
     });
 
     // Update the hidden input with the new materials data as a JSON string
@@ -453,6 +450,11 @@ function calculateAmountSumInvoice() {
     document.getElementById("totalAmountDisplayDeposit").textContent = depositDisplayValue.toFixed(2);
     document.getElementById("totalAmountDisplayTotal").textContent = finalTotal.toFixed(2);
 
+    // --- Update hidden inputs ---
+    document.getElementById('subtotal').value = totalSum.toFixed(2);
+    document.getElementById('deposit_hidden').value = (-depositDisplayValue).toFixed(2); // Positive deposit
+    document.getElementById('total').value = finalTotal.toFixed(2);
+
     console.log(totalSum);
 }
 
@@ -462,7 +464,7 @@ function submitFormInvoices() {
 
     if (materialsData.length === 0) {
         alert("Please add at least one material.");
-        return false; // Prevent form submission
+        return false;
     }
 
     // Allow form submission

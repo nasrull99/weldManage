@@ -160,6 +160,8 @@
                     </select>
                 </div>
 
+                <input type="hidden" name="materials" id="materials">
+
                 <!-- Quantity input -->
                 <div class="mb-3">
                     <label for="quantity" class="form-label">Quantity</label>
@@ -176,8 +178,6 @@
                     <button type="button" class="btn btn-primary" onclick="addRowInvoice()">Add</button>
                 </div>
                 
-
-
                 <div class="cardbody">
                     <table id="maintable" class="table table-striped">
                         <thead>
@@ -197,6 +197,9 @@
                 </div>
 
                 <input type="hidden" name="invoiceData" id="invoiceData">
+                <input type="hidden" id="subtotal" name="subtotal" value="">
+                <input type="hidden" id="deposit_hidden" name="deposit" value="">
+                <input type="hidden" id="total" name="total" value="">
 
                 <div class="total-amount-container">
                     <div class="total-amount-title d-flex justify-content-between mb-3">

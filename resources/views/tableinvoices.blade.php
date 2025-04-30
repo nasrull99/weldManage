@@ -114,6 +114,8 @@
                         <th>#</th>
                         <th>Invoice ID</th>
                         <th>Customer Name</th>
+                        <th>subtotal(RM)</th>
+                        <th>deposit(RM)</th>
                         <th>Total Price (RM)</th>
                         <th>Date</th>
                         <th>Actions</th>
@@ -125,6 +127,8 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $invoice->id }}</td>
                         <td>{{ $invoice->customer->name }}</td>
+                        <td>{{ number_format($invoice->subtotal, 2) }}</td>
+                        <td>{{ number_format($invoice->deposit, 2) }}</td>
                         <td>{{ number_format($invoice->totalamount, 2) }}</td>
                         <td>{{ $invoice->created_at->format('d/m/Y') }}</td>
                         <td>

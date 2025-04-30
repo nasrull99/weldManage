@@ -13,9 +13,9 @@ class Invoice extends Model
 
     protected $fillable = [
         'customer_id', 
-        'totalamount', 
+        'deposit', 
         'subtotal',
-        'deposit'
+        'totalamount'
     ];
 
     public function customer()
@@ -28,7 +28,7 @@ class Invoice extends Model
      */
     public function invoiceMaterials()
     {
-        return $this->hasMany(InvoicesnMaterial::class, 'invoice_id');
+        return $this->hasMany(InvoiceMaterial::class);
     }
 
     /**

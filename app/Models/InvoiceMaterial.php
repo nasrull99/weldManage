@@ -18,12 +18,11 @@ class InvoiceMaterial extends Model
     // Relationship with invoices model
     public function invoice()
     {
-        return $this->belongsTo(Invoice::class, 'invoice_id');
+        return $this->belongsTo(Invoice::class);
     }
 
-    // Relationship with Material model
     public function material()
     {
-        return $this->belongsTo(Material::class, 'material_id');
+        return $this->belongsTo(Material::class);
     }
 }
