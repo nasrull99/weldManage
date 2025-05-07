@@ -101,7 +101,12 @@
                                     </td>
                                     <td class="amount">{{ number_format($material->price * $material->pivot->quantity, 2) }}</td>
                                     <td>
-                                        <button type="button" class="btn btn-danger btn-sm removeRow">Remove</button>
+                                        <button type="button"
+                                            class="btn btn-danger btn-sm removeRow"
+                                            data-quotation-id="{{ $quotation->id }}"
+                                            data-material-id="{{ $material->id }}">
+                                            Remove
+                                        </button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -166,7 +171,12 @@
                         </td>
                         <td class="amount">${parseFloat(price).toFixed(2)}</td>
                         <td>
-                            <button type="button" class="btn btn-danger btn-sm removeRow">Remove</button>
+                            <button type="button"
+                                class="btn btn-danger btn-sm removeRow"
+                                data-quotation-id="{{ $quotation->id }}"
+                                data-material-id="{{ $material->id }}">
+                                Remove
+                            </button>
                         </td>
                     </tr>
                 `);
@@ -177,10 +187,40 @@
 
         document.addEventListener('click', function (e) {
             if (e.target.classList.contains('removeRow')) {
-                e.target.closest('tr').remove();
-                calculateTotal();
+                const row = e.target.closest('tr');
+                const materialId = e.target.getAttribute('data-material-id');
+                const quotationId = e.target.getAttribute('data-quotation-id');
+
+                if (materialId && quotationId) {
+                    if (confirm('Are you sure you want to remove this material?')) {
+                        fetch(`/quotations/${quotationId}/material/${materialId}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Accept': 'application/json',
+                            },
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                row.remove();
+                                calculateTotal();
+                            } else {
+                                alert('Failed to delete material from database.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error(error);
+                            alert('Error occurred while deleting.');
+                        });
+                    }
+                } else {
+                    // For newly added rows that aren't saved in DB yet
+                    row.remove();
+                    calculateTotal();
+                }
             }
         });
+
 
         document.addEventListener('input', function (e) {
             if (e.target.classList.contains('updateQuantity')) {

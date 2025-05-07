@@ -107,6 +107,12 @@
         </div>
     @endif
 
+    @if(session('error'))
+        <script>
+            alert("{{ session('error') }}");
+        </script>
+    @endif
+
     <div class="card my-4">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h1 class="h3">AMD SYNERGY</h1>

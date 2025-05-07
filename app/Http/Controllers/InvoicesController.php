@@ -87,6 +87,7 @@ class InvoicesController extends Controller
             }
 
             // Update the total amount in the invoice
+            $totalAmount = $request->subtotal - $request->deposit;
             $invoice->update(['totalamount' => $totalAmount]);
 
             // Commit the transaction
@@ -155,8 +156,39 @@ class InvoicesController extends Controller
      */
     public function destroy($id)
     {
-        $invoice = invoice::findOrFail($id);
-        $invoice->delete();
-        return redirect()->route('tableinvoice')->with('success', 'invoice deleted successfully.');
+        // Start a DB transaction
+        DB::beginTransaction();
+
+        try {
+            // Find the invoice
+            $invoice = Invoice::findOrFail($id);
+
+            // Delete related invoice materials
+            InvoiceMaterial::where('invoice_id', $invoice->id)->delete();
+
+            // Delete the invoice itself
+            $invoice->delete();
+
+            // Commit the transaction
+            DB::commit();
+
+            return redirect()->route('tableinvoice')->with('success', 'Invoice deleted successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->withErrors(['error' => 'Delete failed: ' . $e->getMessage()]);
+        }
     }
+
+    public function viewCustomer($customerId, $invoiceId)
+    {
+        // Get the customer with the specific invoice and its materials
+        $customer = Customer::with(['invoices' => function ($query) use ($invoiceId) {
+            $query->where('id', $invoiceId)->with('materials');
+        }])->findOrFail($customerId);
+
+        $invoice = $customer->invoices->first(); // Assuming only one invoice is passed
+
+        return view('viewinvoiceCust', compact('customer', 'invoice'));
+    }
+
 }

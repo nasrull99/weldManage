@@ -82,24 +82,44 @@ function addRowQuotation() {
         return;
     }
 
-    // Get the table body element
+    // Get the table body element and check if material has been added
     const tableBody = document.getElementById("maintable").getElementsByTagName("tbody")[0];
+    const existingRows = tableBody.querySelectorAll("input[name$='[material_id]']");
+    for (const row of existingRows) {
+        if (row.value === materialId) {
+            alert("This item is already added.");
+            return;
+        }
+    }
 
     // Create a new row element
     const newRow = tableBody.insertRow();
 
     // Set the inner HTML of the new row
-    newRow.innerHTML = `
-        <td></td>  
-        <td>${material}</td>
-        <td>${price.toFixed(2)}</td>
-        <td>${quantity}</td>
-        <td>${amount}</td>
+        newRow.innerHTML = `
+        <td></td>
+        <td>
+            ${material}
+            <input type="hidden" name="quotation[][material_id]" value="${materialId}">
+        </td>
+        <td>
+            ${price.toFixed(2)}
+            <input type="hidden" name="quotation[][price]" value="${price.toFixed(2)}">
+        </td>
+        <td>
+            ${quantity}
+            <input type="hidden" name="quotation[][quantity]" value="${quantity}">
+        </td>
+        <td>
+            ${amount}
+            <input type="hidden" name="quotation[][amount]" value="${amount}">
+        </td>
         <td>
             <button type="button" class="btn btn-primary btn-sm" onclick="editRowQuotation(this)">edit</button>
             <button type="button" class="btn btn-danger btn-sm" onclick="removeRowQuotation(this)">X</button>
         </td>
     `;
+
 
     // Update row numbers after adding a new row
     updateRowNumbers();
@@ -128,14 +148,13 @@ function addQuotationData(materialId, quantity, price, amount) {
     materialsInput.value = JSON.stringify(materials);
 }
 
-// Function to edit a row
 function editRowQuotation(button) {
     // Get the row that contains the button
     const row = button.parentNode.parentNode;
 
-    // Get the quantity cell
-    const quantityCell = row.cells[3]; 
-    const amountCell = row.cells[4]; 
+    // Get the quantity cell and amount cell
+    const quantityCell = row.cells[3];
+    const amountCell = row.cells[4];
 
     // Get the current quantity
     const currentQuantity = parseInt(quantityCell.textContent);
@@ -144,7 +163,7 @@ function editRowQuotation(button) {
     const input = document.createElement('input');
     input.type = 'number';
     input.value = currentQuantity;
-    input.min = 1; 
+    input.min = 1;
 
     // Create a save button
     const saveButton = document.createElement('button');
@@ -152,7 +171,7 @@ function editRowQuotation(button) {
     saveButton.classList.add('btn', 'btn-success', 'btn-sm');
 
     // Replace the quantity cell content with the input field and save button
-    quantityCell.innerHTML = ''; 
+    quantityCell.innerHTML = '';
     quantityCell.appendChild(input);
     quantityCell.appendChild(saveButton);
 
@@ -170,14 +189,22 @@ function editRowQuotation(button) {
         // Calculate the new amount
         const newAmount = price * newQuantity;
 
-        // Update the quantity and amount cells
+        // Update the quantity and amount cells (visually)
         quantityCell.textContent = newQuantity;
         amountCell.textContent = newAmount.toFixed(2);
+
+        // Update hidden input fields
+        const hiddenQuantityInput = row.querySelector('input[name$="[quantity]"]');
+        const hiddenAmountInput = row.querySelector('input[name$="[amount]"]');
+
+        if (hiddenQuantityInput) hiddenQuantityInput.value = newQuantity;
+        if (hiddenAmountInput) hiddenAmountInput.value = newAmount.toFixed(2);
 
         // Recalculate the total amount
         calculateAmountSumQuotation();
     });
 }
+
 
 // Function to remove a row
 function removeRowQuotation(button) {
@@ -450,12 +477,13 @@ function calculateAmountSumInvoice() {
     document.getElementById("totalAmountDisplayDeposit").textContent = depositDisplayValue.toFixed(2);
     document.getElementById("totalAmountDisplayTotal").textContent = finalTotal.toFixed(2);
 
+    console.log("FT: "+finalTotal);
+    
+
     // --- Update hidden inputs ---
     document.getElementById('subtotal').value = totalSum.toFixed(2);
     document.getElementById('deposit_hidden').value = (-depositDisplayValue).toFixed(2); // Positive deposit
-    document.getElementById('total').value = finalTotal.toFixed(2);
-
-    console.log(totalSum);
+    document.getElementById('totalamount').value = finalTotal.toFixed(2);
 }
 
 function submitFormInvoices() {
@@ -468,6 +496,7 @@ function submitFormInvoices() {
     }
 
     // Allow form submission
+    calculateAmountSumInvoice();
     document.getElementById("invoiceForm").submit();
 }
 

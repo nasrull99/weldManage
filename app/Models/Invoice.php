@@ -28,7 +28,7 @@ class Invoice extends Model
      */
     public function invoiceMaterials()
     {
-        return $this->hasMany(InvoiceMaterial::class);
+        return $this->hasMany(InvoiceMaterial::class, 'invoice_id');
     }
 
     /**

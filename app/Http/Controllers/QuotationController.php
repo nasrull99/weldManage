@@ -40,10 +40,16 @@ class QuotationController extends Controller
         // Validate the incoming data
         $request->validate([
             'customer_id' => 'required|exists:custdetail,id',
-            'materials' => 'required|json', // Ensure the materials field is an array
+            'materials' => 'required|json',
             'materials.*.material_id' => 'required|exists:materials,id',
             'materials.*.quantity' => 'required|integer|min:1',
         ]);
+
+        //Check if customer already has a quotation
+        $existingQuotation = Quotation::where('customer_id', $request->customer_id)->first();
+        if ($existingQuotation) {
+            return redirect()->back()->with('error', 'This customer already has a quotation.');
+        }
 
         // Decode the materials field from JSON
         $materials = json_decode($request->materials, true);
@@ -175,4 +181,13 @@ class QuotationController extends Controller
 
         return view('customer.quotation', compact('customer', 'quotation'));
     }
+
+    public function removeMaterial($quotationId, $materialId)
+    {
+        $quotation = Quotation::findOrFail($quotationId);
+        $quotation->materials()->detach($materialId);
+
+        return response()->json(['success' => true]);
+    }
+
 }

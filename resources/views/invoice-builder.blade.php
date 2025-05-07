@@ -198,8 +198,8 @@
 
                 <input type="hidden" name="invoiceData" id="invoiceData">
                 <input type="hidden" id="subtotal" name="subtotal" value="">
-                <input type="hidden" id="deposit_hidden" name="deposit" value="">
-                <input type="hidden" id="total" name="total" value="">
+                <input type="hidden" id="deposit_hidden" name="deposit_hidden" value="">
+                <input type="hidden" id="totalamount" name="total" value="">
 
                 <div class="total-amount-container">
                     <div class="total-amount-title d-flex justify-content-between mb-3">

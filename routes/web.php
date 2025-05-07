@@ -53,11 +53,17 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::get('/quotations/{id}/edit', [QuotationController::class, 'edit'])->name('editQuotation');
     Route::put('/quotations/{id}', [QuotationController::class, 'update'])->name('updateQuotation');
     Route::get('/quotation/{id}', [QuotationController::class, 'generatePDF'])->name('pdfQuotation');
+    Route::delete('/quotations/{quotation}/material/{material}', [QuotationController::class, 'removeMaterial'])
+    ->name('quotation.removeMaterial');
+
 
     // Invoice Routes
     Route::get('/invoice-builder', [InvoicesController::class, 'index'])->name('showInvoices');
     Route::get('/tableinvoices', [InvoicesController::class, 'show'])->name('tableinvoice');
     Route::post('/invoices/save', [InvoicesController::class, 'store'])->name('invoices.save');
+    Route::delete('/invoices/{id}', [InvoicesController::class, 'destroy'])->name('invoices.destroy');
+    Route::get('invoices/{customerId}/{invoiceId}', [InvoicesController::class, 'viewCustomer'])->name('invoices.viewForCustomer');
+
 
     
 
