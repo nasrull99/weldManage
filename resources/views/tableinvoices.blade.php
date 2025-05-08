@@ -136,9 +136,9 @@
                                 <a href="{{ route('invoices.viewForCustomer', ['customerId' => $invoice->customer->id, 'invoiceId' => $invoice->id]) }}" class="btn btn-secondary btn-sm">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
-                                {{-- <a href="{{ route('editinvoice', ['id' => $invoice->id]) }}" class="btn btn-warning btn-sm">
+                                <a href="{{ route('editInvoice', ['id' => $invoice->id]) }}" class="btn btn-warning btn-sm">
                                     <i class="fas fa-edit"></i>
-                                </a> --}}
+                                </a>
                                 {{-- <a href="{{ route('pdfinvoice', $invoice->id) }}"  class="btn btn-primary btn-sm">
                                     <i class="fa-solid fa-download"></i>
                                 </a>                                                              --}}

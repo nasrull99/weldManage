@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Material; 
 use App\Models\Customer;
-use App\Models\invoice;
+use App\Models\Invoice;
 use App\Models\InvoiceMaterial;
 use DB;
 
@@ -107,13 +107,9 @@ class InvoicesController extends Controller
      */
     public function edit($id)
     {
-        // Retrieve the invoice by its ID with related materials
-        $invoice = invoice::with('materials')->findOrFail($id);
+        $invoice = Invoice::with('materials')->findOrFail($id);
+        $materials = Material::all();
 
-        // Retrieve all available materials from the database
-        $materials = Material::all(); // This ensures $materials is defined
-
-        // Pass data to the view
         return view('edit-invoice', compact('invoice', 'materials'));
     }
 
@@ -122,7 +118,7 @@ class InvoicesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $invoice = invoice::findOrFail($id);
+        $invoice = Invoice::findOrFail($id);
         $materials = $request->input('materials', []);
         $totalAmount = 0;
 

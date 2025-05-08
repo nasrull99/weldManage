@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Edit Quotation')
+@section('title', 'Edit Invoice')
 @section('content')
 
 <style>
@@ -32,26 +32,26 @@
 
 <body>
     <header>
-        <h2 class="header-title">EDIT QUOTATION</h2>
+        <h2 class="header-title">EDIT INVOICE</h2>
     </header>
 
-    <form action="{{ route('updateQuotation', $quotation->id) }}" method="POST">
+    <form action="{{ route('updateInvoice', $invoice->id) }}" method="POST">    
         @csrf
         @method('PUT')
 
         <div class="container my-4">
             <div class="card">
                 <div class="card-header">
-                    <strong>Quotation Details</strong>
+                    <strong>invoice Details</strong>
                 </div>
                 <div class="card-body">
 
-                    <p>ID: {{ $quotation->id }}</p>
+                    <p>ID: {{ $invoice->id }}</p>
 
                     <div class="mb-3">
                         <label for="customerName" class="form-label">Customer Name:</label>
                         <input type="text" id="customerName" name="customer_name" 
-                            value="{{ $quotation->customer->name }}" 
+                            value="{{ $invoice->customer->name }}" 
                             class="form-control" readonly>
                     </div>
 
@@ -83,8 +83,8 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="quotationItems">
-                            @foreach ($quotation->materials as $index => $material)
+                        <tbody id="invoiceItems">
+                            @foreach ($invoice->materials as $index => $material)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>
@@ -103,7 +103,7 @@
                                     <td>
                                         <button type="button"
                                             class="btn btn-danger btn-sm removeRow"
-                                            data-quotation-id="{{ $quotation->id }}"
+                                            data-invoice-id="{{ $invoice->id }}"
                                             data-material-id="{{ $material->id }}">
                                             Remove
                                         </button>
@@ -114,14 +114,14 @@
                         <tfoot>
                             <tr>
                                 <td colspan="4" class="text-end"><strong>Total Amount(RM):</strong></td>
-                                <td id="totalAmount">{{ number_format($quotation->totalamount, 2) }}</td>
+                                <td id="totalAmount">{{ number_format($invoice->totalamount, 2) }}</td>
                             </tr>
                         </tfoot>
                     </table>
 
                     <div class="mt-3">
-                        <button type="submit" class="btn btn-success">Update Quotation</button>
-                        <a href="{{ route('tablequotation') }}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-success">Update invoice</button>
+                        <a href="{{ route('tableinvoice') }}" class="btn btn-secondary">Cancel</a>
                     </div>
 
                 </div>
@@ -146,7 +146,7 @@
             const materialName = selectedOption.text;
 
             if (materialId) {
-                const tbody = document.getElementById('quotationItems');
+                const tbody = document.getElementById('invoiceItems');
                 const existingRow = Array.from(tbody.querySelectorAll('input[name$="[id]"]'))
                     .find(input => input.value === materialId);
 
@@ -173,7 +173,7 @@
                         <td>
                             <button type="button"
                                 class="btn btn-danger btn-sm removeRow"
-                                data-quotation-id="{{ $quotation->id }}"
+                                data-invoice-id="{{ $invoice->id }}"
                                 data-material-id="{{ $material->id }}">
                                 Remove
                             </button>
@@ -189,11 +189,11 @@
             if (e.target.classList.contains('removeRow')) {
                 const row = e.target.closest('tr');
                 const materialId = e.target.getAttribute('data-material-id');
-                const quotationId = e.target.getAttribute('data-quotation-id');
+                const invoiceId = e.target.getAttribute('data-invoice-id');
 
-                if (materialId && quotationId) {
+                if (materialId && invoiceId) {
                     if (confirm('Are you sure you want to remove this material?')) {
-                        fetch(`/quotations/${quotationId}/material/${materialId}`, {
+                        fetch(`/invoices/${invoiceId}/material/${materialId}`, {
                             method: 'DELETE',
                             headers: {
                                 'X-CSRF-TOKEN': '{{ csrf_token() }}',

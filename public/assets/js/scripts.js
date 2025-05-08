@@ -48,109 +48,51 @@ $(document).ready(function() {
 });
 
 //QUOTATION
+// Function to add a row in the quotation
 function addRowQuotation() {
-    // Get the material select element and quantity input element
     const customerSelect = document.getElementById("customerSelect");
     const materialSelect = document.getElementById("materialSelect");
     const quantityInput = document.getElementById("quantity");
 
-    // Get the selected material and its price
     const materialId = materialSelect.value;
-    const customer = customerSelect.options[customerSelect.selectedIndex].text;
     const material = materialSelect.options[materialSelect.selectedIndex].text;
     const price = parseFloat(materialSelect.options[materialSelect.selectedIndex].getAttribute("data-price"));
-
-    // Get the quantity and calculate the amount
     const quantity = parseInt(quantityInput.value);
     const amount = (price * quantity).toFixed(2);
 
-    // Check if customer and material is selected and quantity is valid
-    if (!customer || customer === "Select a customer") { 
-        alert("Please select a customer.");
-        return;
-    }
-    if (!material || material === "Select a material") { 
-        alert("Please select a material.");
-        return;
-    }
-    if (isNaN(price) || price <= 0) { 
-        alert("Please select a valid material with a price.");
-        return;
-    }
-    if (isNaN(quantity) || quantity < 1) { 
-        alert("Please enter a valid quantity (greater than 0).");
+    // Check for validation (if customer, material, or quantity is invalid)
+    if (!material || material === "Select a material" || isNaN(price) || price <= 0 || isNaN(quantity) || quantity < 1) {
+        alert("Please fill all required fields correctly.");
         return;
     }
 
-    // Get the table body element and check if material has been added
+    // Add new row to the table
     const tableBody = document.getElementById("maintable").getElementsByTagName("tbody")[0];
-    const existingRows = tableBody.querySelectorAll("input[name$='[material_id]']");
-    for (const row of existingRows) {
-        if (row.value === materialId) {
-            alert("This item is already added.");
-            return;
-        }
-    }
-
-    // Create a new row element
     const newRow = tableBody.insertRow();
-
-    // Set the inner HTML of the new row
-        newRow.innerHTML = `
+    newRow.innerHTML = `
         <td></td>
-        <td>
-            ${material}
-            <input type="hidden" name="quotation[][material_id]" value="${materialId}">
-        </td>
-        <td>
-            ${price.toFixed(2)}
-            <input type="hidden" name="quotation[][price]" value="${price.toFixed(2)}">
-        </td>
-        <td>
-            ${quantity}
-            <input type="hidden" name="quotation[][quantity]" value="${quantity}">
-        </td>
-        <td>
-            ${amount}
-            <input type="hidden" name="quotation[][amount]" value="${amount}">
-        </td>
+        <td>${material}<input type="hidden" id="material-${materialId}" value="${materialId}"></td>
+        <td>${price.toFixed(2)}<input type="hidden" id="price-${materialId}" value="${price.toFixed(2)}"></td>
+        <td>${quantity}<input type="hidden" id="quantity-${materialId}" value="${quantity}"></td>
+        <td>${amount}<input type="hidden" id="amount-${materialId}" value="${amount}"></td>
         <td>
             <button type="button" class="btn btn-primary btn-sm" onclick="editRowQuotation(this)">edit</button>
             <button type="button" class="btn btn-danger btn-sm" onclick="removeRowQuotation(this)">X</button>
         </td>
     `;
 
-
-    // Update row numbers after adding a new row
+    // Update row numbers and total
     updateRowNumbers();
-
-    // Calculate the total amount
     calculateAmountSumQuotation();
-    addQuotationData(materialId, quantity, price, amount);
-    
+    updateMaterialsInput();
+
     materialSelect.selectedIndex = 0; 
     quantityInput.value = 1;
 }
 
-function addQuotationData(materialId, quantity, price, amount) {
-    const materialsInput = document.getElementById('materials');
-    let materials = JSON.parse(materialsInput.value || '[]');
-
-    // Add the new material data to the array
-    materials.push({
-        material_id: materialId,
-        quantity: quantity,
-        price: price,
-        amount: amount
-    });
-
-    // Update the hidden input with the new materials data as a JSON string
-    materialsInput.value = JSON.stringify(materials);
-}
-
 function editRowQuotation(button) {
     // Get the row that contains the button
-    const row = button.parentNode.parentNode;
+    const row = button.closest('tr');
 
     // Get the quantity cell and amount cell
     const quantityCell = row.cells[3];
@@ -193,82 +135,95 @@ function editRowQuotation(button) {
         quantityCell.textContent = newQuantity;
         amountCell.textContent = newAmount.toFixed(2);
 
-        // Update hidden input fields
-        const hiddenQuantityInput = row.querySelector('input[name$="[quantity]"]');
-        const hiddenAmountInput = row.querySelector('input[name$="[amount]"]');
+        // Re-add hidden input fields for quantity and amount
+        const hiddenQuantityInput = document.createElement('input');
+        hiddenQuantityInput.type = 'hidden';
+        hiddenQuantityInput.id = `quantity-${row.rowIndex}`;
+        hiddenQuantityInput.value = newQuantity;
 
-        if (hiddenQuantityInput) hiddenQuantityInput.value = newQuantity;
-        if (hiddenAmountInput) hiddenAmountInput.value = newAmount.toFixed(2);
+        const hiddenAmountInput = document.createElement('input');
+        hiddenAmountInput.type = 'hidden';
+        hiddenAmountInput.id = `amount-${row.rowIndex}`;
+        hiddenAmountInput.value = newAmount.toFixed(2);
+
+        row.appendChild(hiddenQuantityInput);
+        row.appendChild(hiddenAmountInput);
+
+        // Update the materials array in the hidden input
+        updateMaterialsInput();
 
         // Recalculate the total amount
         calculateAmountSumQuotation();
     });
 }
 
-
-// Function to remove a row
+// Function to remove a row from the quotation
 function removeRowQuotation(button) {
-    // Get the row that contains the button
     const row = button.parentElement.parentElement;
-
-    // Get the amount cell from the row to deduct from the total
-    const amountCell = row.cells[4]; 
-    const amount = parseFloat(amountCell.textContent); 
+    const amountCell = row.cells[4];
+    const amount = parseFloat(amountCell.textContent);
 
     // Remove the row from the table
     row.parentElement.removeChild(row);
 
-    // Deduct the amount from the total sum
-    if (!isNaN(amount)) {
-        const totalAmountDisplay = document.getElementById("totalAmountDisplay");
-        let currentTotal = parseFloat(totalAmountDisplay.textContent.replace("Total Amount: RM", ""));
-        currentTotal -= amount; 
-        totalAmountDisplay.textContent = "Total Amount: RM" + currentTotal.toFixed(2); 
-    }
-
-    // Update row numbers after removing a row
+    // Update row numbers and total
     updateRowNumbers();
+    calculateAmountSumQuotation();
+    updateMaterialsInput();
+}
+
+function updateMaterialsInput() {
+    const rows = document.querySelectorAll('#maintable tbody tr');
+    const materials = [];
+
+    rows.forEach(row => {
+        // Log the row structure to see if the inputs exist
+        console.log("new row:", row);
+
+        // Extract materialId from the hidden input with id="material-{materialId}"
+        const materialId = row.querySelector('input[id^="material-"]') ? row.querySelector('input[id^="material-"]').value : null;
+        const quantity = row.querySelector('input[id^="quantity-"]') ? row.querySelector('input[id^="quantity-"]').value : null;
+        const price = row.querySelector('input[id^="price-"]') ? row.querySelector('input[id^="price-"]').value : null;
+        const amount = row.querySelector('input[id^="amount-"]') ? row.querySelector('input[id^="amount-"]').value : null;
+
+        // Only push if all necessary values are available
+        if (materialId && quantity && price && amount) {
+            materials.push({
+                material_id: materialId,
+                quantity: quantity,
+                price: price,
+                amount: amount
+            });
+        }
+    });
+
+    // Log the materials array to ensure it has the correct data
+    console.log("Materials Data:", materials);
+
+    // Update the hidden #materials field with the materials data in JSON format
+    document.getElementById('materials').value = JSON.stringify(materials);
 }
 
 function calculateAmountSumQuotation() {
-    // Get all rows in the table body
     const rows = document.querySelectorAll("#maintable tbody tr");
-
-    // Initialize the total sum
     let totalSum = 0;
 
-    // Iterate over each row
     rows.forEach(row => {
-        // Get the amount cell
-        const amountCell = row.cells[4]; 
-
-        // Get the amount
+        const amountCell = row.cells[4];
         const amount = parseFloat(amountCell.textContent);
-
-        // Check if amount is valid
         if (!isNaN(amount)) {
-            // Add the amount to the total sum
             totalSum += amount;
         }
     });
 
-    // Update the total amount display
     document.getElementById("totalAmountDisplay").textContent = "Total Amount: RM" + totalSum.toFixed(2);
 }
 
 function submitFormQuotation() {
-    const materialsField = document.getElementById("materials");
-    const materialsData = materialsField.value ? JSON.parse(materialsField.value) : [];
-
-    if (materialsData.length === 0) {
-        alert("Please add at least one material.");
-        return false; // Prevent form submission
-    }
-
-    // Allow form submission
-    document.getElementById("quotationForm").submit();
+    // Ensure all row data is updated in the hidden fields
+    updateMaterialsInput();
+    return true; // Proceed with the form submission
 }
-
 
 //INVOICES
 function addRowInvoice() {
@@ -315,10 +270,10 @@ function addRowInvoice() {
     // Set the inner HTML of the new row
     newRow.innerHTML = `
         <td></td>  
-        <td>${material}</td>
-        <td>${price.toFixed(2)}</td>
-        <td>${quantity}</td>
-        <td>${amount}</td>
+        <td>${material}<input type="hidden" id="material-${materialId}" value="${materialId}"></td>
+        <td>${price.toFixed(2)}<input type="hidden" id="price-${materialId}" value="${price.toFixed(2)}"></td>
+        <td>${quantity}<input type="hidden" id="quantity-${materialId}" value="${quantity}"></td>
+        <td>${amount}<input type="hidden" id="amount-${materialId}" value="${amount}"></td>
         <td>
             <button type="button" class="btn btn-primary btn-sm" onclick="editRowInvoice(this)">edit</button>
             <button type="button" class="btn btn-danger btn-sm" onclick="removeRowInvoice(this)">X</button>
@@ -353,11 +308,11 @@ function addInvoicesData(materialId, quantity) {
 // Function to edit a row
 function editRowInvoice(button) {
     // Get the row that contains the button
-    const row = button.parentNode.parentNode;
+    const row = button.closest('tr');
 
-    // Get the quantity cell
-    const quantityCell = row.cells[3]; 
-    const amountCell = row.cells[4]; 
+    // Get the quantity cell and amount cell
+    const quantityCell = row.cells[3];
+    const amountCell = row.cells[4];
 
     // Get the current quantity
     const currentQuantity = parseInt(quantityCell.textContent);
@@ -366,7 +321,7 @@ function editRowInvoice(button) {
     const input = document.createElement('input');
     input.type = 'number';
     input.value = currentQuantity;
-    input.min = 1; 
+    input.min = 1;
 
     // Create a save button
     const saveButton = document.createElement('button');
@@ -374,7 +329,7 @@ function editRowInvoice(button) {
     saveButton.classList.add('btn', 'btn-success', 'btn-sm');
 
     // Replace the quantity cell content with the input field and save button
-    quantityCell.innerHTML = ''; 
+    quantityCell.innerHTML = '';
     quantityCell.appendChild(input);
     quantityCell.appendChild(saveButton);
 
@@ -392,9 +347,24 @@ function editRowInvoice(button) {
         // Calculate the new amount
         const newAmount = price * newQuantity;
 
-        // Update the quantity and amount cells
+        // Update the quantity and amount cells (visually)
         quantityCell.textContent = newQuantity;
         amountCell.textContent = newAmount.toFixed(2);
+
+        // Re-add hidden input fields for quantity and amount
+        const hiddenQuantityInput = document.createElement('input');
+        hiddenQuantityInput.type = 'hidden';
+        hiddenQuantityInput.id = `quantity-${row.rowIndex}`;
+        hiddenQuantityInput.value = newQuantity;
+
+        const hiddenAmountInput = document.createElement('input');
+        hiddenAmountInput.type = 'hidden';
+        hiddenAmountInput.id = `amount-${row.rowIndex}`;
+        hiddenAmountInput.value = newAmount.toFixed(2);
+
+        row.appendChild(hiddenQuantityInput);
+        row.appendChild(hiddenAmountInput);
+
 
         // Recalculate the total amount
         calculateAmountSumInvoice();
@@ -512,4 +482,3 @@ function updateRowNumbers() {
         row.cells[0].textContent = index + 1;
     });
 }
-

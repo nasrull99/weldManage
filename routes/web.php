@@ -63,9 +63,8 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::post('/invoices/save', [InvoicesController::class, 'store'])->name('invoices.save');
     Route::delete('/invoices/{id}', [InvoicesController::class, 'destroy'])->name('invoices.destroy');
     Route::get('invoices/{customerId}/{invoiceId}', [InvoicesController::class, 'viewCustomer'])->name('invoices.viewForCustomer');
-
-
-    
+    Route::get('/invoices/{id}/edit', [InvoicesController::class, 'edit'])->name('editInvoice');
+    Route::put('/invoices/{id}', [InvoicesController::class, 'update'])->name('updateInvoice');
 
     // Sales Report Routes
     Route::get('/salesreport', function () {
