@@ -7,6 +7,7 @@ use App\Models\Material;
 use App\Models\Customer;
 use App\Models\Invoice;
 use App\Models\InvoiceMaterial;
+use Barryvdh\DomPDF\Facade\Pdf;
 use DB;
 
 
@@ -37,6 +38,20 @@ class InvoicesController extends Controller
         //
     }
 
+    public function generatePDF($id)
+    {
+        // Find the quotation by ID
+        $invoice = Invoice::findOrFail($id);
+
+        // Retrieve the associated customer information (assuming you have a relationship set up)
+        $customer = $invoice->customer;
+
+        // Load the PDF view, passing both quotation and customer data
+        $pdf = Pdf::loadView('pdf-Invoice', compact('invoice', 'customer'));
+
+        // Return the PDF as a download
+        return $pdf->download('invoice_'.$customer->name.'_ID_'.$invoice->id.'.pdf');
+    }
     /**
      * Store a newly created resource in storage.
      */
@@ -113,43 +128,68 @@ class InvoicesController extends Controller
         return view('edit-invoice', compact('invoice', 'materials'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    
     public function update(Request $request, $id)
     {
+        // Validate the incoming data
+        $request->validate([
+            'materials' => 'required|array',
+            'materials.*.id' => 'required|exists:materials,id', // Material ID must exist in the materials table
+            'materials.*.quantity' => 'required|integer|min:1', // Quantity must be greater than or equal to 1
+            'updatesubtotalinvoice' => 'required|numeric|min:0', // Subtotal validation
+            'updatenewdeposit' => 'required|numeric|min:0', // Deposit validation
+            'updatetotalamountinvoice' => 'required|numeric|min:0', // Total amount validation
+        ]);
+    
+        // Find the invoice by ID
         $invoice = Invoice::findOrFail($id);
+    
+        // Get the updated values from the request
         $materials = $request->input('materials', []);
-        $totalAmount = 0;
-
+        $subtotal = $request->input('updatesubtotalinvoice');
+        $deposit = $request->input('updatenewdeposit');
+        $totalAmount = $request->input('updatetotalamountinvoice');
+    
+        // Prepare data for syncing materials
         $data = [];
         foreach ($materials as $material) {
-            $materialData = Material::findOrFail($material['id']);
-            $price = $materialData->price;
-            $quantity = $material['quantity'];
-            $amount = $price * $quantity;
-
+            // Calculate amount for each material based on quantity and price
+            $amount = Material::find($material['id'])->price * $material['quantity'];
+            
             $data[$material['id']] = [
-                'quantity' => $quantity,
+                'quantity' => $material['quantity'],
                 'amount' => $amount,
             ];
-
-            $totalAmount += $amount;
         }
-
-        // Sync the materials with the calculated data
-        $invoice->materials()->sync($data);
-
-        // Update total amount in the invoice
-        $invoice->totalamount = $totalAmount;
-        $invoice->save();
-
-        return redirect()->route('tableinvoice')->with('success', 'invoice updated successfully!');
+    
+        // Start a DB transaction to ensure consistency
+        DB::beginTransaction();
+    
+        try {
+            // Sync the materials with the updated quantities and amounts
+            $invoice->materials()->sync($data);
+    
+            // Update the invoice with the new subtotal, deposit, and total amount
+            $invoice->update([
+                'subtotal' => $subtotal,
+                'deposit' => $deposit,
+                'totalamount' => $totalAmount, // Total amount is calculated as subtotal - deposit
+            ]);
+    
+            // Commit the transaction
+            DB::commit();
+    
+            // Redirect back with success message
+            return redirect()->route('tableinvoice')->with('success', 'Invoice updated successfully!');
+        } catch (\Exception $e) {
+            // Rollback the transaction in case of failure
+            DB::rollBack();
+            return back()->withErrors(['error' => 'Update failed: ' . $e->getMessage()]);
+        }
     }
+    
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy($id)
     {
         // Start a DB transaction
@@ -185,6 +225,14 @@ class InvoicesController extends Controller
         $invoice = $customer->invoices->first(); // Assuming only one invoice is passed
 
         return view('viewinvoiceCust', compact('customer', 'invoice'));
+    }
+
+    public function removeMaterial($invoiceId, $materialId)
+    {
+        $invoice = Invoice::findOrFail($invoiceId);
+        $invoice->materials()->detach($materialId);
+
+        return response()->json(['success' => true]);
     }
 
 }

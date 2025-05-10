@@ -128,15 +128,15 @@
         <h1>KELANTAN</h1>
     </div>
     <div class="receipt-header">
-        <h2>Quotation Receipt</h2>
-        <p>Name: {{ $customer->name }}</p>
-        <p>Quotation ID: {{ $quotation->id }}</p>
-        <p>Date: {{ $quotation->created_at->format('d/m/Y') }}</p>
+        <h2>Invoice Receipt</h2>
+        <p><strong>Bill To:</strong> {{ $customer->name }}</p>
+        <p><strong>Invoice ID:</strong> {{ $invoice->id }}</p>
+        <p><strong>Date:</strong> {{ $invoice->created_at->format('d/m/Y') }}</p>
     </div>
 
     <div class="table-container">
-        @if ($quotation && $quotation->materials->count() > 0)
-            <table class="table table-hover">
+        @if ($invoice && $invoice->materials->count() > 0)
+            <table class="table">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -148,9 +148,9 @@
                 </thead>
                 <tbody>
                     @php
-                        $totalAmount = 0;
+                        $subtotal = 0;
                     @endphp
-                    @foreach ($quotation->materials as $index => $material)
+                    @foreach ($invoice->materials as $index => $material)
                         <tr>
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $material->material }}</td>
@@ -159,17 +159,19 @@
                             <td>{{ number_format($material->price * $material->pivot->quantity, 2) }}</td>
                         </tr>
                         @php
-                            $totalAmount += $material->price * $material->pivot->quantity;
+                            $subtotal += $material->price * $material->pivot->quantity;
                         @endphp
                     @endforeach
                 </tbody>
             </table>
 
             <div class="total">
-                <p>Total Amount: RM {{ number_format($totalAmount, 2) }}</p>
+                <p><strong>Subtotal:</strong> RM {{ number_format($subtotal, 2) }}</p>
+                <p><strong>Deposit:</strong> RM {{ number_format($invoice->deposit, 2) }}</p>
+                <p><strong>Total Amount:</strong> RM {{ number_format($invoice->totalamount, 2) }}</p>
             </div>
         @else
-            <p>No materials found for this quotation.</p>
+            <p>No materials found for this invoice.</p>
         @endif
     </div>
 

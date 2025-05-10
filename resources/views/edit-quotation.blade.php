@@ -123,7 +123,6 @@
                         <button type="submit" class="btn btn-success">Update Quotation</button>
                         <a href="{{ route('tablequotation') }}" class="btn btn-secondary">Cancel</a>
                     </div>
-
                 </div>
             </div>
         </div>

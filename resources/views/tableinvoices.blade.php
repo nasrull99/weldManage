@@ -90,6 +90,23 @@
     <header>
         <h2 class="header-title">INVOICES MANAGEMENT</h2>
     </header>
+
+    <!-- Show success or error message from session -->
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @elseif(session('success'))
+    <div id="successAlert" class="alert alert-success d-flex align-items-center my-2" role="alert"
+        style="font-size: 1rem; padding: 1rem;">
+        <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Success:" style="width: 1.5em; height: 1.5em;">
+            <use xlink:href="#check-circle-fill" />
+        </svg>
+        <div>
+            {{ session('success') }}
+        </div>
+    </div>
+    @endif
     
     <div class="card my-4">
         <div class="card-header d-flex justify-content-between align-items-center">
@@ -101,9 +118,6 @@
             <div class="ms-auto">
                 <!-- This will push the button to the right -->
                 <a href="{{ route('showInvoices') }}" class="btn btn-success"><i class="fa-solid fa-plus fa-flip-vertical"></i></a>
-                <a href="#" class="btn btn-primary">
-                    <i class="fa-solid fa-download"></i>
-                </a>
             </div>
         </div>
 
@@ -139,9 +153,9 @@
                                 <a href="{{ route('editInvoice', ['id' => $invoice->id]) }}" class="btn btn-warning btn-sm">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                {{-- <a href="{{ route('pdfinvoice', $invoice->id) }}"  class="btn btn-primary btn-sm">
+                                <a href="{{ route('pdfInvoice', $invoice->id) }}"  class="btn btn-primary btn-sm">
                                     <i class="fa-solid fa-download"></i>
-                                </a>                                                              --}}
+                                </a>                                                             
                                 <!-- Trigger the modal -->
                                 <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $invoice->id }}">
                                     <i class="fas fa-trash-alt"></i>

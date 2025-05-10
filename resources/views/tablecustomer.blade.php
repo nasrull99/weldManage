@@ -111,8 +111,14 @@
         <h2 class="header-title">CUSTOMER MANAGEMENT</h2>
     </header>
 
-    @if(session('success'))
-    <div id="successAlert" class="alert alert-success d-flex align-items-center my-2" role="alert">
+    <!-- Show success or error message from session -->
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @elseif(session('success'))
+    <div id="successAlert" class="alert alert-success d-flex align-items-center my-2" role="alert"
+        style="font-size: 1rem; padding: 1rem;">
         <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Success:" style="width: 1.5em; height: 1.5em;">
             <use xlink:href="#check-circle-fill" />
         </svg>

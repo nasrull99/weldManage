@@ -50,7 +50,7 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::get('/tablequotation', [QuotationController::class, 'showQuotations'])->name('tablequotation');
     Route::get('quotation/{customerId}/{quotationId}', [QuotationController::class, 'viewForCustomer'])->name('viewForCustomer');
     Route::delete('/quotations/{id}', [QuotationController::class, 'destroy'])->name('deleteQuotation');
-    Route::get('/quotations/{id}/edit', [QuotationController::class, 'edit'])->name('editQuotation');
+    Route::get('/edit-quotations/{id}', [QuotationController::class, 'edit'])->name('editQuotation');
     Route::put('/quotations/{id}', [QuotationController::class, 'update'])->name('updateQuotation');
     Route::get('/quotation/{id}', [QuotationController::class, 'generatePDF'])->name('pdfQuotation');
     Route::delete('/quotations/{quotation}/material/{material}', [QuotationController::class, 'removeMaterial'])
@@ -63,8 +63,11 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::post('/invoices/save', [InvoicesController::class, 'store'])->name('invoices.save');
     Route::delete('/invoices/{id}', [InvoicesController::class, 'destroy'])->name('invoices.destroy');
     Route::get('invoices/{customerId}/{invoiceId}', [InvoicesController::class, 'viewCustomer'])->name('invoices.viewForCustomer');
-    Route::get('/invoices/{id}/edit', [InvoicesController::class, 'edit'])->name('editInvoice');
+    Route::get('/edit-invoices/{id}/', [InvoicesController::class, 'edit'])->name('editInvoice');
     Route::put('/invoices/{id}', [InvoicesController::class, 'update'])->name('updateInvoice');
+    Route::delete('/invoice/{invoice}/material/{material}', [InvoicesController::class, 'removeMaterial'])->name('invoice.removeMaterial');
+    Route::get('/invoice/{id}', [InvoicesController::class, 'generatePDF'])->name('pdfInvoice');
+
 
     // Sales Report Routes
     Route::get('/salesreport', function () {

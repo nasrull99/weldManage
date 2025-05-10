@@ -22,7 +22,7 @@ class CustomerController extends Controller
         $customerCount = Customer::count();
         $materialCount = Material::count();
         $quotationCount = Quotation::count();
-        // $invoiceCount = Invoice::count();
+        $invoiceCount = Invoice::count();
         $newCustomers = Customer::orderBy('created_at', 'desc')->take(5)->get();
 
         // $monthlyIncome = DB::table('totalsales')
@@ -31,7 +31,7 @@ class CustomerController extends Controller
         // ->orderBy('month', 'asc')
         // ->get();
 
-        return view('dashboard', compact('customerCount', 'newCustomers', 'materialCount', 'quotationCount'));
+        return view('dashboard', compact('customerCount', 'newCustomers', 'materialCount', 'quotationCount', 'invoiceCount'));
     }
 
 

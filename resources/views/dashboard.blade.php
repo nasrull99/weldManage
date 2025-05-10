@@ -157,6 +157,7 @@
                             <a href="{{ route('tableinvoice') }}" class="text-white small stretched-link">
                             </a>
                         </h5>
+                        <h3>{{ $invoiceCount }}</h3>
                     </div>
                 </div>
             </div>

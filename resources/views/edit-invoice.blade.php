@@ -28,6 +28,38 @@
         color: #ffffff;
         text-align: center;
     }
+
+      .total-amount-container {
+        border: 1px solid #000000; /* Light gray border */
+        padding: 15px; /* Padding inside the container */
+        margin: 20px; /* Space above the container */
+        background-color: #f9f9f9; /* Light background color */
+    }
+
+    .total-amount-title {
+        font-size: 1.5em; /* Larger font size */
+        margin-bottom: 10px; /* Space below the title */
+        color: #333; /* Darker text color */
+    }
+
+    .amount-display {
+        font-size: 1.2em; /* Slightly larger font size */
+        margin: 5px 0; /* Space above and below each line */
+        display: flex; /* Use flexbox for alignment */
+        justify-content: space-between; /* Space between text and value */
+        align-items: center; /* Center align items vertically */
+    }
+
+    .amount-display span {
+        margin-left: 20px; /* Add consistent space between the text and the value */
+        min-width: 80px; /* Ensure all values are aligned with the same width */
+        text-align: right; /* Right-align the value */
+    }
+
+    .total-amount {
+        font-weight: bold; /* Bold text for emphasis */
+        color: #d9534f; /* Bootstrap danger color for total amount */
+    }
 </style>
 
 <body>
@@ -35,9 +67,32 @@
         <h2 class="header-title">EDIT INVOICE</h2>
     </header>
 
+
+
     <form action="{{ route('updateInvoice', $invoice->id) }}" method="POST">    
         @csrf
         @method('PUT')
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <!-- Show success or error message from session -->
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @elseif(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
 
         <div class="container my-4">
             <div class="card">
@@ -66,6 +121,12 @@
                                 </option>
                             @endforeach
                         </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="updatedeposit" class="form-label">deposit (RM)</label>
+                        <input id="updatedeposit" name="updatedeposit" class="form-control w-auto" type="number" min="0" 
+                               value="{{ $invoice->deposit }}" required>
                     </div>
 
                     <div class="mb-3">
@@ -111,32 +172,80 @@
                                 </tr>
                             @endforeach
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="4" class="text-end"><strong>Total Amount(RM):</strong></td>
-                                <td id="totalAmount">{{ number_format($invoice->totalamount, 2) }}</td>
-                            </tr>
-                        </tfoot>
                     </table>
 
-                    <div class="mt-3">
-                        <button type="submit" class="btn btn-success">Update invoice</button>
-                        <a href="{{ route('tableinvoice') }}" class="btn btn-secondary">Cancel</a>
-                    </div>
+                    <input type="hidden" id="subtotal" name="updatesubtotalinvoice" value="{{ $invoice->subtotal }}">
+                    <input type="hidden" id="totalamount" name="updatetotalamountinvoice" value="{{ $invoice->totalamount }}">
+                    <input type="hidden" id="updatenewdeposit" name="updatenewdeposit" value="{{ $invoice->deposit }}">
 
+                    <div class="mt-3">
+                        <div class="total-amount-container">
+                            <div class="amount-display">Subtotal(RM): <span id="updatesubtotalinvoice">{{ number_format($invoice->subtotal, 2) }}</span></div>
+                            <div class="amount-display">invoice(RM): <span id="updatedepositinvoice">{{ number_format($invoice->deposit, 2) }}</span></div>
+                            <div class="amount-display total-amount">Total Amount(RM): <span id="updatetotalamountinvoice">{{ number_format($invoice->totalamount, 2) }}</span></div>
+                            <button type="submit" class="btn btn-primary">update</button>
+                            <a href="{{ route('tableinvoice') }}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </form>
 
     <script>
-        function calculateTotal() {
-            let total = 0;
+       // Automatic calculation when quantity or deposit changes
+       function calculateTotal() {
+            let subtotal = 0;
+
+            // Sum all the amounts from the table
             document.querySelectorAll('.amount').forEach(amountCell => {
-                total += parseFloat(amountCell.textContent);
+                subtotal += parseFloat(amountCell.textContent.replace(',', '').replace('RM', '').trim());
             });
-            document.getElementById('totalAmount').textContent = total.toFixed(2);
+
+            // Get the deposit value from the input
+            const deposit = parseFloat(document.getElementById('updatedeposit').value) || 0;
+
+            // Calculate the total amount (Total = Subtotal - Deposit)
+            const totalAmount = subtotal - deposit;
+
+            // Update the displayed subtotal, deposit, and total amount in the UI
+            document.getElementById('updatesubtotalinvoice').textContent = subtotal.toFixed(2);
+            document.getElementById('updatedepositinvoice').textContent = deposit.toFixed(2);
+            document.getElementById('updatetotalamountinvoice').textContent = totalAmount.toFixed(2);
+
+            // Update the hidden inputs (for form submission)
+            document.getElementById('subtotal').value = subtotal.toFixed(2); // Subtotal
+            document.getElementById('totalamount').value = totalAmount.toFixed(2); // Total Amount
+            document.getElementById('updatenewdeposit').value = deposit.toFixed(2); // Deposit
         }
+
+        // Event listener for updating quantities
+        document.addEventListener('input', function (e) {
+            if (e.target.classList.contains('updateQuantity')) {
+                const row = e.target.closest('tr');
+                const price = parseFloat(row.children[2].textContent);
+                const quantity = parseFloat(e.target.value) || 0;
+                const amountCell = row.querySelector('.amount');
+                amountCell.textContent = (price * quantity).toFixed(2);
+                calculateTotal();
+            }
+
+            if (e.target.id === 'updatedeposit') {
+                calculateTotal(); // Recalculate total when deposit is changed
+            }
+        });
+
+        // Event listener for removing materials
+        document.addEventListener('click', function (e) {
+            if (e.target.classList.contains('removeRow')) {
+                const row = e.target.closest('tr');
+                row.remove();
+                calculateTotal(); // Recalculate total when a row is removed
+            }
+        });
+
+        // Calculate totals on page load
+        window.onload = calculateTotal;
 
         document.getElementById('addMaterial').addEventListener('click', function () {
             const materialSelect = document.getElementById('material');
@@ -181,54 +290,6 @@
                     </tr>
                 `);
 
-                calculateTotal();
-            }
-        });
-
-        document.addEventListener('click', function (e) {
-            if (e.target.classList.contains('removeRow')) {
-                const row = e.target.closest('tr');
-                const materialId = e.target.getAttribute('data-material-id');
-                const invoiceId = e.target.getAttribute('data-invoice-id');
-
-                if (materialId && invoiceId) {
-                    if (confirm('Are you sure you want to remove this material?')) {
-                        fetch(`/invoices/${invoiceId}/material/${materialId}`, {
-                            method: 'DELETE',
-                            headers: {
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                'Accept': 'application/json',
-                            },
-                        })
-                        .then(response => {
-                            if (response.ok) {
-                                row.remove();
-                                calculateTotal();
-                            } else {
-                                alert('Failed to delete material from database.');
-                            }
-                        })
-                        .catch(error => {
-                            console.error(error);
-                            alert('Error occurred while deleting.');
-                        });
-                    }
-                } else {
-                    // For newly added rows that aren't saved in DB yet
-                    row.remove();
-                    calculateTotal();
-                }
-            }
-        });
-
-
-        document.addEventListener('input', function (e) {
-            if (e.target.classList.contains('updateQuantity')) {
-                const row = e.target.closest('tr');
-                const price = parseFloat(row.children[2].textContent);
-                const quantity = parseFloat(e.target.value) || 0;
-                const amountCell = row.querySelector('.amount');
-                amountCell.textContent = (price * quantity).toFixed(2);
                 calculateTotal();
             }
         });
