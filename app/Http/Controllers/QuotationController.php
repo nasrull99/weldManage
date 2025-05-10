@@ -179,6 +179,10 @@ class QuotationController extends Controller
                             ->latest()
                             ->first();
 
+        if (!$quotation) {
+            return redirect()->route('customer.dashboard')->with('error', 'No quotation found for this customer');
+        }
+
         return view('customer.quotation', compact('customer', 'quotation'));
     }
 

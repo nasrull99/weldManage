@@ -67,6 +67,12 @@ class InvoicesController extends Controller
             'deposit' => 'required|numeric',
         ]);
 
+        //Check if customer already has a invoice
+        $existingInvoice = Invoice::where('customer_id', $request->customer_id)->first();
+        if ($existingInvoice ) {
+            return redirect()->back()->with('error', 'This customer already has a Invoice.');
+        }
+
         // Decode the materials field from JSON
         $materials = json_decode($request->materials, true);
 
@@ -229,10 +235,37 @@ class InvoicesController extends Controller
 
     public function removeMaterial($invoiceId, $materialId)
     {
-        $invoice = Invoice::findOrFail($invoiceId);
-        $invoice->materials()->detach($materialId);
+        try {
+            // Find the invoice
+            $invoice = Invoice::findOrFail($invoiceId);
 
-        return response()->json(['success' => true]);
+            // Detach the material from the invoice
+            $invoice->materials()->detach($materialId);
+
+            return response()->json(['success' => true, 'message' => 'Material removed successfully.']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Failed to remove material: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function customerInvoices()
+    {
+        $user = auth()->user(); // Get logged-in user
+
+        // Find the customer record associated with the logged-in user
+        $customer = Customer::where('user_id', $user->id)->firstOrFail();
+
+        // Fetch only the latest quotation for this customer
+        $invoice = Invoice::where('customer_id', $customer->id)
+                            ->with('materials')
+                            ->latest()
+                            ->first();
+
+        if (!$invoice) {
+            return redirect()->route('customer.dashboard')->with('error', 'No invoice found for this customer');
+        }
+
+        return view('customer.invoice', compact('customer', 'invoice'));
     }
 
 }

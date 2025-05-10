@@ -16,7 +16,7 @@
             </a>
 
             {{-- Invoices --}}
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{ route('customer.invoices') }}">
                 <div class="sb-nav-link-icon"><i class="fa-solid fa-dollar-sign"></i></div>
                 Invoice
             </a>

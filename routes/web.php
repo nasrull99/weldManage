@@ -65,8 +65,9 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::get('invoices/{customerId}/{invoiceId}', [InvoicesController::class, 'viewCustomer'])->name('invoices.viewForCustomer');
     Route::get('/edit-invoices/{id}/', [InvoicesController::class, 'edit'])->name('editInvoice');
     Route::put('/invoices/{id}', [InvoicesController::class, 'update'])->name('updateInvoice');
-    Route::delete('/invoice/{invoice}/material/{material}', [InvoicesController::class, 'removeMaterial'])->name('invoice.removeMaterial');
+    Route::delete('/invoice/{invoice}/material/{material}', [InvoicesController::class, 'removeMaterial'])->name('invoice.removeMaterial');    
     Route::get('/invoice/{id}', [InvoicesController::class, 'generatePDF'])->name('pdfInvoice');
+    
 
 
     // Sales Report Routes
@@ -92,6 +93,8 @@ Route::middleware(['auth','verified'])->group(function () {
 Route::middleware(['auth', 'verified', 'usertype:user'])->group(function () {
     Route::get('/customer/dashboard', [CustomerController::class, 'dashboard'])->name('customer.dashboard');
     Route::get('/customer/quotations', [QuotationController::class, 'customerQuotations'])->name('customer.quotations');
+    Route::get('/customer/invoices', [InvoicesController::class, 'customerInvoices'])->name('customer.invoices');
+
 });
 
 // Authentication routes

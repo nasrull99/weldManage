@@ -40,6 +40,21 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+    const errorAlert = document.getElementById('errorAlert');
+    if (errorAlert) {
+        // Start fade-out after 3 seconds
+        setTimeout(() => {
+            errorAlert.classList.add('fade-out');
+        }, 3000);
+
+        // Remove the alert from the DOM after the fade-out transition (3.5 seconds total)
+        setTimeout(() => {
+            errorAlert.remove();
+        }, 3500);
+    }
+});
+
 $(document).ready(function() {
     $('#customerSelect').select2({
         placeholder: "Select a customer",
@@ -59,6 +74,16 @@ function addRowQuotation() {
     const price = parseFloat(materialSelect.options[materialSelect.selectedIndex].getAttribute("data-price"));
     const quantity = parseInt(quantityInput.value);
     const amount = (price * quantity).toFixed(2);
+
+    const materialsInput = document.getElementById('materials');
+    let materials = JSON.parse(materialsInput.value || '[]');
+
+    const materialExists = materials.some(item => item.material_id === materialId);
+    if (materialExists) {
+        // Alert the user that the material is already added
+        alert(`Material "${material}" has already been added to the quotation.`);
+        return; // Stop further execution if the material is already added
+    }
 
     // Check for validation (if customer, material, or quantity is invalid)
     if (!material || material === "Select a material" || isNaN(price) || price <= 0 || isNaN(quantity) || quantity < 1) {
@@ -240,6 +265,17 @@ function addRowInvoice() {
     const quantity = parseInt(quantityInput.value);
     const price = parseFloat(materialSelect.options[materialSelect.selectedIndex].getAttribute("data-price"));
 
+    // Check if the material is already in the materials array
+    const materialsInput = document.getElementById('materials');
+    let materials = JSON.parse(materialsInput.value || '[]');
+
+    const materialExists = materials.some(item => item.material_id === materialId);
+    if (materialExists) {
+        // Alert the user that the material is already added
+        alert(`Material "${material}" has already been added to the invoice.`);
+        return; // Stop further execution if the material is already added
+    }
+
     // Get the quantity and calculate the amount
     const amount = (price * quantity).toFixed();
 
@@ -295,45 +331,46 @@ function addInvoicesData(materialId, quantity) {
     const materialsInput = document.getElementById('materials');
     let materials = JSON.parse(materialsInput.value || '[]');
 
-    // Add the new material data to the array
-    materials.push({
-        material_id: materialId,
-        quantity: quantity
-    });
+    // Find if the material already exists in the array
+    let materialIndex = materials.findIndex(material => material.material_id === materialId);
+
+    if (materialIndex !== -1) {
+        // Update the existing material's quantity
+        materials[materialIndex].quantity = quantity;
+    } else {
+        // Add new material data if it doesn't exist
+        materials.push({
+            material_id: materialId,
+            quantity: quantity
+        });
+    }
 
     // Update the hidden input with the new materials data as a JSON string
     materialsInput.value = JSON.stringify(materials);
 }
 
+
 // Function to edit a row
 function editRowInvoice(button) {
-    // Get the row that contains the button
     const row = button.closest('tr');
-
-    // Get the quantity cell and amount cell
     const quantityCell = row.cells[3];
     const amountCell = row.cells[4];
 
-    // Get the current quantity
     const currentQuantity = parseInt(quantityCell.textContent);
 
-    // Create an input field for editing the quantity
     const input = document.createElement('input');
     input.type = 'number';
     input.value = currentQuantity;
     input.min = 1;
 
-    // Create a save button
     const saveButton = document.createElement('button');
     saveButton.textContent = 'Save';
     saveButton.classList.add('btn', 'btn-success', 'btn-sm');
 
-    // Replace the quantity cell content with the input field and save button
     quantityCell.innerHTML = '';
     quantityCell.appendChild(input);
     quantityCell.appendChild(saveButton);
 
-    // Add event listener for the save button
     saveButton.addEventListener('click', () => {
         const newQuantity = parseInt(input.value);
         if (isNaN(newQuantity) || newQuantity < 1) {
@@ -341,41 +378,29 @@ function editRowInvoice(button) {
             return;
         }
 
-        // Get the price from the price cell
         const price = parseFloat(row.cells[2].textContent);
-
-        // Calculate the new amount
         const newAmount = price * newQuantity;
 
-        // Update the quantity and amount cells (visually)
+        // Update the cells visually
         quantityCell.textContent = newQuantity;
         amountCell.textContent = newAmount.toFixed(2);
 
-        // Re-add hidden input fields for quantity and amount
-        const hiddenQuantityInput = document.createElement('input');
-        hiddenQuantityInput.type = 'hidden';
-        hiddenQuantityInput.id = `quantity-${row.rowIndex}`;
-        hiddenQuantityInput.value = newQuantity;
+        // Update hidden inputs
+        const materialId = row.querySelector('input[id^="material-"]').value;
+        const hiddenQuantityInput = document.getElementById(`quantity-${materialId}`);
+        const hiddenAmountInput = document.getElementById(`amount-${materialId}`);
 
-        const hiddenAmountInput = document.createElement('input');
-        hiddenAmountInput.type = 'hidden';
-        hiddenAmountInput.id = `amount-${row.rowIndex}`;
-        hiddenAmountInput.value = newAmount.toFixed(2);
+        if (hiddenQuantityInput) hiddenQuantityInput.value = newQuantity;
+        if (hiddenAmountInput) hiddenAmountInput.value = newAmount.toFixed(2);
 
-        row.appendChild(hiddenQuantityInput);
-        row.appendChild(hiddenAmountInput);
-
-
-        // Recalculate the total amount
         calculateAmountSumInvoice();
+        addInvoicesData(materialId, newQuantity); 
     });
 }
 
 function removeRowInvoice(button) {
     // Get the row that contains the button
     const row = button.parentElement.parentElement;
-
-    // Get the amount cell from the row to deduct from the total
     const amountCell = row.cells[4]; 
     const amount = parseFloat(amountCell.textContent); 
 
@@ -404,6 +429,7 @@ function removeRowInvoice(button) {
 
     // Update row numbers after removing a row
     updateRowNumbers();
+    calculateAmountSumInvoice();
 }
 
 //Function to calculate the total amount
@@ -448,7 +474,6 @@ function calculateAmountSumInvoice() {
     document.getElementById("totalAmountDisplayTotal").textContent = finalTotal.toFixed(2);
 
     console.log("FT: "+finalTotal);
-    
 
     // --- Update hidden inputs ---
     document.getElementById('subtotal').value = totalSum.toFixed(2);
@@ -466,10 +491,8 @@ function submitFormInvoices() {
     }
 
     // Allow form submission
-    calculateAmountSumInvoice();
     document.getElementById("invoiceForm").submit();
 }
-
 
 // Function to update row numbers
 function updateRowNumbers() {

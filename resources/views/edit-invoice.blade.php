@@ -239,8 +239,34 @@
         document.addEventListener('click', function (e) {
             if (e.target.classList.contains('removeRow')) {
                 const row = e.target.closest('tr');
-                row.remove();
-                calculateTotal(); // Recalculate total when a row is removed
+                const invoiceId = e.target.getAttribute('data-invoice-id');
+                const materialId = e.target.getAttribute('data-material-id');
+
+                if (confirm('Are you sure you want to remove this material?')) {
+                    // Send an AJAX request to remove the material from the database
+                    fetch(`/invoice/${invoiceId}/material/${materialId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Remove the row from the table
+                                row.remove();
+                                calculateTotal(); // Recalculate totals
+                                alert(data.message);
+                            } else {
+                                alert(data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Failed to remove material. Please try again.');
+                        });
+                }
             }
         });
 
