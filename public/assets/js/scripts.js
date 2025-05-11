@@ -398,39 +398,63 @@ function editRowInvoice(button) {
     });
 }
 
+// function removeRowInvoice(button) {
+//     // Get the row that contains the button
+//     const row = button.parentElement.parentElement;
+//     const amountCell = row.cells[4]; 
+//     const amount = parseFloat(amountCell.textContent); 
+
+//     // Remove the row from the table
+//     row.parentElement.removeChild(row);
+
+//     // Deduct the amount from the total sum
+//     if (!isNaN(amount)) {
+//         // Update the subtotal and total amount displays
+//         const subtotalDisplay = document.getElementById("totalAmountDisplayAmount");
+//         const depositDisplay = document.getElementById("totalAmountDisplayDeposit");
+//         const totalDisplay = document.getElementById("totalAmountDisplayTotal");
+
+//         let currentSubtotal = parseFloat(subtotalDisplay.textContent);
+//         let currentDeposit = parseFloat(depositDisplay.textContent);
+//         let currentTotal = parseFloat(totalDisplay.textContent);
+
+//         // Update the subtotal
+//         currentSubtotal -= amount; 
+//         subtotalDisplay.textContent = currentSubtotal.toFixed(2);
+
+//         // Update the total amount (considering deposit)
+//         currentTotal = currentSubtotal - currentDeposit; 
+//         totalDisplay.textContent = currentTotal.toFixed(2);
+//     }
+
+//     // Update row numbers after removing a row
+//     updateRowNumbers();
+//     calculateAmountSumInvoice();
+// }
+
 function removeRowInvoice(button) {
     // Get the row that contains the button
     const row = button.parentElement.parentElement;
-    const amountCell = row.cells[4]; 
-    const amount = parseFloat(amountCell.textContent); 
+    const materialId = row.querySelector('input[id^="material-"]').value;
 
     // Remove the row from the table
-    row.parentElement.removeChild(row);
+    row.remove();
 
-    // Deduct the amount from the total sum
-    if (!isNaN(amount)) {
-        // Update the subtotal and total amount displays
-        const subtotalDisplay = document.getElementById("totalAmountDisplayAmount");
-        const depositDisplay = document.getElementById("totalAmountDisplayDeposit");
-        const totalDisplay = document.getElementById("totalAmountDisplayTotal");
+    // Update the materials array
+    const materialsInput = document.getElementById('materials');
+    let materials = JSON.parse(materialsInput.value || '[]');
 
-        let currentSubtotal = parseFloat(subtotalDisplay.textContent);
-        let currentDeposit = parseFloat(depositDisplay.textContent);
-        let currentTotal = parseFloat(totalDisplay.textContent);
+    // Filter out the removed material
+    materials = materials.filter(material => material.material_id !== materialId);
 
-        // Update the subtotal
-        currentSubtotal -= amount; 
-        subtotalDisplay.textContent = currentSubtotal.toFixed(2);
+    // Update the hidden input with the new materials data as a JSON string
+    materialsInput.value = JSON.stringify(materials);
 
-        // Update the total amount (considering deposit)
-        currentTotal = currentSubtotal - currentDeposit; 
-        totalDisplay.textContent = currentTotal.toFixed(2);
-    }
-
-    // Update row numbers after removing a row
-    updateRowNumbers();
+    // Recalculate totals
     calculateAmountSumInvoice();
+    updateRowNumbers();
 }
+
 
 //Function to calculate the total amount
 function calculateAmountSumInvoice() {

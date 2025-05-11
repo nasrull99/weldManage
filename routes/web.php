@@ -88,13 +88,11 @@ Route::middleware(['auth','verified'])->group(function () {
 
 });
 
-
 // Customer View
 Route::middleware(['auth', 'verified', 'usertype:user'])->group(function () {
     Route::get('/customer/dashboard', [CustomerController::class, 'dashboard'])->name('customer.dashboard');
     Route::get('/customer/quotations', [QuotationController::class, 'customerQuotations'])->name('customer.quotations');
     Route::get('/customer/invoices', [InvoicesController::class, 'customerInvoices'])->name('customer.invoices');
-
 });
 
 // Authentication routes
