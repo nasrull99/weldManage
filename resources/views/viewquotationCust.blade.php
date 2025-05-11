@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('title', 'Quotation Receipt for Customer')
-
 @section('content')
+
 <style>
     body {
         font-family: Arial, sans-serif;

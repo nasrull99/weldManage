@@ -124,7 +124,7 @@
             
             <div class="ms-auto">
                 <a href="{{ route('showQuotation') }}" class="btn btn-success"><i class="fa-solid fa-plus fa-flip-vertical"></i></a>
-                </div>
+            </div>
         </div>
 
         <div class="card-body">

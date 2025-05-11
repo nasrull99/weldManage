@@ -34,7 +34,7 @@
             </a>
 
             {{-- Sales Report --}}
-            <a class="nav-link" href="{{ url('salesreport') }}">
+            <a class="nav-link" href="{{ route('index.sales') }}">
                 <div class="sb-nav-link-icon"><i class="fa-solid fa-file"></i></div>
                 Sales Report
                 {{-- <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div> --}}

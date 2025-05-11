@@ -5,6 +5,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\InvoicesController;
+use App\Http\Controllers\SalesController;
 use App\Models\User;
 
 use Illuminate\Support\Facades\Route;
@@ -14,13 +15,11 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
-//Admin Dashboard
-Route::get('dashboard', [CustomerController::class, 'index'])
-    ->middleware(['auth', 'verified', 'usertype:admin'])
-    ->name('dashboard');
-
 // Grouped routes protected by 'auth' middleware
-Route::middleware(['auth','verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'usertype:admin'])->group(function () {
+
+    //Admin Dashboard
+    Route::get('dashboard', [SalesController::class, 'index'])->name('dashboard');  
 
     //Customer Admin view 
     Route::get('/customer', function () {
@@ -67,16 +66,11 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::put('/invoices/{id}', [InvoicesController::class, 'update'])->name('updateInvoice');
     Route::delete('/invoice/{invoice}/material/{material}', [InvoicesController::class, 'removeMaterial'])->name('invoice.removeMaterial');    
     Route::get('/invoice/{id}', [InvoicesController::class, 'generatePDF'])->name('pdfInvoice');
-    
-
 
     // Sales Report Routes
-    Route::get('/salesreport', function () {
-        return view('salesreport');
-        })->name('salesreportView');
-    Route::get('/sales-report', function () {
-        return view('salesreportPage');
-    });
+    Route::get('/sales-report', [SalesController::class, 'view'])->name('index.sales');
+    Route::get('/sales-report/show', [SalesController::class, 'showSales'])->name('salesreport');
+    Route::get('/sales-report/download', [SalesController::class, 'downloadSalesReport'])->name('salesreport.download');
 
     // Profile Routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -85,7 +79,6 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::get('/user-list', [ProfileController::class, 'userList'])->name('userList');
     Route::get('/add-user', [ProfileController::class, 'adduser'])->name('adduser');
     Route::delete('/users/{id}', [ProfileController::class, 'destroyUser'])->name('users.destroy');
-
 });
 
 // Customer View

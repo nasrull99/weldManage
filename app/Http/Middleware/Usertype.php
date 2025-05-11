@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 
-
 class Usertype
 {
     /**
@@ -17,35 +16,26 @@ class Usertype
      */
     public function handle(Request $request, Closure $next, $usertype): Response
     {
-        if(!Auth::check())
-        {
-            return redirect()->route('login');
+        if (!Auth::check()) {
+            return redirect()->route('login'); // Ensure the user is logged in
         }
 
         $authUserType = Auth::user()->usertype;
 
-        switch($usertype)
-        {
-            case 'admin':
-                if($authUserType == 'admin'){
-                    return $next($request);
-                }
-                break;
-            case 'user':
-                if($authUserType == 'user'){
-                    return $next($request);
-                }
-                break;
-        }
-        
-        switch($authUserType)
-        {
-            case 'admin':
-                return redirect()->route('dashboard');
-            case 'user':
-                return redirect()->route('customer.dashboard');
+        // Check if the user has the correct role
+        if ($authUserType == $usertype) {
+            return $next($request); // Continue with the request if the user type is correct
         }
 
-        return redirect()->route('login');
+        // Redirect based on user type
+        if ($authUserType == 'admin') {
+            return redirect()->route('dashboard'); // Redirect admin to the admin dashboard
+        }
+
+        if ($authUserType == 'user') {
+            return redirect()->route('customer.dashboard'); // Redirect user to the customer dashboard
+        }
+
+        return redirect()->route('login'); // Redirect to login if the user is not authenticated or invalid
     }
 }

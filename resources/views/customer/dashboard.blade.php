@@ -16,12 +16,13 @@
 
     .header-container {
         display: flex;
-        align-items: center;
         justify-content: space-between;
+        align-items: center;
         padding: 1rem 2rem;
         background-color: #007bff;
         color: white;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
     }
 
     .header-title {
@@ -38,50 +39,65 @@
     .main-content {
         display: flex;
         justify-content: center;
-        align-items: center;
-        padding: 2rem;
-        height: calc(100vh - 120px); /* Adjust for header height */
+        padding: 3rem;
     }
 
     .card {
         background-color: #ffffff;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         width: 100%;
-        max-width: 600px;
+        max-width: 650px;
         padding: 2rem;
+        margin: 20px;
     }
 
     .card-header {
-        font-size: 1.5rem;
+        font-size: 1.75rem;
         font-weight: bold;
         color: #007bff;
         margin-bottom: 1rem;
         text-align: center;
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 1rem;
     }
 
-    .card-body p {
-        font-size: 1rem;
-        line-height: 1.6;
-        margin-bottom: 1rem;
+    .card-body ul {
+        list-style-type: none;
+        padding: 0;
     }
 
-    .card-body p strong {
+    .card-body li {
+        margin: 10px 0;
+        font-weight: 500;
+    }
+
+    .card-body li strong {
         color: #007bff;
     }
 
-    .btn {
-        display: inline-block;
-        padding: 10px 20px;
-        color: white;
-        border-radius: 4px;
-        text-decoration: none;
-        text-align: center;
-        transition: background-color 0.3s ease;
+
+    .alert {
+        font-size: 1rem;
+        padding: 1rem;
+        margin-top: 10px;
+        border-radius: 8px;
     }
 
     .alert svg {
-        margin-right: 10px; /* Adjust this value to increase/decrease the gap */
+        margin-right: 10px;
+    }
+
+    /* Responsive design for smaller screens */
+    @media (max-width: 768px) {
+        .header-container {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .logo {
+            margin-top: 10px;
+        }
     }
     
 </style>
@@ -112,9 +128,10 @@
             {{ session('success') }}
         </div>
     </div>
+
     @endif
 
-    <div class="main-content">
+     <div class="main-content">
         <div class="card">
             <div class="card-header">
                 <h2>Customer Information</h2>

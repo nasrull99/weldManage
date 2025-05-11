@@ -16,25 +16,6 @@ use Pdf;
 
 class CustomerController extends Controller
 {
-
-    public function index()
-    {
-        $customerCount = Customer::count();
-        $materialCount = Material::count();
-        $quotationCount = Quotation::count();
-        $invoiceCount = Invoice::count();
-        $newCustomers = Customer::orderBy('created_at', 'desc')->take(5)->get();
-
-        // $monthlyIncome = DB::table('totalsales')
-        // ->select(DB::raw('MONTH(created_at) as month'), DB::raw('SUM(total_price) as total'))
-        // ->groupBy(DB::raw('MONTH(created_at)'))
-        // ->orderBy('month', 'asc')
-        // ->get();
-
-        return view('dashboard', compact('customerCount', 'newCustomers', 'materialCount', 'quotationCount', 'invoiceCount'));
-    }
-
-
     public function pdfcustomer()
     {
         // Fetch customer data from the database (adjust according to your model)

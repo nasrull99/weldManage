@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('customer.layout.admin')
 @section('title', 'Invoice Receipt for Customer')
 
 @section('content')

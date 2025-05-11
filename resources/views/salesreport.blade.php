@@ -100,7 +100,7 @@
                 <div class="card-body">
                     <h1 class="card-title">Select Date Range</h1>
                     <div class="form-container">
-                        <form action="{{ url('/sales-report') }}">
+                        <form action="{{ url('/sales-report/show') }}">
                             @csrf
                             <div class="form-group">
                                 <label for="start_date">Start Date:</label>
