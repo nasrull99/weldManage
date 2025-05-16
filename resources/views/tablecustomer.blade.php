@@ -203,14 +203,14 @@
                         </td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Actions">
-                                <a href="{{ route('editcustomer', $customer->id) }}" class="btn btn-warning btn-sm">
+                                <a href="{{ route('customer.tracker', $customer->id) }}" class="btn btn-success btn-sm" title="Job Tracker">
+                                    <i class="fas fa-clipboard-list"></i>
+                                </a>
+                                <a href="{{ route('editcustomer', $customer->id) }}" class="btn btn-warning btn-sm" title="Edit">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <a href="{{ route('customer.tracker', $customer->id) }}" class="btn btn-success btn-sm">
-                                    <i class="fas fa-location"></i>
-                                </a>
                                 <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal{{ $customer->id }}">
+                                    data-bs-target="#deleteModal{{ $customer->id }}" title="Delete">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </div>
