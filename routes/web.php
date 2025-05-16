@@ -31,6 +31,10 @@ Route::middleware(['auth', 'verified', 'usertype:admin'])->group(function () {
     Route::post('/editsavedcustomer/{id}', [CustomerController::class, 'editsaved'])->name('editsavedcust');
     Route::delete('/destroycustomer/{id}', [CustomerController::class, 'destroy'])->name('deletecustomer');
     Route::get('pdf-customer', [CustomerController::class, 'pdfcustomer'])->name('pdfcustomer');
+    Route::get('customertracker/{id}', [CustomerController::class, 'tracker'])->name('customer.tracker');
+    Route::post('/tracker-edit{id}', [CustomerController::class, 'trackeredit'])->name('tracker.edit');
+    Route::delete('/customer-tracker/{customer}/{index}', [CustomerController::class, 'deleteTrackerEntry'])->name('tracker.delete');
+
     
     // Material Routes
     Route::get('/addmaterial', function () {

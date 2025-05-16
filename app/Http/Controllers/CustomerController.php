@@ -132,4 +132,69 @@ class CustomerController extends Controller
 
         return view('customer.dashboard', compact('customer'));
     }
+
+    public function tracker($id)
+    {
+        // Fetch customer details based on user_id
+        $customer = Customer::find($id);
+
+        return view('customer-tracker', compact('customer'));
+    }
+
+    public function trackeredit(Request $request, string $id)
+    {
+        $customer = Customer::find($id);
+
+        $data = $request->validate([
+            'date' => 'required|date',
+            'time' => 'required|date_format:H:i',
+            'description' => 'nullable|string|max:255',
+            'image' => 'required|mimes:jpeg,png,jpg,gif,mp4,avi,mov,wmv|max:51200',   
+        ]);
+
+        // Prepare new entry
+        $newEntry = [
+            'datetime' => $request->filled('date') && $request->filled('time')
+                ? $request->date . ' ' . $request->time
+                : ($request->filled('date') ? $request->date : null),
+            'description' => $request->description,
+            'image' => null,
+        ];
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $newEntry['image'] = $request->file('image')->store('customer_images', 'public');
+        }
+
+        // Get existing history or initialize
+        $history = $customer->description ? json_decode($customer->description, true) : [];
+
+        // Only add if at least one field is filled
+        if ($newEntry['datetime'] || $newEntry['description'] || $newEntry['image']) {
+            $history[] = $newEntry;
+        }
+
+        // Save as JSON
+        $customer->description = json_encode($history);
+
+        $customer->save();
+
+        return redirect()->back()->with('success', 'successfully.');
+    }
+
+    public function deleteTrackerEntry($customerId, $index)
+    {
+        $customer = Customer::findOrFail($customerId);
+        $history = $customer->description ? json_decode($customer->description, true) : [];
+        if (is_array($history) && isset($history[$index])) {
+            // Optionally: delete the image file from storage
+            if (!empty($history[$index]['image'])) {
+                \Storage::disk('public')->delete($history[$index]['image']);
+            }
+            array_splice($history, $index, 1);
+            $customer->description = json_encode($history);
+            $customer->save();
+        }
+        return redirect()->back()->with('success', 'Tracker entry deleted successfully.');
+    }
 }

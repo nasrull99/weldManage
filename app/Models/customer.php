@@ -17,6 +17,9 @@ class Customer extends Model
         'location',
         'status',
         'user_id',
+        'datetime',
+        'description',
+        'image',
     ];
 
     // Define the relationship with quotations
