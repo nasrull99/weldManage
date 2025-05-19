@@ -56,13 +56,18 @@
         box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
 
+   .tracker-delete-btn {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        margin: 0;
+        z-index: 2;
+    }
+
     @media (max-width: 768px) {
-        .tracker-content {
-            flex-direction: column;
-            align-items: flex-start !important;
-        }
-        .tracker-content img {
-            margin-top: 10px;
+        .tracker-delete-btn {
+            top: 8px;
+            right: 8px;
         }
     }
 </style>
@@ -153,30 +158,31 @@
                         <div class="tracker-wrapper">
                             @foreach($history as $index => $entry)
                                 <div class="tracker-item mb-4">
-                                    <div class="tracker-content d-flex justify-content-between align-items-start">
+                                    <div class="tracker-content" style="position: relative;">
                                         <div>
                                             <div><strong>Date & Time:</strong> {{ $entry['datetime'] ?? '-' }}</div>
                                             <div><strong>Description:</strong> {{ $entry['description'] ?? '-' }}</div>
                                             <div class="mt-2">
                                                 @if(!empty($entry['image']))
-                                                    @php
-                                                        $ext = pathinfo($entry['image'], PATHINFO_EXTENSION);
-                                                        $isVideo = in_array(strtolower($ext), ['mp4','avi','mov','wmv']);
-                                                    @endphp
-                                                    @if($isVideo)
-                                                        <video controls style="border-radius:8px; max-width:100%; height:auto;">
-                                                            <source src="{{ asset('storage/' . $entry['image']) }}" type="video/{{ $ext }}">
-                                                            Your browser does not support the video tag.
-                                                        </video>
-                                                    @else
-                                                        <img src="{{ asset('storage/' . $entry['image']) }}" alt="Image" style="border-radius: 8px; max-width: 100%;">
-                                                    @endif
+                                                  @php
+                                                    $ext = strtolower(pathinfo($entry['image'], PATHINFO_EXTENSION));
+                                                    $isVideo = in_array($ext, ['mp4','avi','mov','wmv']);
+                                                    $mime = $ext === 'mp4' ? 'video/mp4' : ($ext === 'mov' ? 'video/quicktime' : 'video/' . $ext);
+                                                @endphp
+                                                @if($isVideo)
+                                                    <video controls style="border-radius:8px; max-width:100%; height:auto;">
+                                                        <source src="{{ asset('storage/' . $entry['image']) }}" type="{{ $mime }}">
+                                                        Your browser does not support the video tag or this video format. Please use MP4 for best compatibility.
+                                                    </video>
+                                                @else
+                                                    <img src="{{ asset('storage/' . $entry['image']) }}" alt="Image" style="border-radius: 8px; max-width: 100%;">
+                                                @endif
                                                 @else
                                                     <span class="text-muted">No image/video</span>
                                                 @endif
                                             </div>
                                         </div>
-                                        <form action="{{ route('tracker.delete', [$customer->id, $index]) }}" method="POST" class="ms-2">
+                                        <form action="{{ route('tracker.delete', [$customer->id, $index]) }}" method="POST" class="tracker-delete-btn">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete">

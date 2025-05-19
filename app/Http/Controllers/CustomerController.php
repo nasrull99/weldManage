@@ -161,9 +161,29 @@ class CustomerController extends Controller
             'image' => null,
         ];
 
-        // Handle image upload
         if ($request->hasFile('image')) {
-            $newEntry['image'] = $request->file('image')->store('customer_images', 'public');
+            $file = $request->file('image');
+            $path = $file->store('customer_images', 'public');
+            $ext = strtolower($file->getClientOriginalExtension());
+
+            // Only convert if it's a video file
+            $videoExts = ['mp4', 'avi', 'mov', 'wmv'];
+            if (in_array($ext, $videoExts) && $ext !== 'mp4') {
+                $inputPath = storage_path('app/public/' . $path);
+                $outputFileName = pathinfo($file->hashName(), PATHINFO_FILENAME) . '.mp4';
+                $outputPath = storage_path('app/public/customer_images/' . $outputFileName);
+
+                // Convert to mp4 (H.264 video, AAC audio)
+                exec("ffmpeg -y -i \"$inputPath\" -vcodec libx264 -acodec aac \"$outputPath\"");
+
+                // If conversion succeeded, use new path and delete original
+                if (file_exists($outputPath)) {
+                    \Storage::disk('public')->delete($path);
+                    $path = 'customer_images/' . $outputFileName;
+                }
+            }
+
+            $newEntry['image'] = $path;
         }
 
         // Get existing history or initialize
@@ -196,5 +216,32 @@ class CustomerController extends Controller
             $customer->save();
         }
         return redirect()->back()->with('success', 'Tracker entry deleted successfully.');
+    }
+
+    public function showChangePasswordForm()
+    {
+        return view('customer.change-password');
+    }
+
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $user = auth()->user();
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors(['current_password' => 'Current password is incorrect.']);
+        }
+
+        if ($request->filled('new_password')) {
+            $user->password = Hash::make($request->new_password);
+        }  
+
+        $user->save();
+
+        return back()->with('success', 'Password changed successfully.');
     }
 }

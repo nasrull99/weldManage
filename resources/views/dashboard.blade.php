@@ -126,6 +126,43 @@
             padding: 0.5rem;
         }
     }
+
+    .card-hover {
+        transition: all 0.2s;
+        cursor: pointer;
+    }
+    .card-hover.bg-warning:hover {
+        box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+        transform: translateY(-5px) scale(1.03);
+        transition: all 0.2s;
+        cursor: pointer;
+        background-color: #ffbf00 !important;
+        color: #343a40 !important;
+    }
+    .card-hover.bg-success:hover {
+        box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+        transform: translateY(-5px) scale(1.03);
+        transition: all 0.2s;
+        cursor: pointer;
+        background-color: #00ff84 !important;
+        color: #343a40 !important;
+    }
+    .card-hover.bg-danger:hover {
+        box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+        transform: translateY(-5px) scale(1.03);
+        transition: all 0.2s;
+        cursor: pointer;
+        background-color: #ff1500 !important;
+        color: #343a40 !important;
+    }
+    .card-hover.bg-primary:hover {
+        box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+        transform: translateY(-5px) scale(1.03);
+        transition: all 0.2s;
+        cursor: pointer;
+        background-color: #0062ff !important;
+        color: #343a40 !important;
+    }
 </style>
 
 <body>
@@ -138,7 +175,7 @@
         <div class="row">
             <!-- Customer Card -->
             <div class="col-xl-3 col-md-6">
-                <div class="card bg-warning text-white">
+                <div class="card bg-warning text-white card-hover" onclick="window.location='{{ route('showname') }}'">
                     <div class="card-body">
                         <h5 class="card-title d-flex justify-content-between align-items-center">
                             <i class="fas fa-users me-1"></i>
@@ -152,7 +189,7 @@
 
             <!-- Materials Card -->
             <div class="col-xl-3 col-md-6">
-                <div class="card bg-success text-white">
+                <div class="card bg-success text-white card-hover">
                     <div class="card-body">
                         <h5 class="card-title d-flex justify-content-between align-items-center">
                             <i class="fa-solid fa-wrench"></i>
@@ -166,7 +203,7 @@
 
             <!-- Quotation Card -->
             <div class="col-xl-3 col-md-6">
-                <div class="card bg-danger text-white">
+                <div class="card bg-danger text-white card-hover">
                     <div class="card-body">
                         <h5 class="card-title d-flex justify-content-between align-items-center">
                             <i class="fa-solid fa-file-invoice-dollar"></i>
@@ -180,7 +217,7 @@
 
             <!-- Invoices Card -->
             <div class="col-xl-3 col-md-6">
-                <div class="card bg-primary text-white">
+                <div class="card bg-primary text-white card-hover">
                     <div class="card-body">
                         <h5 class="card-title d-flex justify-content-between align-items-center">
                             <i class="fa-solid fa-dollar-sign"></i>
@@ -193,35 +230,83 @@
             </div>
         </div>
 
-        <div class="col-xl-6 mb-4">
-            <div class="card">
-                <div class="card-header">
-                    <i class="fas fa-users me-1"></i>
-                    Recent Customers
-                </div>
-                <div class="card-body">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Name</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($newCustomers as $customer)
+       <div class="row mb-4">
+            <!-- Stats Cards (Left) -->
+            <div class="col-lg-3 mb-4 d-flex">
+                <div class="card w-100 h-100 shadow border-0">
+                    <div class="card-header bg-gradient-primary text-white d-flex align-items-center" style="font-size:1.15rem;">
+                        <i class="fas fa-chart-bar me-2"></i> Stats Summary
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table table-borderless mb-0 text-center align-middle">
+                            <tbody>
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $customer->name }}</td>
-                                    <td>{{ $customer->status}}</td>
+                                    <th class="text-success d-flex align-items-center justify-content-center gap-2" style="font-weight:600; font-size:1.08rem;">
+                                        <i class="fas fa-coins fa-lg"></i> Total Sales
+                                    </th>
+                                    <td class="fw-bold" style="font-size:1.1rem;">RM {{ number_format($totalSales, 2) }}</td>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                                <tr>
+                                    <th class="text-info d-flex align-items-center justify-content-center gap-2" style="font-weight:600; font-size:1.08rem;">
+                                        <i class="fas fa-shopping-cart fa-lg"></i> Total Orders
+                                    </th>
+                                    <td class="fw-bold" style="font-size:1.1rem;">{{ $totalOrders }} Orders</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-warning d-flex align-items-center justify-content-center gap-2" style="font-weight:600; font-size:1.08rem;">
+                                        <i class="fas fa-trophy fa-lg"></i> Highest Sale
+                                    </th>
+                                    <td class="fw-bold" style="font-size:1.1rem;">RM {{ number_format($highestSale, 2) }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Customers (Right) -->
+            <div class="col-lg-9 mb-4 d-flex">
+                <div class="card w-100 h-100">
+                    <div class="card-header">
+                        <i class="fas fa-users me-1"></i>
+                        Recent Customers
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped align-middle table-bordered shadow-sm" style="border-radius: 12px; overflow: hidden; background: #fff;">
+                            <thead class="table-primary">
+                                <tr style="font-size: 1.1rem;">
+                                    <th style="width: 60px;">#</th>
+                                    <th>Name</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($newCustomers as $customer)
+                                    <tr style="font-size: 1.05rem;">
+                                        <td class="fw-bold">{{ $loop->iteration }}</td>
+                                        <td class="text-capitalize">{{ $customer->name }}</td>
+                                        <td>
+                                            @php
+                                                $status = strtolower($customer->status);
+                                                $badgeClass = match($status) {
+                                                    'pending' => 'text-danger',
+                                                    'in_progress' => 'text-primary',
+                                                    'completed' => 'text-success',
+                                                    default => 'text-secondary',
+                                                };
+                                                $statusLabel = ucfirst(str_replace('_', ' ', $customer->status));
+                                            @endphp
+                                            <span class="badge {{ $badgeClass }} px-3 py-2 shadow-sm" style="font-size: 1rem; letter-spacing: 1px; border-radius: 8px;">{{ $statusLabel }}</span>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-
+        
         <!-- Monthly Income Chart -->
         <div class="col-xl-12 mb-4">
             <div class="card">

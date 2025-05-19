@@ -183,13 +183,14 @@
                                         <div><strong>Description:</strong> {{ $entry['description'] ?? '-' }}</div>
                                         <div class="mt-2">
                                             @if(!empty($entry['image']))
-                                                @php
-                                                    $ext = pathinfo($entry['image'], PATHINFO_EXTENSION);
-                                                    $isVideo = in_array(strtolower($ext), ['mp4','avi','mov','wmv']);
+                                               @php
+                                                    $ext = strtolower(pathinfo($entry['image'], PATHINFO_EXTENSION));
+                                                    $isVideo = in_array($ext, ['mp4','avi','mov','wmv']);
+                                                    $mime = $ext === 'mp4' ? 'video/mp4' : ($ext === 'mov' ? 'video/quicktime' : 'video/' . $ext);
                                                 @endphp
                                                 @if($isVideo)
                                                     <video controls style="border-radius:8px; max-width:100%; height:auto;">
-                                                        <source src="{{ asset('storage/' . $entry['image']) }}" type="video/{{ $ext }}">
+                                                        <source src="{{ asset('storage/' . $entry['image']) }}" type="{{ $mime }}">
                                                         Your browser does not support the video tag.
                                                     </video>
                                                 @else

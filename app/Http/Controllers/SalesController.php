@@ -30,7 +30,20 @@ class SalesController extends Controller
             ->take(12)
             ->get();
 
-        return view('dashboard', compact('customerCount', 'newCustomers', 'materialCount', 'quotationCount', 'invoiceCount', 'monthlyIncome'));
+        $totalSales = Invoice::sum('subtotal');
+        $totalOrders = Invoice::count();
+        $highestSale = Invoice::max('subtotal');
+
+        return view('dashboard', compact(
+            'customerCount', 
+            'newCustomers', 
+            'materialCount', 
+            'quotationCount', 
+            'invoiceCount', 
+            'monthlyIncome', 
+            'totalSales', 
+            'totalOrders', 
+            'highestSale'));
     }
 
     public function view()

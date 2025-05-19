@@ -25,6 +25,7 @@ Route::middleware(['auth', 'verified', 'usertype:admin'])->group(function () {
     Route::get('/customer', function () {
         return view('customer');
         })->name('customer');
+
     Route::post('/tablecustomer', [CustomerController::class, 'store'])->name('storecustomer');
     Route::get('/tablecustomer', [CustomerController::class, 'show'])->name('showname');
     Route::get('/edit-customer/{id}', [CustomerController::class, 'editview'])->name('editcustomer');
@@ -90,6 +91,8 @@ Route::middleware(['auth', 'verified', 'usertype:user'])->group(function () {
     Route::get('/customer/dashboard', [CustomerController::class, 'dashboard'])->name('customer.dashboard');
     Route::get('/customer/quotations', [QuotationController::class, 'customerQuotations'])->name('customer.quotations');
     Route::get('/customer/invoices', [InvoicesController::class, 'customerInvoices'])->name('customer.invoices');
+    Route::get('/customer/change-password', [CustomerController::class, 'showChangePasswordForm'])->name('customer.changePasswordForm');
+    Route::post('/customer/change-password', [CustomerController::class, 'changePassword'])->name('customer.changePassword');
 });
 
 // Authentication routes

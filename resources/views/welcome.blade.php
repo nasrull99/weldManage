@@ -70,6 +70,33 @@
             text-align: center;
             /* Center align the title */
         }
+
+         @media (max-width: 768px) {
+            .title {
+                font-size: 12vw;
+            }
+            .content {
+                padding: 1.5rem 0.5rem;
+            }
+            .top-right {
+                font-size: 0.95rem;
+                top: 10px;
+                right: 5px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title {
+                font-size: 2.2rem;
+            }
+            .content {
+                padding: 1rem 0.2rem;
+            }
+            .links > a {
+                font-size: 0.9rem;
+                padding: 0 5px;
+            }
+        }
     </style>
 </head>
 
@@ -83,7 +110,6 @@
         @elseif (Route::has('login') && !Auth::check())
         <div class="top-right links">
             <a href="{{ url('/login') }}">Login</a>
-            <a href="{{ url('/register') }}">Register</a>
         </div>
         @endif
 

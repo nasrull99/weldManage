@@ -16,6 +16,7 @@
 
     .receipt-container {
         width: 90%;
+        max-width: 900px;
         margin: 0 auto;
         padding: 20px;
         background-color: #fff;
@@ -40,6 +41,25 @@
         margin-top: 5px;
     }
 
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+        margin-bottom: 1rem;
+        border-radius: 5px;
+    }
+
+    .table {
+        width: 100%;
+        min-width: 600px;
+        background: #fff;
+        border-radius: 5px;
+    }
+
+    .table th, .table td {
+        vertical-align: middle !important;
+        text-align: center;
+    }
+
     .total {
         font-size: 1.2rem;
         font-weight: bold;
@@ -53,6 +73,23 @@
         font-size: 0.9rem;
         color: #666;
     }
+
+    @media (max-width: 600px) {
+        .receipt-container {
+            width: 99%;
+            padding: 8px;
+        }
+        .receipt-header h2 {
+            font-size: 1.2rem;
+        }
+        .table {
+            min-width: 400px;
+            font-size: 0.95rem;
+        }
+        .total {
+            font-size: 1rem;
+        }
+    }
 </style>
 
 <div class="receipt-container">
@@ -64,34 +101,36 @@
     </div>
 
     @if ($quotation)
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Material Name</th>
-                    <th>Unit Price (RM)</th>
-                    <th>Quantity</th>
-                    <th>Amount (RM)</th>
-                </tr>
-            </thead>
-            <tbody>
-                @php
-                    $totalAmount = 0;
-                @endphp
-                @foreach ($quotation->materials as $index => $material)
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
                     <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $material->material }}</td>
-                        <td>{{ number_format($material->price, 2) }}</td>
-                        <td>{{ $material->pivot->quantity }}</td>
-                        <td>{{ number_format($material->price * $material->pivot->quantity, 2) }}</td>
+                        <th>#</th>
+                        <th>Material Name</th>
+                        <th>Unit Price (RM)</th>
+                        <th>Quantity</th>
+                        <th>Amount (RM)</th>
                     </tr>
+                </thead>
+                <tbody>
                     @php
-                        $totalAmount += $material->price * $material->pivot->quantity;
+                        $totalAmount = 0;
                     @endphp
-                @endforeach
-            </tbody>
-        </table>
+                    @foreach ($quotation->materials as $index => $material)
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $material->material }}</td>
+                            <td>{{ number_format($material->price, 2) }}</td>
+                            <td>{{ $material->pivot->quantity }}</td>
+                            <td>{{ number_format($material->price * $material->pivot->quantity, 2) }}</td>
+                        </tr>
+                        @php
+                            $totalAmount += $material->price * $material->pivot->quantity;
+                        @endphp
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
 
         <div class="total">
             <p>Total Amount: RM {{ number_format($totalAmount, 2) }}</p>

@@ -1,15 +1,17 @@
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
 
     <nav class="navbar bg-body-tertiary">
-        <div class="container-fluid">
+        <div class="container-fluid align-items-center d-flex">
             <a class="navbar-brand text-white" href="{{ route('dashboard') }}">
-            <img src="{{ url('images/logoAMD-no-bg-white.png') }}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top rounded">
+                <img src="{{ url('images/logoAMD-no-bg-white.png') }}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top rounded">
                 AMD SYNERGY
             </a>
+            <!-- Sidebar Toggle Button right after logo -->
+            <button class="btn btn-link btn-sm" id="sidebarToggle" href="#!">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
     </nav>
-    <!-- Sidebar Toggle-->
-    <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
     
     <!-- Navbar Search-->
     <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
@@ -28,6 +30,8 @@
                 <li><hr class="dropdown-divider" /></li>
                 <li><a class="dropdown-item" href="{{ route('userList') }}">{{ __('User') }}</a></li>
                 <li><hr class="dropdown-divider" /></li>
+                {{-- <li><a class="dropdown-item" href="{{ route('register') }}">{{ __('Register') }}</a></li>                
+                <li><hr class="dropdown-divider" /></li> --}}
                 <li>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf

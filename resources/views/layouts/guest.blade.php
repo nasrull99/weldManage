@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>@yield('title', config('app.name', 'Laravel'))</title>
+        <title>@yield('title', config('app.name', 'AMD Management System'))</title>
 
         <style>
         body {
@@ -48,7 +48,6 @@
         <div class="top-right links">
             <a href="{{ route('welcome') }}" ><i class="fa-solid fa-house"></i>Home</a>
             <a href="{{ url('/login') }}">Login</a>
-            <a href="{{ url('/register') }}">Register</a>
         </div>
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 ">
             <div>
