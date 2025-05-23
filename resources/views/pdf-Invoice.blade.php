@@ -129,7 +129,7 @@
     </div>
     <div class="receipt-header">
         <h2>Invoice Receipt</h2>
-        <p><strong>Bill To:</strong> {{ $customer->name }}</p>
+        <p><strong>Bill To:</strong> {{ $customer->username }}</p>
         <p><strong>Invoice ID:</strong> {{ $invoice->id }}</p>
         <p><strong>Date:</strong> {{ $invoice->created_at->format('d/m/Y') }}</p>
     </div>

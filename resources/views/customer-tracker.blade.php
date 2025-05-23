@@ -1,12 +1,20 @@
 @extends('layouts.admin')
-@section('title', 'Customer Tracker')
+@section('title', 'Customer Progress')
 @section('content')
 
 <style>
+     header {
+        background-color: #212529;
+        padding: 1rem;
+        margin: 1rem;
+        text-align: center;
+        border-radius: 10px;
+    }
+
     .header-title {
-        font-size: 2rem;
+        font-size: 1.5rem;
         font-weight: bold;
-        color: #fff;
+        color: #ffffff;
         text-align: center;
     }
 
@@ -73,7 +81,7 @@
 </style>
 
 <body>
-    <header class="bg-primary py-3 text-center rounded mb-4 mx-3">
+    <header>
         <h2 class="header-title">CUSTOMER MANAGEMENT</h2>
     </header>
 
@@ -112,7 +120,7 @@
                 <div class="card card-custom p-4">
                     <h4 class="text-primary fw-bold mb-3 text-center">Customer Information</h4>
                     <ul class="list-unstyled">
-                        <li><strong>Name:</strong> {{ $customer->name }}</li>
+                        <li><strong>Name:</strong> {{ $customer->username }}</li>
                         <li><strong>Phone:</strong> {{ $customer->phone }}</li>
                         <li><strong>Location:</strong> {{ $customer->location }}</li>
                         <li><strong>Status:</strong> {{ $customer->status }}</li>
@@ -148,7 +156,7 @@
             {{-- Right Side - Timeline Tracker --}}
             <div class="col-md-7">
                 <div class="card card-custom p-4">
-                    <h5 class="fw-bold text-primary mb-3">Job Tracker History</h5>
+                    <h5 class="fw-bold text-primary mb-3">Job Progress History</h5>
                     @php
                         $history = $customer->description ? json_decode($customer->description, true) : [];
                         if (!is_array($history)) $history = [];

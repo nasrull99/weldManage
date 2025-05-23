@@ -13,7 +13,7 @@
     }
 
     header {
-        background-color: #007bff;
+        background-color: #212529;
         padding: 1rem;
         margin: 1rem;
         text-align: center;
@@ -86,7 +86,7 @@
     <header>
         <h2 class="header-title">CUSTOMER MANAGEMENT</h2>
     </header>
-
+    
     <!-- Main Content -->
     <div class="main-content">
         <div class="container">
@@ -103,11 +103,16 @@
                             <input type="hidden" name="user_id" value="{{ Auth::id() }}"> <!-- Hidden User ID Field -->
 
                             <div class="form-group">
-                                <label for="name">Name:</label>
-                                <input type="text" id="name" name="name" placeholder="Enter customer name" required>
-                                @error('name')
+                                <label for="username">Username:</label>
+                                <input type="text" id="username" name="username" placeholder="Enter customer username" required>
+                                @error('username')
                                 <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="name">Name:</label>
+                                <input type="text" id="name" name="name" placeholder="Enter customer name"
+                                    required>
                             </div>
                             <div class="form-group">
                                 <label for="phone">Phone Number:</label>
@@ -115,8 +120,12 @@
                                     required>
                             </div>
                             <div class="form-group">
-                                <label for="location">Location:</label>
-                                <input type="text" id="location" name="location" placeholder="Enter Location" required>
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" name="email" placeholder="Enter customer email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="location">Address:</label>
+                                <input type="text" id="location" name="location" placeholder="Enter customer Adress" required>
                             </div>
                             <div class="form-group">
                                 <label for="status" class="form-label">Status</label>

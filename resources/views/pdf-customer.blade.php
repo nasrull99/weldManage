@@ -68,7 +68,7 @@
             @forelse ($customers as $customer)
             <tr>
                 <td>{{ $loop->iteration }}</td>
-                <td>{{ $customer->name }}</td>
+                <td>{{ $customer->username }}</td>
                 <td>{{ $customer->phone }}</td>
                 <td>{{ $customer->location }}</td>
                 <td>{{ $customer->status }}</td>

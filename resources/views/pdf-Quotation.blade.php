@@ -129,7 +129,7 @@
     </div>
     <div class="receipt-header">
         <h2>Quotation Receipt</h2>
-        <p>Name: {{ $customer->name }}</p>
+        <p>Name: {{ $customer->username }}</p>
         <p>Quotation ID: {{ $quotation->id }}</p>
         <p>Date: {{ $quotation->created_at->format('d/m/Y') }}</p>
     </div>

@@ -9,14 +9,10 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
-        Schema::create('custdetail', function (Blueprint $table) {
-            $table->id();
-            $table->string('username');
-            $table->string('phone');
-            $table->string('location');
-            $table->timestamps();
+        Schema::table('custdetail', function (Illuminate\Database\Schema\Blueprint $table) {
+            $table->string('name')->after('username');
         });
     }
 
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('custdetail');
+        Schema::table('custdetail', function (Illuminate\Database\Schema\Blueprint $table) {
+            $table->dropColumn('name');
+        });
     }
 };

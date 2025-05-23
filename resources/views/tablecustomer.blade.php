@@ -13,7 +13,7 @@
     }
 
     header {
-        background-color: #007bff;
+        background-color: #212529;
         padding: 1rem;
         margin: 1rem;
         text-align: center;
@@ -58,7 +58,7 @@
     }
 
     .table th {
-        background-color: #007bff;
+        background-color: #212529;
         color: white;
         font-weight: bold;
     }
@@ -151,9 +151,10 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Name</th>
+                        <th>name</th>
                         <th>Phone Number</th>
-                        <th>Location</th>
+                        <th>Email</th>
+                        <th>Adress</th>
                         <th>Status</th>
                         <th>view</th>
                         <th>Action</th>
@@ -165,6 +166,7 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $customer->name }}</td>
                         <td>{{ $customer->phone }}</td>
+                        <td>{{ $customer->email }}</td>
                         <td>{{ $customer->location }}</td>
                         <td>
                             <span class="status-uppercase 
@@ -203,7 +205,7 @@
                         </td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Actions">
-                                <a href="{{ route('customer.tracker', $customer->id) }}" class="btn btn-success btn-sm" title="Job Tracker">
+                                <a href="{{ route('customer.tracker', $customer->id) }}" class="btn btn-success btn-sm" title="Job Progress">
                                     <i class="fas fa-clipboard-list"></i>
                                 </a>
                                 <a href="{{ route('editcustomer', $customer->id) }}" class="btn btn-warning btn-sm" title="Edit">
@@ -244,7 +246,7 @@
                     </div>
                     @empty
                     <tr>
-                        <td colspan="6" class="text-center">No customers found.</td>
+                        <td colspan="8" class="text-center">No customers found.</td>
                     </tr>
                     @endforelse
                 </tbody>

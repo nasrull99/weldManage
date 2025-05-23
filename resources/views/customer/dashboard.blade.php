@@ -160,6 +160,7 @@
             <div class="card-body">
                 <ul>
                     <li><strong>Name:</strong> {{ $customer->name }}</li>
+                    <li><strong>Email:</strong> {{ $customer->email }}</li>
                     <li><strong>Phone:</strong> {{ $customer->phone }}</li>
                     <li><strong>Location:</strong> {{ $customer->location }}</li>
                     <li><strong>Status:</strong> {{ $customer->status }}</li>
@@ -167,7 +168,7 @@
             </div>
 
             <div class="card card-custom p-4">
-                <h5 class="fw-bold text-primary mb-3">Job Tracker History</h5>
+                <h5 class="fw-bold text-primary mb-3">Job Progress History</h5>
                 @php
                     $history = $customer->description ? json_decode($customer->description, true) : [];
                     if (!is_array($history)) $history = [];

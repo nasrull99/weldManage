@@ -118,7 +118,7 @@
 
     <div class="receipt-header">
         <h2>Invoice Receipt</h2>
-        <p>Name: {{ $customer->name }}</p>
+        <p>Name: {{ $customer->username }}</p>
         <p>Invoice ID: {{ $invoice->id }}</p>
         <p>Date: {{ $invoice->created_at->format('d/m/Y') }}</p>
     </div>

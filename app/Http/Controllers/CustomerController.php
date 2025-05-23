@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
 use App\Models\Customer;
 use App\Models\Material;
 use App\Models\Quotation;
@@ -12,6 +11,8 @@ use App\Models\Invoice;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\CustomerAccountCreated;
 use Pdf;
 
 class CustomerController extends Controller
@@ -48,28 +49,35 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'username' => 'required|max:255',
             'name' => 'required|max:255',
             'phone' => 'required',
+            'email' => 'required|email|max:255|unique:users,email',
             'location' => 'required|max:255',
             'status' => 'required|string|in:pending,in_progress,completed',
         ]);
 
         // **1. Create User Account**
         $user = User::create([
-            'name' => $request->name,
-            'email' => strtolower(str_replace(' ', '', $request->name)) . '@gmail.com', // Generate email
-            'password' => Hash::make('12345678'), // Default password
+            'name' => $request->username,
+            'email' => $request->email,
+            'password' => Hash::make('12345678'),
             'usertype' => 'user',
         ]);
 
         // **2. Create Customer Details & Link with User**
         Customer::create([
+            'username' => $request->username,
             'name' => $request->name,
             'phone' => $request->phone,
+            'email' => $request->email,
             'location' => $request->location,
             'status' => $request->status,
-            'user_id' => $user->id, // Link to created user
+            'user_id' => $user->id,
         ]);
+
+        // 3. Send email notification
+        Mail::to($user->email)->send(new CustomerAccountCreated($user->name, '12345678'));
 
         return redirect()->route('showname')->with('success', 'Customer registered successfully.');
     }
@@ -96,12 +104,31 @@ class CustomerController extends Controller
     public function editsaved(Request $request, string $id)
     {
         $customer = Customer::find($id);
+        if (!$customer) {
+            return redirect()->route('showname')->with('error', 'Customer not found.');
+        }
+
+        // Update customer details
+        $customer->username = $request->username;
         $customer->name = $request->name;
         $customer->phone = $request->phone;
-        $customer->location = $request ->location;
-        $customer->status = $request ->status;
+        $customer->email = $request->email;
+        $customer->location = $request->location;
+        $customer->status = $request->status;
+        \Log::info('Saving customer name', ['name' => $customer->name]);
         $customer->save();
-        return redirect()->route('showname')->with('success', 'Customer Edited successfully');
+
+        // Update linked user email if exists
+        if ($customer->user_id) {
+            $user = \App\Models\User::find($customer->user_id);
+            if ($user) {
+                $user->name = $request->username;
+                $user->email = $request->email;
+                $user->save();
+            }
+        }
+
+        return redirect()->route('showname')->with('success', 'Customer edited successfully');
     }
 
     /**

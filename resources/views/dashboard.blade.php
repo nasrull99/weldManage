@@ -16,29 +16,29 @@
     }
 
     .header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    background-color: #007bff;
-    color: white;
-    border-radius: 8px;
-    flex-wrap: wrap; /* Allow wrapping for smaller screens */
-}
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 2rem;
+        background-color: #212529;
+        color: white;
+        border-radius: 8px;
+        margin: 1rem;
+    }
 
-.header-title {
-    font-size: 2rem;
-    font-weight: bold;
-    margin: 0;
-    flex: 1 1 auto;
-}
+    .header-title {
+        font-size: 2rem;
+        font-weight: bold;
+        margin: 0;
+        flex: 1 1 auto;
+    }
 
-.logo {
-    width: 120px;
-    height: auto;
-    margin-left: 20px;
-    flex: 0 0 auto;
-}
+    .logo {
+        width: 120px;
+        height: auto;
+        margin-left: 20px;
+        flex: 0 0 auto;
+    }
 
     .card-body {
         display: flex;
@@ -65,7 +65,7 @@
     }
 
     .card-header {
-        background-color: #007bff;
+        background-color: #212529;
         color: white;
         font-weight: bold;
     }
@@ -168,7 +168,6 @@
 <body>
     <header class="header-container">
         <h1 class="header-title">Dashboard</h1>
-        <img src="images/logoAMD-no-bg.png" alt="AMD Synergy Logo" class="logo" />
     </header>
 
     <div class="container my-4">
@@ -273,7 +272,7 @@
                     </div>
                     <div class="card-body">
                         <table class="table table-striped align-middle table-bordered shadow-sm" style="border-radius: 12px; overflow: hidden; background: #fff;">
-                            <thead class="table-primary">
+                            <thead class="table-body">
                                 <tr style="font-size: 1.1rem;">
                                     <th style="width: 60px;">#</th>
                                     <th>Name</th>
@@ -284,7 +283,7 @@
                                 @foreach($newCustomers as $customer)
                                     <tr style="font-size: 1.05rem;">
                                         <td class="fw-bold">{{ $loop->iteration }}</td>
-                                        <td class="text-capitalize">{{ $customer->name }}</td>
+                                        <td class="text-capitalize">{{ $customer->username }}</td>
                                         <td>
                                             @php
                                                 $status = strtolower($customer->status);
@@ -296,7 +295,7 @@
                                                 };
                                                 $statusLabel = ucfirst(str_replace('_', ' ', $customer->status));
                                             @endphp
-                                            <span class="badge {{ $badgeClass }} px-3 py-2 shadow-sm" style="font-size: 1rem; letter-spacing: 1px; border-radius: 8px;">{{ $statusLabel }}</span>
+                                            <span class="badge {{ $badgeClass }} px-3 py-2" style="font-size: 1rem; letter-spacing: 1px; border-radius: 8px;">{{ $statusLabel }}</span>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -308,7 +307,7 @@
         </div>
         
         <!-- Monthly Income Chart -->
-        <div class="col-xl-12 mb-4">
+        {{-- <div class="col-xl-12 mb-4">
             <div class="card">
                 <div class="card-header">
                     <strong>Monthly Income</strong>
@@ -317,7 +316,7 @@
                     <canvas id="monthlyIncomeChart" style="max-height: 300px;"></canvas>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <!-- Sales by Month Chart -->
         <div class="col-xl-12 mb-4">
@@ -336,42 +335,43 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-        // Prepare data for Monthly Income chart
-        const monthlyIncomeData = @json($monthlyIncome); // Convert PHP data to JS
+        // // Prepare data for Monthly Income chart
+        // const monthlyIncomeData = @json($monthlyIncome); // Convert PHP data to JS
 
-        // Prepare labels (Months)
-        const months = monthlyIncomeData.map(item => item.month);
+        // // Prepare labels (Months)
+        // const months = monthlyIncomeData.map(item => item.month);
 
-        // Prepare data (Income)
-        const income = monthlyIncomeData.map(item => item.total);
+        // // Prepare data (Income)
+        // const income = monthlyIncomeData.map(item => item.total);
 
-        // Create Monthly Income Bar Chart
-        var ctx = document.getElementById('monthlyIncomeChart').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'bar',  // Use 'bar' for bar chart
-            data: {
-                labels: months, // Months as x-axis
-                datasets: [{
-                    label: 'Monthly Income',
-                    data: income, // Sales data
-                    backgroundColor: 'rgba(0, 123, 255, 0.5)', // Bar color
-                    borderColor: 'rgba(0, 123, 255, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
+        // // Create Monthly Income Bar Chart
+        // var ctx = document.getElementById('monthlyIncomeChart').getContext('2d');
+        // var myChart = new Chart(ctx, {
+        //     type: 'bar',  // Use 'bar' for bar chart
+        //     data: {
+        //         labels: months, // Months as x-axis
+        //         datasets: [{
+        //             label: 'Monthly Income',
+        //             data: income, // Sales data
+        //             backgroundColor: 'rgba(0, 123, 255, 0.5)', // Bar color
+        //             borderColor: 'rgba(0, 123, 255, 1)',
+        //             borderWidth: 1
+        //         }]
+        //     },
+        //     options: {
+        //         scales: {
+        //             y: {
+        //                 beginAtZero: true
+        //             }
+        //         }
+        //     }
+        // });
 
         // Prepare Sales Data for Monthly Sales chart
         const salesData = @json($monthlyIncome); // Reusing the same data structure
 
         // Prepare sales amounts (total sales value)
+        const months = salesData.map(item => item.month);
         const sales = salesData.map(item => item.total);
 
         // Create Monthly Sales Line Chart
@@ -384,14 +384,29 @@
                     label: 'Sales by Month',
                     data: sales,  // Sales data
                     fill: false,
-                    borderColor: 'rgba(0, 123, 255, 1)', // Line color
+                    borderColor: 'rgba(0, 0, 0, 1)', // Line color
                     tension: 0.1
                 }]
             },
             options: {
                 scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Months'
+                        }
+                    },
                     y: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return 'RM ' + value;
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Sales (RM)'
+                        },
                     }
                 }
             }

@@ -11,7 +11,7 @@
     }
 
     header {
-        background-color: #007bff;
+        background-color: #212529;
         padding: 1rem;
         margin: 1rem;
         text-align: center;
@@ -37,7 +37,7 @@
     }
 
     .table th {
-        background-color: #007bff;
+        background-color: #212529;
         color: white;
         font-weight: bold;
     }

@@ -17,7 +17,7 @@
     }
 
     header {
-        background-color: #007bff;
+        background-color: #212529;
         padding: 1rem;
         margin: 1rem;
         text-align: center;
@@ -88,7 +88,7 @@
 
 <body>
     <header>
-        <h2 class="header-title">QUOTATION MANAGEMENT</h2>
+        <h2 class="header-title">MATERIAL MANAGEMENT</h2>
     </header>
 
 <!-- Display success message if material saved -->
@@ -114,7 +114,7 @@
         <div class="container">
             <div class="card">
                 <div class="card-body">
-                    <h1 class="card-title">QUOTATION DETAILS</h1>
+                    <h1 class="card-title">MATERIAL DETAILS</h1>
                     <div class="form-container">
                         <form action="{{ route('editsavedmaterial', $material->id) }}" method="POST">
                             @csrf

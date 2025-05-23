@@ -15,7 +15,7 @@
     }
 
     header {
-        background-color: #007bff;
+        background-color: #212529;
         padding: 1rem;
         margin: 1rem;
         text-align: center;
@@ -155,7 +155,7 @@
                     <select id="customerSelect" name="customer_id" class="form-select" required>
                         <option disabled selected></option>
                         @foreach ($customers as $customer)
-                            <option value="{{ $customer->id }}">{{ $customer->name }}</option>
+                            <option value="{{ $customer->id }}">{{ $customer->username }}</option>
                         @endforeach
                     </select>
                 </div>                

@@ -1,3 +1,4 @@
+-- Active: 1735408713532@@127.0.0.1@3306@weldmanage
 @extends('layouts.admin')
 
 @section('title', 'Customer Management')
@@ -17,7 +18,7 @@
     }
 
     header {
-        background-color: #007bff;
+        background-color: #212529;
         padding: 1rem;
         margin: 1rem;
         text-align: center;
@@ -108,18 +109,28 @@
                         <form action="{{ route('editsavedcust', $customer->id) }}" method="POST">
                             @csrf
                             <div class="form-group">
+                                <label for="username">Username:</label>
+                                <input type="text" id="username" name="username" placeholder="Enter customer username"
+                                    value="{{ $customer->username }}" required>
+                            </div>
+                            <div class="form-group">
                                 <label for="name">Name:</label>
-                                <input type="text" id="name" name="name" placeholder="Enter your name"
+                                <input type="text" id="name" name="name" placeholder="Enter customer full name"
                                     value="{{ $customer->name }}" required>
                             </div>
                             <div class="form-group">
                                 <label for="phone">Phone Number:</label>
-                                <input type="text" id="phone" name="phone" placeholder="Enter your phone number"
+                                <input type="text" id="phone" name="phone" placeholder="Enter customer phone number"
                                     value="{{ $customer->phone }}" required>
                             </div>
                             <div class="form-group">
-                                <label for="location">Location:</label>
-                                <input type="text" id="location" name="location" placeholder="Enter Location"
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" name="email" placeholder="Enter customer email"
+                                    value="{{ $customer->email }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="location">Address:</label>
+                                <input type="text" id="location" name="location" placeholder="Enter customer Address"
                                     value="{{ $customer->location }}" required>
                             </div>
                             <div class="form-group">
