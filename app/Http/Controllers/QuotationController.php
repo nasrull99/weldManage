@@ -45,12 +45,6 @@ class QuotationController extends Controller
             'materials.*.quantity' => 'required|integer|min:1',
         ]);
 
-        //Check if customer already has a quotation
-        $existingQuotation = Quotation::where('customer_id', $request->customer_id)->first();
-        if ($existingQuotation) {
-            return redirect()->back()->with('error', 'This customer already has a quotation.');
-        }
-
         // Decode the materials field from JSON
         $materials = json_decode($request->materials, true);
 
@@ -168,21 +162,17 @@ class QuotationController extends Controller
 
     public function customerQuotations()
     {
-        $user = auth()->user(); // Get logged-in user
-
-        // Find the customer record associated with the logged-in user
+        $user = auth()->user();
         $customer = Customer::where('user_id', $user->id)->firstOrFail();
+        $quotations = Quotation::where('customer_id', $customer->id)->with('customer')->get();
 
-        // Fetch only the latest quotation for this customer
-        $quotation = Quotation::where('customer_id', $customer->id)
-                            ->with('materials')
-                            ->latest()
-                            ->first();
+        return view('customer.tablequotation', compact('customer', 'quotations'));
+    }
 
-        if (!$quotation) {
-            return redirect()->route('customer.dashboard')->with('error', 'No quotation found for this customer');
-        }
-
+    public function custview($customerId, $quotationId)
+    {
+        $customer = Customer::findOrFail($customerId);
+        $quotation = Quotation::where('id', $quotationId)->where('customer_id', $customerId)->with('materials')->firstOrFail();
         return view('customer.quotation', compact('customer', 'quotation'));
     }
 

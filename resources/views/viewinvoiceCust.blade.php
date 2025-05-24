@@ -1,7 +1,3 @@
-@extends('layouts.admin')
-@section('title', 'Invoice Receipt for Customer')
-
-@section('content')
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -178,5 +174,3 @@
         <p>Thank you for choosing us! If you have any questions, feel free to contact us.</p>
     </div>
 </div>
-
-@endsection

@@ -40,13 +40,13 @@ class InvoicesController extends Controller
 
     public function generatePDF($id)
     {
-        // Find the quotation by ID
+        // Find the invoice by ID
         $invoice = Invoice::findOrFail($id);
 
         // Retrieve the associated customer information (assuming you have a relationship set up)
         $customer = $invoice->customer;
 
-        // Load the PDF view, passing both quotation and customer data
+        // Load the PDF view, passing both invoice and customer data
         $pdf = Pdf::loadView('pdf-Invoice', compact('invoice', 'customer'));
 
         // Return the PDF as a download
@@ -66,12 +66,6 @@ class InvoicesController extends Controller
             'subtotal' => 'required|numeric',
             'deposit' => 'required|numeric',
         ]);
-
-        //Check if customer already has a invoice
-        $existingInvoice = Invoice::where('customer_id', $request->customer_id)->first();
-        if ($existingInvoice ) {
-            return redirect()->back()->with('error', 'This customer already has a Invoice.');
-        }
 
         // Decode the materials field from JSON
         $materials = json_decode($request->materials, true);
@@ -250,21 +244,17 @@ class InvoicesController extends Controller
 
     public function customerInvoices()
     {
-        $user = auth()->user(); // Get logged-in user
-
-        // Find the customer record associated with the logged-in user
+        $user = auth()->user();
         $customer = Customer::where('user_id', $user->id)->firstOrFail();
+        $invoices = Invoice::where('customer_id', $customer->id)->with('customer')->get();
 
-        // Fetch only the latest quotation for this customer
-        $invoice = Invoice::where('customer_id', $customer->id)
-                            ->with('materials')
-                            ->latest()
-                            ->first();
+        return view('customer.tableinvoice', compact('customer', 'invoices'));
+    }
 
-        if (!$invoice) {
-            return redirect()->route('customer.dashboard')->with('error', 'No invoice found for this customer');
-        }
-
+    public function custview($customerId, $invoiceId)
+    {
+        $customer = Customer::findOrFail($customerId);
+        $invoice = invoice::where('id', $invoiceId)->where('customer_id', $customerId)->with('materials')->firstOrFail();
         return view('customer.invoice', compact('customer', 'invoice'));
     }
 

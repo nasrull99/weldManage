@@ -90,6 +90,11 @@ Route::middleware(['auth', 'verified', 'usertype:admin'])->group(function () {
 Route::middleware(['auth', 'verified', 'usertype:user'])->group(function () {
     Route::get('/customer/dashboard', [CustomerController::class, 'dashboard'])->name('customer.dashboard');
     Route::get('/customer/quotations', [QuotationController::class, 'customerQuotations'])->name('customer.quotations');
+    Route::get('/customer/quotation/{customerId}/{quotationId}', [QuotationController::class, 'custview'])->name('customer.quotations.view');
+
+    Route::get('/customer/invoices', [InvoicesController::class, 'customerInvoices'])->name('customer.invoices');
+    Route::get('/customer/invoices/{customerId}/{invoiceId}', [InvoicesController::class, 'custview'])->name('customer.invoices.view');
+
     Route::get('/customer/invoices', [InvoicesController::class, 'customerInvoices'])->name('customer.invoices');
     Route::get('/customer/change-password', [CustomerController::class, 'showChangePasswordForm'])->name('customer.changePasswordForm');
     Route::post('/customer/change-password', [CustomerController::class, 'changePassword'])->name('customer.changePassword');

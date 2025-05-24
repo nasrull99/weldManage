@@ -50,10 +50,6 @@
         background-color: #f1f1f1;
     }
 
-    .btn-group button {
-        border-radius: 50%;
-    }
-
     .btn {
         font-size: 1rem;
         padding: 0.5rem 1rem;
@@ -75,7 +71,7 @@
     }
 
     .modal-header {
-        background-color: #007bff;
+        background-color: #212529;
         color: white;
         border-radius: 5px 5px 0 0;
     }
@@ -149,9 +145,10 @@
                         <td>{{ $quotation->created_at->format('d/m/Y') }}</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Actions">
-                                <a href="{{ route('viewForCustomer', ['customerId' => $quotation->customer->id, 'quotationId' => $quotation->id]) }}" class="btn btn-secondary btn-sm">
+                                <button type="button"
+                                    class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#viewQuotationModal" data-url="{{ route('viewForCustomer', ['customerId' => $quotation->customer->id, 'quotationId' => $quotation->id]) }}">
                                     <i class="fa-solid fa-eye"></i>
-                                </a>
+                                </button>
                                 <a href="{{ route('editQuotation', ['id' => $quotation->id]) }}" class="btn btn-warning btn-sm">
                                     <i class="fas fa-edit"></i>
                                 </a>
@@ -165,6 +162,24 @@
                             </div>
                         </td>
                     </tr>
+
+                    <!-- Quotation View Modal -->
+                    <div class="modal fade" id="viewQuotationModal" tabindex="-1" aria-labelledby="viewQuotationModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="viewQuotationModalLabel">Quotation Details</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: invert(1);"></button>
+                                </div>
+                                <div class="modal-body" id="quotationModalBody">
+                                    <div class="text-center py-5">
+                                        <div class="spinner-border text-primary" role="status"></div>
+                                        <div>Loading...</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- Modal for Deletion Confirmation -->
                     <div class="modal fade" id="deleteModal{{ $quotation->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $quotation->id }}" aria-hidden="true">
@@ -188,13 +203,21 @@
                             </div>
                         </div>
                     </div>
-
                     @endforeach
                 </tbody>
             </table>
         </div>
     </div>
-
 </body>
-
+<script>
+$('#viewQuotationModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var url = button.data('url');
+    var modal = $(this);
+    modal.find('#quotationModalBody').html('<div class="text-center py-5"><div class="spinner-border text-primary" role="status"></div><div>Loading...</div></div>');
+    $.get(url, function(data) {
+        modal.find('#quotationModalBody').html(data);
+    });
+});
+</script>
 @endsection

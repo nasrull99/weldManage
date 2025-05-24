@@ -156,7 +156,6 @@
                         <th>Email</th>
                         <th>Adress</th>
                         <th>Status</th>
-                        <th>view</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -174,34 +173,6 @@
                                    ($customer->status === 'in_progress' ? 'status-in-progress' : 'status-completed') }}">
                                 {{ $customer->status }}
                             </span>
-                        </td>
-                        <td>
-                            @if($customer->quotations->count())
-                                @foreach ($customer->quotations as $quotation)
-                                    <div class="d-grid gap-1 mb-1">
-                                        <a href="{{ route('viewForCustomer', ['customerId' => $quotation->customer->id, 'quotationId' => $quotation->id]) }}"
-                                        class="btn btn-outline-primary btn-xs py-1 px-2 shadow-sm"
-                                        style="font-size: 0.85rem; border-radius: 20px; min-width: 90px;">
-                                            <i class="fa-solid fa-file-invoice-dollar me-1"></i> Quotation
-                                        </a>
-                                    </div>
-                                @endforeach
-                            @else
-                                <span class="text-muted d-grid gap-1 mb-1" style="font-size: 0.9rem;">quotation not exist</span>
-                            @endif
-                            @if($customer->invoices->count())
-                            @foreach ($customer->invoices as $invoice)
-                                <div class="d-grid gap-1 mb-1">
-                                    <a href="{{ route('invoices.viewForCustomer', ['customerId' => $invoice->customer->id, 'invoiceId' => $invoice->id]) }}"
-                                    class="btn btn-outline-success btn-xs py-1 px-2 shadow-sm"
-                                    style="font-size: 0.85rem; border-radius: 20px; min-width: 90px;">
-                                        <i class="fa-solid fa-file-invoice me-1"></i> Invoice
-                                    </a>
-                                </div>
-                            @endforeach
-                            @else
-                                <span class="text-muted d-grid gap-1 mb-1" style="font-size: 0.9rem;">invoice not exist</span>
-                            @endif
                         </td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Actions">

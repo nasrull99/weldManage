@@ -50,10 +50,6 @@
         background-color: #f1f1f1;
     }
 
-    .btn-group button {
-        border-radius: 50%;
-    }
-
     .btn {
         font-size: 1rem;
         padding: 0.5rem 1rem;
@@ -75,7 +71,7 @@
     }
 
     .modal-header {
-        background-color: #007bff;
+        background-color: #212529;
         color: white;
         border-radius: 5px 5px 0 0;
     }
@@ -147,9 +143,10 @@
                         <td>{{ $invoice->created_at->format('d/m/Y') }}</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Actions">
-                                <a href="{{ route('invoices.viewForCustomer', ['customerId' => $invoice->customer->id, 'invoiceId' => $invoice->id]) }}" class="btn btn-secondary btn-sm">
+                                <button type="button"
+                                    class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#viewInvoiceModal" data-url="{{ route('invoices.viewForCustomer', ['customerId' => $invoice->customer->id, 'invoiceId' => $invoice->id]) }}">
                                     <i class="fa-solid fa-eye"></i>
-                                </a>
+                                </button>
                                 <a href="{{ route('editInvoice', ['id' => $invoice->id]) }}" class="btn btn-warning btn-sm">
                                     <i class="fas fa-edit"></i>
                                 </a>
@@ -163,6 +160,24 @@
                             </div>
                         </td>
                     </tr>
+
+                    <!-- Invoice View Modal -->
+                    <div class="modal fade" id="viewInvoiceModal" tabindex="-1" aria-labelledby="viewInvoiceModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="viewInvoiceModalLabel">Invoice Details</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: invert(1);"></button>
+                                </div>
+                                <div class="modal-body" id="invoiceModalBody">
+                                    <div class="text-center py-5">
+                                        <div class="spinner-border text-primary" role="status"></div>
+                                        <div>Loading...</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- Modal for Deletion Confirmation -->
                     <div class="modal fade" id="deleteModal{{ $invoice->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $invoice->id }}" aria-hidden="true">
@@ -186,7 +201,6 @@
                             </div>
                         </div>
                     </div>
-
                     @endforeach
                 </tbody>
             </table>
@@ -194,6 +208,15 @@
     </div>
 
 </body>
-
-
+<script>
+$('#viewInvoiceModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var url = button.data('url');
+    var modal = $(this);
+    modal.find('#invoiceModalBody').html('<div class="text-center py-5"><div class="spinner-border text-primary" role="status"></div><div>Loading...</div></div>');
+    $.get(url, function(data) {
+        modal.find('#invoiceModalBody').html(data);
+    });
+});
+</script>
 @endsection
